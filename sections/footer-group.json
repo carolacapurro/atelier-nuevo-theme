@@ -1,0 +1,693 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "t:names.footer",
+  "sections": {
+    "section_PCyXPY": {
+      "type": "section",
+      "blocks": {
+        "text_MyjkQW": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h3>Preguntas Frecuentes</h3>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "accordion_njmVXE": {
+          "type": "accordion",
+          "name": "t:names.accordion",
+          "settings": {
+            "icon": "caret",
+            "dividers": true,
+            "type_preset": "h5",
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "accordion_row_4cKaci": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "¿Cómo están hechos nuestros productos?",
+                "open_by_default": false
+              },
+              "blocks": {
+                "text_cLdHJy": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Cada pieza Vallorani es 100% artesanal y hecha en familia, desde el corte del cuero hasta el armado final. Usamos cuero curtido vegetal, flor o engrasado, un material que es resistente y está hecho para durar. Como todo material natural, puede presentar marcas o variaciones: lejos de ser defectos, son señales de su autenticidad y carácter.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_cLdHJy"
+              ]
+            },
+            "accordion_row_tYJQ7Q": {
+              "type": "_accordion-row",
+              "settings": {
+                "heading": "¿Qué es un Midori y para qué sirve?",
+                "open_by_default": false
+              },
+              "blocks": {
+                "text_XRVypQ": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Es un sistema de cuaderno recargable que te permite intercambiar los cuadernillos internos cuando los completás, sin perder la cubierta. Es ideal para journaling, escritura diaria, notas de viaje o lo que necesites llevar con vos siempre.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_XRVypQ"
+              ]
+            },
+            "accordion_row_4B743i": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_dash_row",
+              "settings": {
+                "heading": "¿Qué incluye cada Midori?",
+                "open_by_default": false
+              },
+              "blocks": {
+                "text_NgPXXr": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>Cada uno incluye:</p><ul><li>2 cuadernos internos punteados (en el tamaño correspondiente)</li><li>1 dije frontal + 1 dije lateral a elección</li><li>Grabado personalizado de hasta 6 letras</li></ul><p>También podés sumar más dijes con costo adicional.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_NgPXXr"
+              ]
+            },
+            "accordion_row_cTgAgA": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_dash_row",
+              "settings": {
+                "heading": "¿Cuánto tarda mi pedido?",
+                "open_by_default": false
+              },
+              "blocks": {
+                "text_kWpamn": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>Todos los productos se fabrican a pedido en 5 a 7 días hábiles aproximadamente, estos tiempos pueden variar por lo que recomendamos consultar antes de comprar. Intentamos minimizar estos tiempos, pero tenelo en cuenta al comprar, ya que son productos 100% personalizados y artesanales.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_kWpamn"
+              ]
+            },
+            "accordion_row_U73kjR": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_dash_row",
+              "settings": {
+                "heading": "¿Cómo se hacen los envíos?",
+                "open_by_default": false
+              },
+              "blocks": {
+                "text_pgb8cW": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>Realizamos envios a todo el país. Podes elegir correo o moto. Una vez realizada la compra, nos comunicamos por WhatsApp para que abones y coordines el envío. (Correo demora entre 2 a 5 días aprox.)</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_pgb8cW"
+              ]
+            },
+            "accordion_row_fybbNb": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_dash_row",
+              "settings": {
+                "heading": "¿Realizan envíos al exterior?",
+                "open_by_default": false
+              },
+              "blocks": {
+                "text_CpxBHT": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "text": "<p>Si! Realizamos envíos internacionales a todo el mundo con FedEx y DHL. Consultanos por privado, vía instagram o mail.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_CpxBHT"
+              ]
+            },
+            "accordion_row_RwGAVM": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_row",
+              "settings": {
+                "heading": "¿Puedo cambiar o devolver mi pedido?",
+                "open_by_default": false
+              },
+              "blocks": {
+                "text_YADF3Q": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>No realizamos cambios ni devoluciones, ya que cada producto se hace especialmente para vos. En caso de querer cambiar algo en tu pedido se cancelará la compra para que la vuelvas a hacer con los cambios correspondientes. <br/>Solo se aceptan reclamos por fallas de fabricación.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_YADF3Q"
+              ]
+            },
+            "accordion_row_ywPLVi": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_row",
+              "settings": {
+                "heading": "¿Los colores y tamaños son exactos?",
+                "open_by_default": false
+              },
+              "blocks": {
+                "text_87PzeG": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>No exactamente. Como todo es hecho a mano y usamos cuero natural, puede haber pequeñas variaciones en las medidas, el color o la textura. Además, los tonos pueden verse distintos según la pantalla. Cada cuaderno es único.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_87PzeG"
+              ]
+            },
+            "accordion_row_ykQwaW": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_row",
+              "settings": {
+                "heading": "¿Cómo son los dijes?",
+                "open_by_default": false
+              },
+              "blocks": {
+                "text_HhgUx3": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Nuestros dijes dorados pueden ser de acero o enchapados en oro (consultar). Dijes plateados pueden ser de acero o aleación, según disponibilidad. Siempre buscamos materiales duraderos para que puedas disfrutar de tu midori el mayor tiempo posible.</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_HhgUx3"
+              ]
+            },
+            "accordion_row_mtcjpe": {
+              "type": "_accordion-row",
+              "name": "t:names.accordion_row",
+              "settings": {
+                "heading": "PAGOS CON TRANSFERENCIA",
+                "open_by_default": false
+              },
+              "blocks": {
+                "text_yriXhX": {
+                  "type": "text",
+                  "settings": {
+                    "text": "<p>Los pagos con transferencia bancaria tienen un 10% OFF. Una vez realizada la compra tenes 24hs para enviar el comprobante, N. de orden y tus datos a    hola@valloraniatelier.com</p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "custom",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_yriXhX"
+              ]
+            }
+          },
+          "block_order": [
+            "accordion_row_4cKaci",
+            "accordion_row_tYJQ7Q",
+            "accordion_row_4B743i",
+            "accordion_row_cTgAgA",
+            "accordion_row_U73kjR",
+            "accordion_row_fybbNb",
+            "accordion_row_RwGAVM",
+            "accordion_row_ywPLVi",
+            "accordion_row_ykQwaW",
+            "accordion_row_mtcjpe"
+          ]
+        }
+      },
+      "block_order": [
+        "text_MyjkQW",
+        "accordion_njmVXE"
+      ],
+      "name": "t:names.faq_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 32,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-100bdc0c-6741-4701-bd7d-97faaeb64789",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "group_NMLrEc": {
+          "type": "group",
+          "settings": {
+            "link": "",
+            "open_in_new_tab": false,
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "flex-start",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_CPh9EU": {
+              "type": "group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "row",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "flex-start",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 50,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "menu_yiQQfm": {
+                  "type": "menu",
+                  "settings": {
+                    "menu": "main-menu",
+                    "heading": "",
+                    "menu_spacing": 13,
+                    "show_as_accordion": false,
+                    "accordion_icon": "caret",
+                    "accordion_dividers": false,
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "heading_preset": "h4",
+                    "link_preset": "h4",
+                    "padding-block-start": 0,
+                    "padding-block-end": 12,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "menu_yiQQfm"
+              ]
+            }
+          },
+          "block_order": [
+            "group_CPh9EU"
+          ]
+        },
+        "footer_utilities_zVWazC": {
+          "type": "footer-utilities",
+          "settings": {
+            "divider_thickness": 1,
+            "padding-block-start": 12,
+            "padding-block-end": 0
+          },
+          "blocks": {
+            "copyright": {
+              "type": "_footer-copyright",
+              "static": true,
+              "settings": {
+                "font_size": "0.75rem",
+                "case": "none"
+              },
+              "blocks": {}
+            },
+            "policy_list": {
+              "type": "_footer-policy-list",
+              "static": true,
+              "settings": {
+                "font_size": "0.75rem",
+                "case": "none"
+              },
+              "blocks": {}
+            },
+            "social_icons": {
+              "type": "_footer-social-icons",
+              "static": true,
+              "settings": {},
+              "blocks": {
+                "social_link_eMTTTG": {
+                  "type": "_social-link",
+                  "settings": {
+                    "link": "https://www.instagram.com/valloraniatelier"
+                  },
+                  "blocks": {}
+                },
+                "social_link_XLRrJj": {
+                  "type": "_social-link",
+                  "settings": {
+                    "link": "https://www.tiktok.com/@vallorani"
+                  },
+                  "blocks": {}
+                },
+                "social_link_iMNX3h": {
+                  "type": "_social-link",
+                  "name": "t:names.social_link",
+                  "settings": {
+                    "link": ""
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "social_link_eMTTTG",
+                "social_link_XLRrJj",
+                "social_link_iMNX3h"
+              ]
+            }
+          },
+          "block_order": []
+        }
+      },
+      "block_order": [
+        "group_NMLrEc",
+        "footer_utilities_zVWazC"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 64,
+        "section_width": "page-width",
+        "section_height": "",
+        "color_scheme": "scheme-5ae1ee77-3730-4668-b2c9-f21ee4144e90",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "padding-block-start": 64,
+        "padding-block-end": 16
+      }
+    }
+  },
+  "order": [
+    "section_PCyXPY",
+    "footer"
+  ]
+}
