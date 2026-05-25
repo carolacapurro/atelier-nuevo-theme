@@ -505,8 +505,9 @@
       "name": "Journal Configurador",
       "settings": {
         "esquinas_rounded_image": "shopify://shop_images/image-swatches-2_2_1754023534093-1754023549.jpg",
+        "esquinas_squared_image": "shopify://shop_images/image-swatches-2_1_1754023078854-1754023526.jpg",
         "grabado_silver_color": "#C0C0C0",
-        "grabado_gold_color": "#CFB53B"
+        "grabado_gold_color": "#fdd95f"
       }
     }
   },
