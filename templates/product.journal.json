@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "journal_configurator": {
+      "type": "journal-configurator",
+      "blocks": {},
+      "block_order": [],
+      "settings": {}
+    }
+  },
+  "order": ["journal_configurator"]
+}

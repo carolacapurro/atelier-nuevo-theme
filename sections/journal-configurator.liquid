@@ -1,0 +1,508 @@
+{{ 'journal-configurator.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign cuero_blocks     = section.blocks | where: 'type', 'cuero'
+  assign cordon_blocks    = section.blocks | where: 'type', 'cordon'
+  assign portada_blocks   = section.blocks | where: 'type', 'dije_portada'
+  assign costado_blocks   = section.blocks | where: 'type', 'dije_costado'
+  assign extra_blocks     = section.blocks | where: 'type', 'dije_extra'
+  assign silver_color     = section.settings.grabado_silver_color | default: '#C0C0C0'
+  assign gold_color       = section.settings.grabado_gold_color   | default: '#CFB53B'
+-%}
+
+<section class="journal-configurator-section" id="jc-{{ section.id }}">
+  <div class="jc-inner page-width">
+
+    {{-- ── Preview panel ─────────────────────────────── --}}
+    <div class="jc-preview">
+      <div class="jc-canvas">
+
+        {%- if section.settings.base_image != blank -%}
+          <img class="jc-layer jc-layer--base"
+               src="{{ section.settings.base_image | image_url: width: 900 }}"
+               alt="{{ product.title }}"
+               loading="eager" width="900" height="900">
+        {%- else -%}
+          <div class="jc-layer jc-layer--base jc-placeholder">
+            <span>Subí la imagen base del journal en el editor de tema</span>
+          </div>
+        {%- endif -%}
+
+        <img class="jc-layer" data-layer="cuero"       src="" alt="" aria-hidden="true" style="display:none">
+        <img class="jc-layer" data-layer="cordon"      src="" alt="" aria-hidden="true" style="display:none">
+        <img class="jc-layer" data-layer="esquinas"    src="" alt="" aria-hidden="true" style="display:none">
+        <img class="jc-layer" data-layer="dije_portada" src="" alt="" aria-hidden="true" style="display:none">
+        <img class="jc-layer" data-layer="dije_costado" src="" alt="" aria-hidden="true" style="display:none">
+
+        <div class="jc-layer jc-extras-container" data-layer="dijes_extra" aria-hidden="true"></div>
+
+        <div class="jc-layer jc-grabado-layer" aria-hidden="true">
+          <span class="jc-grabado-text"
+                data-silver="{{ silver_color }}"
+                data-gold="{{ gold_color }}"
+                style="color: {{ silver_color }}"></span>
+        </div>
+
+      </div>
+
+      <p class="jc-hint-text">Seleccioná las opciones para ver tu journal personalizado</p>
+    </div>
+
+    {{-- ── Options panel ─────────────────────────────── --}}
+    <div class="jc-panel">
+
+      <div class="jc-product-header">
+        <h1 class="jc-product-title">{{ product.title }}</h1>
+        <p class="jc-product-price">{{ variant.price | money }}</p>
+      </div>
+
+      <form
+        class="jc-form"
+        id="jc-form-{{ section.id }}"
+        action="/cart/add"
+        method="post"
+        novalidate>
+
+        <input type="hidden" name="id" value="{{ variant.id }}">
+
+        {{-- Color Cuero --}}
+        {%- if cuero_blocks.size > 0 -%}
+        <div class="jc-group" data-group="cuero" data-required>
+          <div class="jc-label">Color Cuero <span class="jc-required-mark" aria-hidden="true">*</span></div>
+          <div class="jc-chips">
+            {%- for block in cuero_blocks -%}
+              <button type="button" class="jc-chip"
+                data-option="cuero"
+                data-value="{{ block.settings.slug | strip }}"
+                data-label="{{ block.settings.name | strip }}"
+                data-image="{{ block.settings.image | image_url: width: 900 }}"
+                {{ block.shopify_attributes }}>
+                {%- if block.settings.image != blank -%}
+                  <span class="jc-swatch" style="background-image:url('{{ block.settings.image | image_url: width: 80 }}')"></span>
+                {%- endif -%}
+                {{ block.settings.name }}
+              </button>
+            {%- endfor -%}
+          </div>
+          <input type="hidden" name="properties[Color Cuero]" data-prop="cuero">
+          <p class="jc-group-error" aria-live="polite">Seleccioná el color de cuero</p>
+        </div>
+        {%- endif -%}
+
+        {{-- Color Cordón --}}
+        {%- if cordon_blocks.size > 0 -%}
+        <div class="jc-group" data-group="cordon" data-required>
+          <div class="jc-label">Color Cordón <span class="jc-required-mark" aria-hidden="true">*</span></div>
+          <div class="jc-chips">
+            {%- for block in cordon_blocks -%}
+              <button type="button" class="jc-chip"
+                data-option="cordon"
+                data-value="{{ block.settings.slug | strip }}"
+                data-label="{{ block.settings.name | strip }}"
+                data-four="{{ block.settings.image_4 | image_url: width: 900 }}"
+                data-six="{{ block.settings.image_6 | image_url: width: 900 }}"
+                {{ block.shopify_attributes }}>
+                {%- if block.settings.image_4 != blank -%}
+                  <span class="jc-swatch" style="background-image:url('{{ block.settings.image_4 | image_url: width: 80 }}')"></span>
+                {%- endif -%}
+                {{ block.settings.name }}
+              </button>
+            {%- endfor -%}
+          </div>
+          <input type="hidden" name="properties[Color Cordón]" data-prop="cordon">
+          <p class="jc-group-error" aria-live="polite">Seleccioná el color del cordón</p>
+        </div>
+        {%- endif -%}
+
+        {{-- Cantidad de Cordones --}}
+        <div class="jc-group" data-group="cantidad" data-required>
+          <div class="jc-label">Cantidad de Cordones <span class="jc-required-mark" aria-hidden="true">*</span></div>
+          <div class="jc-chips">
+            <button type="button" class="jc-chip" data-option="cantidad" data-value="4" data-label="4 cordones">
+              4 cordones
+            </button>
+            <button type="button" class="jc-chip" data-option="cantidad" data-value="6" data-label="6 cordones">
+              6 cordones
+            </button>
+          </div>
+          <input type="hidden" name="properties[Cantidad de Cordones]" data-prop="cantidad">
+          <p class="jc-group-error" aria-live="polite">Seleccioná la cantidad de cordones</p>
+        </div>
+
+        {{-- Esquinas --}}
+        <div class="jc-group" data-group="esquinas" data-required>
+          <div class="jc-label">Esquinas <span class="jc-required-mark" aria-hidden="true">*</span></div>
+          <div class="jc-chips">
+            <button type="button" class="jc-chip"
+              data-option="esquinas"
+              data-value="redondeadas"
+              data-label="Redondeadas"
+              data-image="{{ section.settings.esquinas_rounded_image | image_url: width: 900 }}">
+              Redondeadas
+            </button>
+            <button type="button" class="jc-chip"
+              data-option="esquinas"
+              data-value="rectas"
+              data-label="Rectas"
+              data-image="{{ section.settings.esquinas_squared_image | image_url: width: 900 }}">
+              Rectas
+            </button>
+          </div>
+          <input type="hidden" name="properties[Esquinas]" data-prop="esquinas">
+          <p class="jc-group-error" aria-live="polite">Seleccioná el tipo de esquinas</p>
+        </div>
+
+        {{-- Detalles del grabado --}}
+        <div class="jc-group" data-group="detalles">
+          <div class="jc-label">Detalles del Grabado</div>
+          <div class="jc-chips">
+            <button type="button" class="jc-chip"
+              data-option="detalles"
+              data-value="plateado"
+              data-label="Plateado"
+              data-color="{{ silver_color }}">
+              <span class="jc-dot" style="background:{{ silver_color }}"></span>
+              Plateado
+            </button>
+            <button type="button" class="jc-chip"
+              data-option="detalles"
+              data-value="dorado"
+              data-label="Dorado"
+              data-color="{{ gold_color }}">
+              <span class="jc-dot" style="background:{{ gold_color }}"></span>
+              Dorado
+            </button>
+          </div>
+          <input type="hidden" name="properties[Detalles]" data-prop="detalles">
+        </div>
+
+        {{-- Dije Portada --}}
+        {%- if portada_blocks.size > 0 -%}
+        <div class="jc-group" data-group="dije_portada">
+          <div class="jc-label">
+            Dije Portada
+            <span class="jc-badge">Incluido</span>
+          </div>
+          <div class="jc-chips jc-chips--dijes">
+            <button type="button" class="jc-chip is-active"
+              data-option="dije_portada"
+              data-value=""
+              data-label="Ninguno"
+              data-image="">
+              Ninguno
+            </button>
+            {%- for block in portada_blocks -%}
+              <button type="button" class="jc-chip jc-chip--dije"
+                data-option="dije_portada"
+                data-value="{{ block.settings.slug | strip }}"
+                data-label="{{ block.settings.name | strip }}"
+                data-image="{{ block.settings.layer | image_url: width: 900 }}"
+                {{ block.shopify_attributes }}>
+                {%- if block.settings.thumb != blank -%}
+                  <img class="jc-thumb" src="{{ block.settings.thumb | image_url: width: 80 }}"
+                       alt="{{ block.settings.name }}" loading="lazy" width="40" height="40">
+                {%- endif -%}
+                <span>{{ block.settings.name }}</span>
+              </button>
+            {%- endfor -%}
+          </div>
+          <input type="hidden" name="properties[Dije Portada]" data-prop="dije_portada">
+        </div>
+        {%- endif -%}
+
+        {{-- Dije Costado --}}
+        {%- if costado_blocks.size > 0 -%}
+        <div class="jc-group" data-group="dije_costado">
+          <div class="jc-label">
+            Dije Costado
+            <span class="jc-badge">Incluido</span>
+          </div>
+          <div class="jc-chips jc-chips--dijes">
+            <button type="button" class="jc-chip is-active"
+              data-option="dije_costado"
+              data-value=""
+              data-label="Ninguno"
+              data-image="">
+              Ninguno
+            </button>
+            {%- for block in costado_blocks -%}
+              <button type="button" class="jc-chip jc-chip--dije"
+                data-option="dije_costado"
+                data-value="{{ block.settings.slug | strip }}"
+                data-label="{{ block.settings.name | strip }}"
+                data-image="{{ block.settings.layer | image_url: width: 900 }}"
+                {{ block.shopify_attributes }}>
+                {%- if block.settings.thumb != blank -%}
+                  <img class="jc-thumb" src="{{ block.settings.thumb | image_url: width: 80 }}"
+                       alt="{{ block.settings.name }}" loading="lazy" width="40" height="40">
+                {%- endif -%}
+                <span>{{ block.settings.name }}</span>
+              </button>
+            {%- endfor -%}
+          </div>
+          <input type="hidden" name="properties[Dije Costado]" data-prop="dije_costado">
+        </div>
+        {%- endif -%}
+
+        {{-- Dijes Extra --}}
+        {%- if extra_blocks.size > 0 -%}
+        <div class="jc-group" data-group="dije_extra">
+          <div class="jc-label">
+            Dijes Extra
+            <span class="jc-hint-label">Podés elegir varios</span>
+          </div>
+          <div class="jc-chips jc-chips--dijes">
+            {%- for block in extra_blocks -%}
+              <button type="button" class="jc-chip jc-chip--dije jc-chip--multi"
+                data-option="dije_extra"
+                data-value="{{ block.settings.slug | strip }}"
+                data-label="{{ block.settings.name | strip }}"
+                data-image="{{ block.settings.layer | image_url: width: 900 }}"
+                {{ block.shopify_attributes }}>
+                {%- if block.settings.thumb != blank -%}
+                  <img class="jc-thumb" src="{{ block.settings.thumb | image_url: width: 80 }}"
+                       alt="{{ block.settings.name }}" loading="lazy" width="40" height="40">
+                {%- endif -%}
+                <span>{{ block.settings.name }}</span>
+                {%- if block.settings.price != blank -%}
+                  <span class="jc-chip-price">{{ block.settings.price }}</span>
+                {%- endif -%}
+              </button>
+            {%- endfor -%}
+          </div>
+          <input type="hidden" name="properties[Dijes Extra]" data-prop="dije_extra">
+        </div>
+        {%- endif -%}
+
+        {{-- Grabado Frente --}}
+        <div class="jc-group" data-group="grabado">
+          <label class="jc-label" for="jc-grabado-{{ section.id }}">
+            Grabado Frente
+            <span class="jc-hint-label">Opcional — hasta 30 caracteres</span>
+          </label>
+          <div class="jc-grabado-wrapper">
+            <input
+              id="jc-grabado-{{ section.id }}"
+              type="text"
+              name="properties[Grabado Frente]"
+              class="jc-grabado-input"
+              placeholder="Ej: Carola"
+              maxlength="30"
+              autocomplete="off">
+            <span class="jc-char-counter">0/30</span>
+          </div>
+        </div>
+
+        {{-- Cart actions --}}
+        <div class="jc-cart-actions">
+          <div class="jc-qty-wrapper" role="group" aria-label="Cantidad">
+            <button type="button" class="jc-qty-btn" data-action="minus" aria-label="Restar">−</button>
+            <input type="number" name="quantity" value="1" min="1" max="99"
+                   class="jc-qty-input" aria-label="Cantidad">
+            <button type="button" class="jc-qty-btn" data-action="plus" aria-label="Sumar">+</button>
+          </div>
+          <button type="submit" class="jc-submit button" id="jc-submit-{{ section.id }}">
+            <span class="jc-submit-label">Agregar al carrito</span>
+            <span class="jc-submit-spinner" aria-hidden="true" hidden>...</span>
+          </button>
+        </div>
+
+        <div class="jc-cart-error" id="jc-error-{{ section.id }}" role="alert" hidden></div>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<script src="{{ 'journal-configurator.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Journal Configurador",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Imágenes base"
+    },
+    {
+      "type": "image_picker",
+      "id": "base_image",
+      "label": "Silueta base del journal"
+    },
+    {
+      "type": "header",
+      "content": "Esquinas"
+    },
+    {
+      "type": "image_picker",
+      "id": "esquinas_rounded_image",
+      "label": "Capa — Esquinas redondeadas"
+    },
+    {
+      "type": "image_picker",
+      "id": "esquinas_squared_image",
+      "label": "Capa — Esquinas rectas"
+    },
+    {
+      "type": "header",
+      "content": "Color del grabado"
+    },
+    {
+      "type": "color",
+      "id": "grabado_silver_color",
+      "label": "Color plateado",
+      "default": "#C0C0C0"
+    },
+    {
+      "type": "color",
+      "id": "grabado_gold_color",
+      "label": "Color dorado",
+      "default": "#CFB53B"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "cuero",
+      "name": "Color Cuero",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre",
+          "placeholder": "Ej: Rojo"
+        },
+        {
+          "type": "text",
+          "id": "slug",
+          "label": "Slug (sin espacios, en minúsculas)",
+          "placeholder": "Ej: red"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Capa de textura del cuero"
+        }
+      ]
+    },
+    {
+      "type": "cordon",
+      "name": "Color Cordón",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre",
+          "placeholder": "Ej: Negro"
+        },
+        {
+          "type": "text",
+          "id": "slug",
+          "label": "Slug (sin espacios, en minúsculas)",
+          "placeholder": "Ej: black"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_4",
+          "label": "Capa con 4 cordones"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_6",
+          "label": "Capa con 6 cordones"
+        }
+      ]
+    },
+    {
+      "type": "dije_portada",
+      "name": "Dije Portada",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre del dije"
+        },
+        {
+          "type": "text",
+          "id": "slug",
+          "label": "Slug"
+        },
+        {
+          "type": "image_picker",
+          "id": "thumb",
+          "label": "Miniatura (botón del selector)"
+        },
+        {
+          "type": "image_picker",
+          "id": "layer",
+          "label": "Capa del dije sobre el journal"
+        }
+      ]
+    },
+    {
+      "type": "dije_costado",
+      "name": "Dije Costado",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre del dije"
+        },
+        {
+          "type": "text",
+          "id": "slug",
+          "label": "Slug"
+        },
+        {
+          "type": "image_picker",
+          "id": "thumb",
+          "label": "Miniatura (botón del selector)"
+        },
+        {
+          "type": "image_picker",
+          "id": "layer",
+          "label": "Capa del dije sobre el journal"
+        }
+      ]
+    },
+    {
+      "type": "dije_extra",
+      "name": "Dije Extra",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre del dije"
+        },
+        {
+          "type": "text",
+          "id": "slug",
+          "label": "Slug"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Precio adicional",
+          "placeholder": "+$500"
+        },
+        {
+          "type": "image_picker",
+          "id": "thumb",
+          "label": "Miniatura (botón del selector)"
+        },
+        {
+          "type": "image_picker",
+          "id": "layer",
+          "label": "Capa del dije sobre el journal"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Journal Configurador"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,378 @@
+/* ── Layout ──────────────────────────────────────────────────────────── */
+
+.journal-configurator-section {
+  padding-block: 48px;
+}
+
+.jc-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+@media (max-width: 749px) {
+  .jc-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* ── Preview panel ───────────────────────────────────────────────────── */
+
+.jc-preview {
+  position: sticky;
+  top: 80px;
+}
+
+.jc-canvas {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #f7f5f2;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.jc-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Extra dijes container — children are absolutely positioned within canvas */
+.jc-extras-container {
+  position: absolute;
+  inset: 0;
+}
+
+.jc-extra-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Grabado text overlay */
+.jc-grabado-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.jc-grabado-text {
+  font-family: serif;
+  font-size: clamp(1rem, 3.5vw, 2rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+/* Placeholder when no base image is set */
+.jc-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.jc-hint-text {
+  margin-block-start: 12px;
+  font-size: 0.75rem;
+  color: #999;
+  text-align: center;
+}
+
+/* ── Options panel ───────────────────────────────────────────────────── */
+
+.jc-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.jc-product-header {
+  margin-block-end: 28px;
+}
+
+.jc-product-title {
+  margin: 0 0 4px;
+  font-size: 1.5rem;
+  font-family: var(--font-primary--family, serif);
+}
+
+.jc-product-price {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--color-foreground);
+}
+
+/* ── Option groups ───────────────────────────────────────────────────── */
+
+.jc-group {
+  padding-block: 20px;
+  border-bottom: 1px solid var(--color-border, #e8e8e8);
+}
+
+.jc-group:last-of-type {
+  border-bottom: none;
+}
+
+.jc-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-block-end: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-foreground);
+}
+
+.jc-required-mark {
+  color: #c0392b;
+}
+
+.jc-badge {
+  font-size: 0.65rem;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 99px;
+  background: var(--color-foreground, #222);
+  color: var(--color-background, #fff);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.jc-hint-label {
+  font-size: 0.7rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #999;
+}
+
+/* ── Chips ───────────────────────────────────────────────────────────── */
+
+.jc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.jc-chips--dijes {
+  gap: 10px;
+}
+
+.jc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1.5px solid var(--color-border, #e0ddd9);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--color-foreground);
+  line-height: 1;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  text-align: left;
+}
+
+.jc-chip:hover {
+  border-color: var(--color-foreground, #222);
+}
+
+.jc-chip.is-active {
+  border-color: var(--color-foreground, #222);
+  background: var(--color-foreground, #222);
+  color: var(--color-background, #fff);
+}
+
+/* Leather/cord color swatch inside chip */
+.jc-swatch {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+}
+
+/* Detalles color dot */
+.jc-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+/* Dije chips with thumbnail */
+.jc-chip--dije {
+  flex-direction: column;
+  padding: 10px 12px;
+  gap: 6px;
+  min-width: 72px;
+  text-align: center;
+  justify-content: center;
+}
+
+.jc-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.jc-chip-price {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+/* Error state */
+.jc-group-error {
+  display: none;
+  margin-block-start: 8px;
+  font-size: 0.78rem;
+  color: #c0392b;
+}
+
+.jc-has-error .jc-label {
+  color: #c0392b;
+}
+
+.jc-has-error .jc-chip {
+  border-color: #e0b0b0;
+}
+
+.jc-has-error .jc-group-error {
+  display: block;
+}
+
+/* ── Grabado input ───────────────────────────────────────────────────── */
+
+.jc-grabado-wrapper {
+  position: relative;
+}
+
+.jc-grabado-input {
+  width: 100%;
+  padding: 10px 48px 10px 14px;
+  border: 1.5px solid var(--color-border, #e0ddd9);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: var(--color-foreground);
+  background: transparent;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.jc-grabado-input:focus {
+  border-color: var(--color-foreground, #222);
+}
+
+.jc-char-counter {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  color: #aaa;
+  pointer-events: none;
+}
+
+/* ── Cart actions ────────────────────────────────────────────────────── */
+
+.jc-cart-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-block-start: 24px;
+}
+
+/* Quantity */
+.jc-qty-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--color-border, #e0ddd9);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.jc-qty-btn {
+  width: 40px;
+  height: 46px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--color-foreground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s;
+}
+
+.jc-qty-btn:hover {
+  background: var(--color-border, #f0ede9);
+}
+
+.jc-qty-input {
+  width: 44px;
+  height: 46px;
+  text-align: center;
+  border: none;
+  border-inline: 1.5px solid var(--color-border, #e0ddd9);
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--color-foreground);
+  background: transparent;
+  -moz-appearance: textfield;
+}
+
+.jc-qty-input::-webkit-outer-spin-button,
+.jc-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Submit */
+.jc-submit {
+  flex: 1;
+  min-height: 46px;
+}
+
+/* Cart error */
+.jc-cart-error {
+  margin-block-start: 12px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: #fdf0f0;
+  border: 1px solid #f5c0c0;
+  font-size: 0.85rem;
+  color: #c0392b;
+}
