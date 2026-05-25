@@ -14,7 +14,7 @@
 <section class="journal-configurator-section" id="jc-{{ section.id }}">
   <div class="jc-inner page-width">
 
-    {{-- ── Preview panel ─────────────────────────────── --}}
+    <!-- Preview panel -->
     <div class="jc-preview">
       <div class="jc-canvas">
 
@@ -49,7 +49,7 @@
       <p class="jc-hint-text">Seleccioná las opciones para ver tu journal personalizado</p>
     </div>
 
-    {{-- ── Options panel ─────────────────────────────── --}}
+    <!-- Options panel -->
     <div class="jc-panel">
 
       <div class="jc-product-header">
@@ -66,7 +66,7 @@
 
         <input type="hidden" name="id" value="{{ variant.id }}">
 
-        {{-- Color Cuero --}}
+        <!-- Color Cuero -->
         {%- if cuero_blocks.size > 0 -%}
         <div class="jc-group" data-group="cuero" data-required>
           <div class="jc-label">Color Cuero <span class="jc-required-mark" aria-hidden="true">*</span></div>
@@ -90,7 +90,7 @@
         </div>
         {%- endif -%}
 
-        {{-- Color Cordón --}}
+        <!-- Color Cordón -->
         {%- if cordon_blocks.size > 0 -%}
         <div class="jc-group" data-group="cordon" data-required>
           <div class="jc-label">Color Cordón <span class="jc-required-mark" aria-hidden="true">*</span></div>
@@ -115,7 +115,7 @@
         </div>
         {%- endif -%}
 
-        {{-- Cantidad de Cordones --}}
+        <!-- Cantidad de Cordones -->
         <div class="jc-group" data-group="cantidad" data-required>
           <div class="jc-label">Cantidad de Cordones <span class="jc-required-mark" aria-hidden="true">*</span></div>
           <div class="jc-chips">
@@ -130,7 +130,7 @@
           <p class="jc-group-error" aria-live="polite">Seleccioná la cantidad de cordones</p>
         </div>
 
-        {{-- Esquinas --}}
+        <!-- Esquinas -->
         <div class="jc-group" data-group="esquinas" data-required>
           <div class="jc-label">Esquinas <span class="jc-required-mark" aria-hidden="true">*</span></div>
           <div class="jc-chips">
@@ -153,7 +153,7 @@
           <p class="jc-group-error" aria-live="polite">Seleccioná el tipo de esquinas</p>
         </div>
 
-        {{-- Detalles del grabado --}}
+        <!-- Detalles del grabado -->
         <div class="jc-group" data-group="detalles">
           <div class="jc-label">Detalles del Grabado</div>
           <div class="jc-chips">
@@ -177,7 +177,7 @@
           <input type="hidden" name="properties[Detalles]" data-prop="detalles">
         </div>
 
-        {{-- Dije Portada --}}
+        <!-- Dije Portada -->
         {%- if portada_blocks.size > 0 -%}
         <div class="jc-group" data-group="dije_portada">
           <div class="jc-label">
@@ -211,7 +211,7 @@
         </div>
         {%- endif -%}
 
-        {{-- Dije Costado --}}
+        <!-- Dije Costado -->
         {%- if costado_blocks.size > 0 -%}
         <div class="jc-group" data-group="dije_costado">
           <div class="jc-label">
@@ -245,7 +245,7 @@
         </div>
         {%- endif -%}
 
-        {{-- Dijes Extra --}}
+        <!-- Dijes Extra -->
         {%- if extra_blocks.size > 0 -%}
         <div class="jc-group" data-group="dije_extra">
           <div class="jc-label">
@@ -275,7 +275,7 @@
         </div>
         {%- endif -%}
 
-        {{-- Grabado Frente --}}
+        <!-- Grabado Frente -->
         <div class="jc-group" data-group="grabado">
           <label class="jc-label" for="jc-grabado-{{ section.id }}">
             Grabado Frente
@@ -294,7 +294,7 @@
           </div>
         </div>
 
-        {{-- Cart actions --}}
+        <!-- Cart actions -->
         <div class="jc-cart-actions">
           <div class="jc-qty-wrapper" role="group" aria-label="Cantidad">
             <button type="button" class="jc-qty-btn" data-action="minus" aria-label="Restar">−</button>
