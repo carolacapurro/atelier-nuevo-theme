@@ -1,6 +1,37 @@
 (function () {
   'use strict';
 
+  /* ── Validación de grabado (mismas reglas que easify-custom.js) ──
+     - Solo letras (incluye ñ y tildes), espacio y punto
+     - Sin números ni caracteres especiales
+     - Sin letras repetidas consecutivas
+     - Máx. 2 puntos (≈ máx. 3 oraciones)
+     - Todo en mayúsculas
+  ── */
+  var VALID_CHARS       = /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ. ]$/;
+  var NUMBERS_OR_SPECIAL = /[^a-zA-ZáéíóúüñÁÉÍÓÚÜÑ. ]/g;
+  var MAX_DOTS = 2;
+
+  function limitDots(str) {
+    var count = 0;
+    var out = '';
+    for (var i = 0; i < str.length; i++) {
+      if (str[i] === '.') {
+        count++;
+        if (count > MAX_DOTS) continue;
+      }
+      out += str[i];
+    }
+    return out;
+  }
+
+  function cleanGrabado(value) {
+    var cleaned = value.replace(NUMBERS_OR_SPECIAL, '');
+    cleaned = cleaned.replace(/(.)\1+/gi, '$1');
+    cleaned = limitDots(cleaned);
+    return cleaned.toUpperCase();
+  }
+
   class JournalConfigurator {
     constructor(root) {
       this.root   = root;
@@ -36,10 +67,50 @@
       const grabadoInput   = this.form.querySelector('.jc-grabado-input');
       const charCounter    = this.form.querySelector('.jc-char-counter');
       if (grabadoInput) {
+        grabadoInput.addEventListener('keydown', (e) => {
+          const key = e.key;
+          if (key.length > 1) return;
+
+          if (/[0-9]/.test(key)) { e.preventDefault(); return; }
+          if (!VALID_CHARS.test(key)) { e.preventDefault(); return; }
+
+          if (key === '.') {
+            const dotCount = (grabadoInput.value.match(/\./g) || []).length;
+            if (dotCount >= MAX_DOTS) { e.preventDefault(); return; }
+          }
+
+          const pos = grabadoInput.selectionStart;
+          const charBefore = grabadoInput.value[pos - 1];
+          if (charBefore && charBefore.toLowerCase() === key.toLowerCase()) {
+            e.preventDefault();
+          }
+        });
+
         grabadoInput.addEventListener('input', (e) => {
-          const val = e.target.value;
+          const pos = grabadoInput.selectionStart;
+          const cleaned = cleanGrabado(e.target.value);
+          if (cleaned !== e.target.value) {
+            grabadoInput.value = cleaned;
+            const newPos = Math.min(pos, cleaned.length);
+            try { grabadoInput.setSelectionRange(newPos, newPos); } catch (_) {}
+          }
+          const val = grabadoInput.value;
           if (this.grabadoTextEl) this.grabadoTextEl.textContent = val;
           if (charCounter) charCounter.textContent = `${val.length}/30`;
+        });
+
+        grabadoInput.addEventListener('paste', (e) => {
+          e.preventDefault();
+          const pasted  = (e.clipboardData || window.clipboardData).getData('text') || '';
+          const start   = grabadoInput.selectionStart;
+          const end     = grabadoInput.selectionEnd;
+          const current = grabadoInput.value;
+          const newValue = cleanGrabado(current.substring(0, start) + pasted + current.substring(end));
+          grabadoInput.value = newValue;
+          const newPos = Math.min(start + pasted.length, newValue.length);
+          try { grabadoInput.setSelectionRange(newPos, newPos); } catch (_) {}
+          if (this.grabadoTextEl) this.grabadoTextEl.textContent = newValue;
+          if (charCounter) charCounter.textContent = `${newValue.length}/30`;
         });
       }
 
@@ -238,9 +309,38 @@
     }
   }
 
+  function initInfoTabs(root) {
+    const tabs = [...root.querySelectorAll('.jc-info-tab')];
+    if (!tabs.length) return;
+
+    const select = (tab, focus) => {
+      tabs.forEach((t) => {
+        const active = t === tab;
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
+        t.tabIndex = active ? 0 : -1;
+        const panel = root.querySelector('#' + CSS.escape(t.getAttribute('aria-controls')));
+        if (panel) panel.hidden = !active;
+      });
+      if (focus) tab.focus();
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const step = e.key === 'ArrowRight' ? 1 : -1;
+        select(tabs[(i + step + tabs.length) % tabs.length], true);
+      });
+    });
+
+    select(tabs[0]);
+  }
+
   function init() {
     document.querySelectorAll('.journal-configurator-section').forEach((root) => {
       new JournalConfigurator(root);
+      initInfoTabs(root);
     });
   }
 

@@ -254,6 +254,7 @@
           </div>
           <div class="jc-chips jc-chips--dijes">
             {%- for block in extra_blocks -%}
+              {%- if block.settings.product != blank and block.settings.product.available == false -%}{%- continue -%}{%- endif -%}
               <button type="button" class="jc-chip jc-chip--dije jc-chip--multi"
                 data-option="dije_extra"
                 data-value="{{ block.settings.slug | strip }}"
@@ -311,6 +312,56 @@
         <div class="jc-cart-error" id="jc-error-{{ section.id }}" role="alert" hidden></div>
 
       </form>
+
+      <!-- Info tabs: Descripción / Especificaciones / Envíos -->
+      {%- liquid
+        assign tab_desc  = section.settings.tab_description_content | default: product.description
+        assign tab_specs = section.settings.tab_specs_content
+        assign tab_ship  = section.settings.tab_shipping_content
+      -%}
+      {%- if tab_desc != blank or tab_specs != blank or tab_ship != blank -%}
+      <div class="jc-info">
+        <div class="jc-info-tabs" role="tablist" aria-label="Información del producto">
+          {%- if tab_desc != blank -%}
+            <button type="button" class="jc-info-tab" role="tab"
+              id="jc-tab-desc-{{ section.id }}" aria-controls="jc-panel-desc-{{ section.id }}">
+              {{ section.settings.tab_description_label | default: 'Descripción' }}
+            </button>
+          {%- endif -%}
+          {%- if tab_specs != blank -%}
+            <button type="button" class="jc-info-tab" role="tab"
+              id="jc-tab-specs-{{ section.id }}" aria-controls="jc-panel-specs-{{ section.id }}">
+              {{ section.settings.tab_specs_label | default: 'Especificaciones' }}
+            </button>
+          {%- endif -%}
+          {%- if tab_ship != blank -%}
+            <button type="button" class="jc-info-tab" role="tab"
+              id="jc-tab-ship-{{ section.id }}" aria-controls="jc-panel-ship-{{ section.id }}">
+              {{ section.settings.tab_shipping_label | default: 'Envíos' }}
+            </button>
+          {%- endif -%}
+        </div>
+
+        {%- if tab_desc != blank -%}
+          <div class="jc-info-panel rte" role="tabpanel" hidden
+            id="jc-panel-desc-{{ section.id }}" aria-labelledby="jc-tab-desc-{{ section.id }}">
+            {{ tab_desc }}
+          </div>
+        {%- endif -%}
+        {%- if tab_specs != blank -%}
+          <div class="jc-info-panel rte" role="tabpanel" hidden
+            id="jc-panel-specs-{{ section.id }}" aria-labelledby="jc-tab-specs-{{ section.id }}">
+            {{ tab_specs }}
+          </div>
+        {%- endif -%}
+        {%- if tab_ship != blank -%}
+          <div class="jc-info-panel rte" role="tabpanel" hidden
+            id="jc-panel-ship-{{ section.id }}" aria-labelledby="jc-tab-ship-{{ section.id }}">
+            {{ tab_ship }}
+          </div>
+        {%- endif -%}
+      </div>
+      {%- endif -%}
     </div>
 
   </div>
@@ -360,6 +411,47 @@
       "id": "grabado_gold_color",
       "label": "Color dorado",
       "default": "#CFB53B"
+    },
+    {
+      "type": "header",
+      "content": "Pestañas de información"
+    },
+    {
+      "type": "paragraph",
+      "content": "Una pestaña vacía no se muestra. Si Descripción queda vacía, se usa la descripción del producto."
+    },
+    {
+      "type": "text",
+      "id": "tab_description_label",
+      "label": "Título pestaña 1",
+      "default": "Descripción"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_description_content",
+      "label": "Contenido pestaña 1"
+    },
+    {
+      "type": "text",
+      "id": "tab_specs_label",
+      "label": "Título pestaña 2",
+      "default": "Especificaciones"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_specs_content",
+      "label": "Contenido pestaña 2"
+    },
+    {
+      "type": "text",
+      "id": "tab_shipping_label",
+      "label": "Título pestaña 3",
+      "default": "Envíos"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_shipping_content",
+      "label": "Contenido pestaña 3"
     }
   ],
   "blocks": [
@@ -485,6 +577,11 @@
           "id": "price",
           "label": "Precio adicional",
           "placeholder": "+$500"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Producto vinculado (para ocultar si no hay stock)"
         },
         {
           "type": "image_picker",

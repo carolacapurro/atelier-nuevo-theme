@@ -1,0 +1,82 @@
+{{ 'vallorani-blog.css' | asset_url | stylesheet_tag }}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=La+Belle+Aurore&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Montserrat:wght@400;500;600&display=swap">
+
+{%- liquid
+  assign firma = 'Por el taller de Rosa Vallorani · noviembre de 2026'
+-%}
+<div class="vb">
+  <section class="vb-blog">
+    <header class="cab">
+      <span class="tag">{{ section.settings.etiqueta }}</span>
+      <h1 class="titulo">{{ section.settings.titulo }} <em>{{ section.settings.cursiva }}</em></h1>
+      <p>{{ section.settings.texto }}</p>
+      {%- if section.settings.mano != blank -%}<span class="mano">{{ section.settings.mano }}</span>{%- endif -%}
+    </header>
+
+    {%- if blog.all_tags.size > 1 -%}
+      <nav class="filtros" aria-label="Temas">
+        <a href="{{ blog.url }}" {% unless current_tags %}class="on"{% endunless %}>Todas</a>
+        {%- for t in blog.all_tags -%}
+          <a href="{{ blog.url }}/tagged/{{ t | handleize }}" {% if current_tags contains t %}class="on"{% endif %}>{{ t }}</a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+
+    {%- paginate blog.articles by 9 -%}
+      <div class="grid">
+        {%- for article in blog.articles -%}
+          {%- liquid
+            if article.excerpt != blank
+              assign resumen = article.excerpt | strip_html | truncatewords: 26
+            else
+              assign resumen = article.content | strip_html | remove: firma | strip | truncatewords: 26
+            endif
+            assign palabras = article.content | strip_html | split: ' ' | size
+            assign minutos = palabras | divided_by: 200 | at_least: 2
+            assign destacada = false
+            if forloop.first and paginate.current_page == 1 and current_tags == blank
+              assign destacada = true
+            endif
+          -%}
+          <a class="card{% if destacada %} destacada{% endif %}" href="{{ article.url }}">
+            <div class="img">
+              {%- if article.tags.size > 0 -%}<span class="tag{% cycle '', ' verde' %}">{{ article.tags.first }}</span>{%- endif -%}
+              {%- if article.image -%}
+                {{ article.image | image_url: width: 1200 | image_tag: alt: article.image.alt, loading: 'lazy', sizes: '(max-width: 600px) 100vw, 33vw' }}
+              {%- else -%}
+                <div class="vacia">Vallorani</div>
+              {%- endif -%}
+            </div>
+            <div>
+              <div class="meta">{{ article.published_at | date: '%d/%m/%Y' }} · {{ minutos }} min de lectura</div>
+              <h2>{{ article.title }}</h2>
+              <p>{{ resumen }}</p>
+              <span class="leer">Leer nota</span>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}
+        <nav class="pag" aria-label="Páginas">
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}<a href="{{ part.url }}">{{ part.title }}</a>{%- else -%}<span class="{% if part.title == paginate.current_page %}current{% endif %}">{{ part.title }}</span>{%- endif -%}
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Vallorani · Blog",
+  "settings": [
+    {"type": "text", "id": "etiqueta", "label": "Etiqueta", "default": "Journal"},
+    {"type": "text", "id": "titulo", "label": "Título (normal)", "default": "Diario"},
+    {"type": "text", "id": "cursiva", "label": "Título (cursiva)", "default": "del taller"},
+    {"type": "textarea", "id": "texto", "label": "Texto", "default": "Guías, historias y consejos sobre midoris de cuero hechos a mano: cómo elegirlos, personalizarlos, cuidarlos y llevarlos de viaje."},
+    {"type": "text", "id": "mano", "label": "Frase manuscrita", "default": "para que tus historias viajen con vos"}
+  ]
+}
+{% endschema %}

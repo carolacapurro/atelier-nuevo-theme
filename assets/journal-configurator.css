@@ -376,3 +376,56 @@
   font-size: 0.85rem;
   color: #c0392b;
 }
+
+/* ── Info tabs (Descripción / Especificaciones / Envíos) ─────────────── */
+
+.jc-info {
+  margin-block-start: 40px;
+  border-top: 1px solid var(--color-foreground, #222);
+}
+
+.jc-info-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 32px;
+  padding-block: 18px 4px;
+}
+
+.jc-info-tab {
+  padding: 0 0 3px;
+  border: none;
+  border-bottom: 1.5px solid transparent;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-foreground);
+  opacity: 0.6;
+  transition: opacity 0.15s, border-color 0.15s;
+}
+
+.jc-info-tab:hover {
+  opacity: 1;
+}
+
+.jc-info-tab[aria-selected="true"] {
+  opacity: 1;
+  border-bottom-color: currentColor;
+}
+
+.jc-info-panel {
+  padding-block: 16px 8px;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--color-foreground);
+}
+
+.jc-info-panel > :first-child {
+  margin-block-start: 0;
+}
+
+.jc-info-panel p {
+  margin-block: 0 1em;
+}

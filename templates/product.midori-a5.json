@@ -1,0 +1,105 @@
+{
+  "sections": {
+    "main": {
+      "type": "midori-pre-compra",
+      "blocks": {
+        "cuero_cocoa_engrasado": {
+          "type": "cuero",
+          "settings": {
+            "name": "Cocoa engrasado",
+            "asset_file": "midori-cocoa-engrasado.jpg"
+          }
+        },
+        "cuero_camel_flor": {
+          "type": "cuero",
+          "settings": {
+            "name": "Camel flor",
+            "asset_file": "midori-camel-flor.jpg"
+          }
+        },
+        "cuero_rojo_flor": {
+          "type": "cuero",
+          "settings": {
+            "name": "Rojo flor",
+            "asset_file": "midori-rojo-flor.jpg"
+          }
+        },
+        "cuero_cafe_flor": {
+          "type": "cuero",
+          "settings": {
+            "name": "Café flor",
+            "asset_file": "midori-cafe-flor.jpg"
+          }
+        },
+        "cuero_cactus_engrasado": {
+          "type": "cuero",
+          "settings": {
+            "name": "Cactus engrasado",
+            "asset_file": "midori-cactus-engrasado.jpg"
+          }
+        },
+        "cuero_chocolate_engrasado": {
+          "type": "cuero",
+          "settings": {
+            "name": "Chocolate engrasado",
+            "asset_file": "midori-chocolate-engrasado.jpg"
+          }
+        },
+        "cuero_azul_engrasado": {
+          "type": "cuero",
+          "settings": {
+            "name": "Azul engrasado",
+            "asset_file": "midori-azul-engrasado.jpg"
+          }
+        },
+        "cuero_avellana_vetas": {
+          "type": "cuero",
+          "settings": {
+            "name": "Avellana vetas",
+            "asset_file": "midori-avellana-vetas.jpg"
+          }
+        },
+        "cuero_caramelo_vetas": {
+          "type": "cuero",
+          "settings": {
+            "name": "Caramelo vetas",
+            "asset_file": "midori-caramelo-vetas.jpg"
+          }
+        },
+        "cuero_gris_engrasado": {
+          "type": "cuero",
+          "settings": {
+            "name": "Gris engrasado",
+            "asset_file": "midori-gris-engrasado.jpg"
+          }
+        },
+        "cuero_habano_engrasado": {
+          "type": "cuero",
+          "settings": {
+            "name": "Habano engrasado",
+            "asset_file": "midori-habano-engrasado.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "cuero_cocoa_engrasado",
+        "cuero_camel_flor",
+        "cuero_rojo_flor",
+        "cuero_cafe_flor",
+        "cuero_cactus_engrasado",
+        "cuero_chocolate_engrasado",
+        "cuero_azul_engrasado",
+        "cuero_avellana_vetas",
+        "cuero_caramelo_vetas",
+        "cuero_gris_engrasado",
+        "cuero_habano_engrasado"
+      ],
+      "settings": {
+        "model": "A5"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,71 @@
+{{ 'vallorani-blog.css' | asset_url | stylesheet_tag }}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=La+Belle+Aurore&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Montserrat:wght@400;500;600&display=swap">
+
+{%- liquid
+  assign palabras = article.content | strip_html | split: ' ' | size
+  assign minutos = palabras | divided_by: 200 | at_least: 2
+-%}
+<div class="vb">
+  <article class="vb-art">
+    <header class="cab">
+      <nav class="migas" aria-label="Ruta"><a href="{{ routes.root_url }}">Inicio</a><span>/</span><a href="{{ blog.url }}">{{ blog.title }}</a></nav>
+      {%- if article.tags.size > 0 -%}<span class="tag">{{ article.tags.first }}</span>{%- endif -%}
+      <h1 class="titulo">{{ article.title }}</h1>
+      <div class="info"><span>{{ section.settings.firma }}</span><span>{{ article.published_at | date: '%d/%m/%Y' }}</span><span>{{ minutos }} min de lectura</span></div>
+    </header>
+
+    {%- if article.image -%}
+      <figure class="portada">{{ article.image | image_url: width: 2000 | image_tag: alt: article.image.alt, fetchpriority: 'high', sizes: '(max-width: 1000px) 100vw, 1000px' }}</figure>
+    {%- endif -%}
+
+    <div class="cuerpo">{{ article.content }}</div>
+
+    <aside class="cierre">
+      <span class="tag verde">{{ section.settings.cierre_tag }}</span>
+      <h2 class="titulo">{{ section.settings.cierre_titulo }} <em>{{ section.settings.cierre_cursiva }}</em></h2>
+      <p>{{ section.settings.cierre_texto }}</p>
+      <div class="btns">
+        <a class="btn" href="{{ section.settings.btn1_url | default: '/products/journal-a5?view=journal' }}">{{ section.settings.btn1 }}</a>
+        <a class="btn claro" href="{{ blog.url }}">Más notas</a>
+      </div>
+    </aside>
+
+    {%- liquid
+      assign otras = 0
+    -%}
+    {%- if blog.articles_count > 1 -%}
+      <section class="mas">
+        <h2 class="titulo">Seguí <em>leyendo</em></h2>
+        <div class="grid">
+          {%- for a in blog.articles -%}
+            {%- if a.id == article.id -%}{%- continue -%}{%- endif -%}
+            {%- if otras == 3 -%}{%- break -%}{%- endif -%}
+            {%- assign otras = otras | plus: 1 -%}
+            <a href="{{ a.url }}"><div class="meta">{{ a.tags.first | default: 'Journal' }}</div><h3>{{ a.title }}</h3></a>
+          {%- endfor -%}
+        </div>
+      </section>
+    {%- endif -%}
+  </article>
+</div>
+
+<script>
+  /* Tablas con scroll horizontal en mobile */
+  document.querySelectorAll('.vb-art .cuerpo table').forEach(function(t){var w=document.createElement('div');w.className='tabla';t.parentNode.insertBefore(w,t);w.appendChild(t);});
+</script>
+
+{% schema %}
+{
+  "name": "Vallorani · Artículo",
+  "settings": [
+    {"type": "text", "id": "firma", "label": "Firma", "default": "Por el taller de Rosa Vallorani"},
+    {"type": "text", "id": "cierre_tag", "label": "Cierre: etiqueta", "default": "Hecho a mano"},
+    {"type": "text", "id": "cierre_titulo", "label": "Cierre: título (normal)", "default": "Diseñá el tuyo"},
+    {"type": "text", "id": "cierre_cursiva", "label": "Cierre: título (cursiva)", "default": "a tu medida"},
+    {"type": "textarea", "id": "cierre_texto", "label": "Cierre: texto", "default": "Elegí el cuero, el cordón, los dijes y el grabado, y mirá cómo queda antes de comprarlo. Lo hacemos a mano en 5 a 7 días hábiles."},
+    {"type": "text", "id": "btn1", "label": "Botón", "default": "Personalizar mi midori"},
+    {"type": "url", "id": "btn1_url", "label": "Link del botón"}
+  ]
+}
+{% endschema %}
