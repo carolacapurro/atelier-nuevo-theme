@@ -1,0 +1,21 @@
+{%- comment -%}
+  Cantidad del carrito sin contar las piezas (cuero, dijes, grabado) de un Midori personalizado que está en el carrito.
+{%- endcomment -%}
+{%- liquid
+  assign mpz_pedidos = '|'
+  for it in cart.items
+    if it.properties['_Pedido'] != blank
+      assign mpz_pedidos = mpz_pedidos | append: it.properties['_Pedido'] | append: '|'
+    endif
+  endfor
+  assign mpz_count = cart.item_count
+  for it in cart.items
+    if it.properties['Para'] != blank
+      assign mpz_buscar = '|' | append: it.properties['Para'] | append: '|'
+      if mpz_pedidos contains mpz_buscar
+        assign mpz_count = mpz_count | minus: it.quantity
+      endif
+    endif
+  endfor
+  echo mpz_count
+-%}

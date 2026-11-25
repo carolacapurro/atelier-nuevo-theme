@@ -9,7 +9,7 @@
 <div
   ref="cartBubble"
   class="cart-bubble{% if cart == empty %} visually-hidden{% endif %}"
-  {% assign item_count = cart.item_count %}
+  {% capture item_count %}{% render 'mpz-item-count' %}{% endcapture %}{% assign item_count = item_count | plus: 0 %}
   {% if item_count <= 99 %}
     data-maintain-ratio
   {% endif %}
@@ -24,14 +24,14 @@
   >
     <span class="visually-hidden">
       {{- 'accessibility.cart_count' | t -}}
-      : {{ cart.item_count }}
+      : {{ item_count }}
     </span>
     <span
       class="cart-bubble__text-count"
       aria-hidden="true"
     >
-      {%- if limit == blank or cart.item_count < limit %}
-        {{- cart.item_count -}}
+      {%- if limit == blank or item_count < limit %}
+        {{- item_count -}}
       {%- endif -%}
     </span>
   </span>

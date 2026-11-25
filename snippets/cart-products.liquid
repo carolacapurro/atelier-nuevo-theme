@@ -441,7 +441,7 @@
       ref="cartItemCount"
       aria-hidden="true"
     >
-      {{- cart.item_count -}}
+      {%- render 'mpz-item-count' -%}
     </span>
     <form
       action="{{ routes.cart_url }}"
