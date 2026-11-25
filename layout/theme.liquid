@@ -63,5 +63,23 @@
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
+      {%- comment -%} Midoris personalizados: quitar el Midori quita también sus piezas {%- endcomment -%}
+    <script>
+      if (!window.__mpzCarrito) {
+        window.__mpzCarrito = true;
+        // Al quitar un Midori personalizado, se quitan también sus piezas (cuero, dijes, grabado extra).
+        document.addEventListener('click', async (e) => {
+          const btn = e.target.closest('.cart-items__remove');
+          const row = btn && btn.closest('[data-mpz-keys]');
+          if (!row) return;
+          e.preventDefault(); e.stopImmediatePropagation();
+          const updates = {};
+          row.dataset.mpzKeys.split(',').forEach((k) => { updates[k] = 0; });
+          btn.disabled = true;
+          await fetch('{{ routes.cart_update_url }}.js', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ updates }) });
+          window.location.reload();
+        }, true);
+      }
+    </script>
   </body>
 </html>

@@ -505,11 +505,45 @@
           </thead>
 
           <tbody role="rowgroup">
+            {%- comment -%}
+              Midoris personalizados: el Midori lleva la propiedad _Pedido y cada pieza (cuero, dijes, grabado extra)
+              lleva "Para" con el mismo número. Las piezas se ocultan y se listan debajo de su Midori.
+              Si una pieza queda sin su Midori, se muestra normal para que no se cobre nada escondido.
+            {%- endcomment -%}
+            {%- assign mpz_pedidos = '|' -%}
+            {%- for it in cart.items -%}
+              {%- if it.properties['_Pedido'] != blank -%}
+                {%- assign mpz_pedidos = mpz_pedidos | append: it.properties['_Pedido'] | append: '|' -%}
+              {%- endif -%}
+            {%- endfor -%}
             {% for item in cart.items %}
+              {%- liquid
+                assign mpz_ped = item.properties['_Pedido']
+                assign mpz_para = item.properties['Para']
+                assign mpz_oculta = false
+                if mpz_para != blank
+                  assign mpz_buscar = '|' | append: mpz_para | append: '|'
+                  if mpz_pedidos contains mpz_buscar
+                    assign mpz_oculta = true
+                  endif
+                endif
+                assign mpz_total = item.final_line_price
+                assign mpz_keys = item.key
+                if mpz_ped != blank
+                  for it in cart.items
+                    if it.properties['Para'] == mpz_ped
+                      assign mpz_total = mpz_total | plus: it.final_line_price
+                      assign mpz_keys = mpz_keys | append: ',' | append: it.key
+                    endif
+                  endfor
+                endif
+              -%}
               <tr
                 role="row"
-                class="cart-items__table-row"
+                class="cart-items__table-row{% if mpz_oculta %} mpz-parte{% endif %}{% if mpz_ped != blank %} mpz-midori{% endif %}"
                 ref="cartItemRows[]"
+                {% if mpz_oculta %}hidden aria-hidden="true"{% endif %}
+                {% if mpz_ped != blank %}data-mpz-keys="{{ mpz_keys }}"{% endif %}
               >
                 <td
                   class="cart-items__media"
@@ -589,7 +623,7 @@
                         {%- assign property_first_char = property.first | slice: 0 -%}
                         {%- if property.last != blank and property_first_char != '_' -%}
                           <div class="cart-items__properties">
-                            <dt class="visually-hidden">{{ property.first }}:</dt>
+                            <dt{% unless mpz_ped != blank %} class="visually-hidden"{% endunless %}>{{ property.first }}:</dt>
                             <dd>
                               {%- if property.last contains '/uploads/' -%}
                                 <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
@@ -605,6 +639,19 @@
                     {% if item.selling_plan_allocation %}
                       <p>{{ item.selling_plan_allocation.selling_plan.name }}</p>
                     {% endif %}
+
+                    {%- if mpz_ped != blank -%}
+                      <ul class="mpz-piezas list-unstyled">
+                        {%- for it in cart.items -%}
+                          {%- if it.properties['Para'] == mpz_ped -%}
+                            <li>
+                              <span>{{ it.product.title | remove: ' -$0' }}{% unless it.product.has_only_default_variant %}: {{ it.variant.title }}{% endunless %}{% if it.properties['Texto'] != blank %} ({{ it.properties['Texto'] }}){% endif %}</span>
+                              {%- if it.final_line_price > 0 %} <span>+{{ it.final_line_price | money }}</span>{% endif -%}
+                            </li>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </ul>
+                    {%- endif -%}
                   {%- endif -%}
 
                   {% if item.line_level_discount_allocations.size > 0 %}
@@ -652,6 +699,7 @@
                   headers="quantity"
                 >
                   {% # Here I want to pass some arguments to the quantity block so it knows which value should the input be set to. Though quantity block could be a snippet instead %}
+                  {%- unless mpz_ped != blank -%}
                   {% render 'quantity-selector',
                     product: item.product,
                     in_cart_quantity: item.quantity,
@@ -659,6 +707,7 @@
                     min: 0,
                     class: 'cart-primary-typography'
                   %}
+                  {%- endunless -%}
 
                   <button
                     class="button button--tertiary cart-items__remove"
@@ -696,10 +745,10 @@
                 >
                   {%- liquid
                     if settings.currency_code_enabled_cart_items
-                      assign price = item.final_line_price | money_with_currency
+                      assign price = mpz_total | money_with_currency
                       assign unit_price = item.unit_price | money_with_currency
                     else
-                      assign price = item.final_line_price | money
+                      assign price = mpz_total | money
                       assign unit_price = item.unit_price | money
                     endif
                   -%}
@@ -718,3 +767,13 @@
     </form>
   {%- endif -%}
 </div>
+
+{%- comment -%} Midoris personalizados en el carrito {%- endcomment -%}
+<style>
+  .cart-items__table-row.mpz-parte{ display:none; }
+  .mpz-midori .cart-items__properties dt{ display:inline; font-weight:600; margin-right:4px; }
+  .mpz-midori .cart-items__properties dd{ display:inline; margin:0; }
+  .mpz-piezas{ margin:8px 0 0; padding:8px 0 0; border-top:1px dashed rgba(0,0,0,.18); font-size:.9em; }
+  .mpz-piezas li{ display:flex; justify-content:space-between; gap:10px; }
+  .mpz-piezas li::before{ content:"+ "; opacity:.6; }
+</style>
