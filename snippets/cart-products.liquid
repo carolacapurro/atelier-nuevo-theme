@@ -644,9 +644,24 @@
                       <ul class="mpz-piezas list-unstyled">
                         {%- for it in cart.items -%}
                           {%- if it.properties['Para'] == mpz_ped -%}
+                            {%- liquid
+                              assign mpz_h = it.product.handle
+                              assign mpz_lbl = it.product.title
+                              if mpz_h contains 'cuero'
+                                assign mpz_lbl = 'Cuero'
+                              elsif mpz_h contains 'frente'
+                                assign mpz_lbl = 'Dije frente'
+                              elsif mpz_h contains 'costado'
+                                assign mpz_lbl = 'Dije costado'
+                              elsif mpz_h contains 'charms-extra'
+                                assign mpz_lbl = 'Dije extra'
+                              elsif mpz_h contains 'grabado'
+                                assign mpz_lbl = 'Grabado extra'
+                              endif
+                            -%}
                             <li>
-                              <span>{{ it.product.title | remove: ' -$0' }}{% unless it.product.has_only_default_variant %}: {{ it.variant.title }}{% endunless %}{% if it.properties['Texto'] != blank %} ({{ it.properties['Texto'] }}){% endif %}</span>
-                              {%- if it.final_line_price > 0 %} <span>+{{ it.final_line_price | money }}</span>{% endif -%}
+                              <span>+ {{ mpz_lbl }}: {% if it.properties['Texto'] != blank %}{{ it.properties['Texto'] }}{% else %}{{ it.variant.title }}{% endif %}</span>
+                              {%- if it.final_line_price > 0 %}<span class="mpz-pz-precio">+{{ it.final_line_price | money }}</span>{% endif -%}
                             </li>
                           {%- endif -%}
                         {%- endfor -%}
@@ -774,6 +789,6 @@
   .mpz-midori .cart-items__properties dt{ display:inline; font-weight:600; margin-right:4px; }
   .mpz-midori .cart-items__properties dd{ display:inline; margin:0; }
   .mpz-piezas{ margin:8px 0 0; padding:8px 0 0; border-top:1px dashed rgba(0,0,0,.18); font-size:.9em; }
-  .mpz-piezas li{ display:flex; justify-content:space-between; gap:10px; }
-  .mpz-piezas li::before{ content:"+ "; opacity:.6; }
+  .mpz-piezas li{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; text-align:left; }
+  .mpz-piezas .mpz-pz-precio{ white-space:nowrap; }
 </style>
