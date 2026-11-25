@@ -134,7 +134,6 @@
     font-weight:500; font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:var(--bordo);
     background:var(--crema); padding:6px 10px; border-radius:6px;}
 .mpz #cover{fill:var(--cuero,#4a2e1a); transition:fill .25s ease;}
-.mpz #pages rect{fill:var(--crema); stroke:var(--bordo); stroke-width:3;}
 .mpz #band{fill:none; stroke:var(--cordon,#1c1815); stroke-width:18; stroke-linecap:round; stroke-linejoin:round; transition:stroke .25s ease;}
 .mpz #outline{fill:none; stroke:#000; stroke-width:7;}
 .mpz #engrave{font-family:var(--acento); font-style:normal; font-size:96px; font-weight:400; letter-spacing:.06em;
