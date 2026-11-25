@@ -266,3 +266,6 @@
 .mpz .cta[disabled]{ opacity:.6; cursor:wait; }
 .mpz .cta-note.err{ color:#b3261e; }
 .mpz .sw[hidden], .mpz .opt[disabled]{ display:none; }
+/* el encabezado del tema es transparente y va encima de la primera sección: dejarle lugar */
+.mpz .hero{ padding-top:112px; }
+@media (max-width:749px){ .mpz .hero{ padding-top:92px; } }
