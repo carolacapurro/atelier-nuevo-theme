@@ -261,8 +261,8 @@
       try {
         const resp = await fetch('/cart/add.js', {
           method:  'POST',
-          headers: { 'X-Requested-With': 'XMLHttpRequest' },
-          body:    new FormData(this.form),
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body:    JSON.stringify({ items: this._cartItems() }),
         });
 
         if (!resp.ok) {
@@ -286,6 +286,31 @@
       } finally {
         this._setLoading(false);
       }
+    }
+
+    /* El Midori + una línea por cada cuero / dije / grabado extra elegido.
+       Cada uno es una variante de su producto de stock, así Shopify descuenta el inventario. */
+    _cartItems() {
+      const fd = new FormData(this.form);
+      const qty = Math.max(1, parseInt(fd.get('quantity'), 10) || 1);
+      const properties = {};
+      for (const [k, v] of fd.entries()) {
+        const m = k.match(/^properties\[(.+)\]$/);
+        if (m && String(v).trim() !== '') properties[m[1]] = v;
+      }
+      const ref = `Midori #${Date.now().toString(36).slice(-5).toUpperCase()}`;   // une el Midori con sus partes en el pedido
+      properties['_Pedido'] = ref;
+      const items = [{ id: Number(fd.get('id')), quantity: qty, properties }];
+      const partes = [...this.form.querySelectorAll('.jc-chip.is-active[data-variant-id]')];
+      partes.forEach((chip) => {
+        items.push({ id: Number(chip.dataset.variantId), quantity: qty, properties: { 'Para': ref } });
+      });
+      const ge = this.form.querySelector('[data-grabado-extra-input]');
+      const geVar = this.form.querySelector('[data-grabado-extra-variant]');
+      if (ge && geVar && ge.value.trim() !== '') {
+        items.push({ id: Number(geVar.value), quantity: qty, properties: { 'Para': ref, 'Texto': ge.value.trim() } });
+      }
+      return items;
     }
 
     _setLoading(on) {

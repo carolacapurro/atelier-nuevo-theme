@@ -1,0 +1,253 @@
+{{ 'midori-personalizador.css' | asset_url | stylesheet_tag }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+  @font-face{ font-family:"Royale Victoria"; src:url({{ 'royale-victoria.otf' | asset_url }}) format("opentype"); font-display:swap; }
+</style>
+
+{%- liquid
+  comment
+    Datos reales para el personalizador. El stock vive en productos ocultos:
+    cada cuero, dije y el grabado extra es una variante. Solo se muestran las variantes disponibles.
+  endcomment
+  assign p_a5 = section.settings.producto_a5
+  assign p_a6 = section.settings.producto_a6
+  assign tam_actual = 'A5'
+  if p_a6 != blank and product.id == p_a6.id
+    assign tam_actual = 'A6'
+  endif
+  if p_a5 == blank and tam_actual == 'A5'
+    assign p_a5 = product
+  endif
+  assign s_cueros = section.settings.stock_cueros
+  assign s_frente = section.settings.stock_dijes_frente
+  assign s_costado = section.settings.stock_dijes_costado
+  assign s_extra = section.settings.stock_dijes_extra
+  assign s_grabado = section.settings.stock_grabado_extra
+-%}
+
+<script type="application/json" id="mpz-data">
+{
+  "tam": {{ tam_actual | json }},
+  "rutas": { "add": {{ routes.cart_add_url | json }}, "cart": {{ routes.cart_url | json }} },
+  "productos": {
+    "A5": {%- if p_a5 != blank -%}{ "id": {{ p_a5.selected_or_first_available_variant.id }}, "precio": {{ p_a5.selected_or_first_available_variant.price }}, "disp": {{ p_a5.available }} }{%- else -%}null{%- endif -%},
+    "A6": {%- if p_a6 != blank -%}{ "id": {{ p_a6.selected_or_first_available_variant.id }}, "precio": {{ p_a6.selected_or_first_available_variant.price }}, "disp": {{ p_a6.available }} }{%- else -%}null{%- endif -%}
+  },
+  "grabado": {%- if s_grabado != blank and s_grabado.available -%}{ "id": {{ s_grabado.selected_or_first_available_variant.id }}, "precio": {{ s_grabado.selected_or_first_available_variant.price }} }{%- else -%}null{%- endif -%},
+  "cueros": [
+    {%- assign sep = '' -%}
+    {%- for v in s_cueros.variants -%}
+      {%- if v.available -%}
+        {%- assign h = v.title | handleize -%}
+        {{ sep }}{ "id": {{ v.id }}, "n": {{ v.title | strip | json }}, "p": {{ v.price }},
+          "tex": {{ 'midori-tex-' | append: h | append: '.jpg' | asset_url | json }},
+          "foto": {{ 'midori-' | append: h | append: '.jpg' | asset_url | json }} }
+        {%- assign sep = ',' -%}
+      {%- endif -%}
+    {%- endfor -%}
+  ],
+  "dijes": {
+    {%- assign grupos = 'front,side,extra' | split: ',' -%}
+    {%- for g in grupos -%}
+      {%- case g -%}
+        {%- when 'front' -%}{%- assign sp = s_frente -%}
+        {%- when 'side' -%}{%- assign sp = s_costado -%}
+        {%- else -%}{%- assign sp = s_extra -%}
+      {%- endcase -%}
+      {{ g | json }}: [
+        {%- assign sep = '' -%}
+        {%- if sp != blank -%}
+          {%- for v in sp.variants -%}
+            {%- if v.available -%}
+              {%- assign im = v.image | default: sp.featured_image -%}
+              {{ sep }}{ "id": {{ v.id }}, "n": {{ v.title | strip | json }}, "p": {{ v.price }}, "img": {% if im != blank %}{{ im | image_url: width: 400 | json }}{% else %}null{% endif %} }
+              {%- assign sep = ',' -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      ]{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  }
+}
+</script>
+
+<div class="mpz" id="mpz-{{ section.id }}">
+<header class="hero">
+  <h1><span class="a">Armá tu</span><span class="b">Midori</span></h1>
+  <p class="sub"><span class="ver">VERSIÓN A5 &amp; A6</span></p>
+  <svg class="star" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 2 L58 36 L90 22 L66 46 L98 56 L64 62 L74 96 L50 72 L26 96 L36 62 L2 56 L34 46 L10 22 L42 36Z" fill="#667128"/></svg>
+  <svg class="star sm" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 2 L58 36 L90 22 L66 46 L98 56 L64 62 L74 96 L50 72 L26 96 L36 62 L2 56 L34 46 L10 22 L42 36Z" fill="#721442"/></svg>
+</header>
+<main class="config" id="armar">
+  <section class="stage" aria-label="Vista previa">
+    <div class="stage-panel">
+      <span class="sticker stage-tag">Hecho a mano</span>
+      <div class="canvas-row">
+      <div class="canvas">
+        <svg id="jc-svg" viewBox="0 0 1200 1556" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vista previa del Midori personalizado">
+          <defs><pattern id="plata-tex" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(58)"><rect width="9" height="9" fill="#bfc1c4"/><rect width="3.2" height="9" fill="#f7f8f9"/><rect x="3.2" width="1.6" height="9" fill="#dfe1e3"/><rect x="6.6" width="1.4" height="9" fill="#8a8d91"/></pattern></defs>
+          <g id="pages"><rect x="1090" y="150" width="16" height="1256" rx="2"></rect></g>
+          <path id="cover" d="M104.1,97.4h981.4c5.8,0,10.5,4.7,10.5,10.5v1370.6c0,5.8-4.7,10.5-10.5,10.5h-981.4s0-1391.5,0-1391.5Z"></path>
+          <clipPath id="cover-clip"><use href="#cover"/></clipPath><image class="leather-img" x="104" y="97" width="992" height="1466" preserveAspectRatio="none" clip-path="url(#cover-clip)"/>
+          <path id="outline" d="M104.1,97.4h981.4c5.8,0,10.5,4.7,10.5,10.5v1370.6c0,5.8-4.7,10.5-10.5,10.5h-981.4s0-1391.5,0-1391.5Z"></path>
+          <path id="band" d="M98 830H1102"></path>
+          <text id="engrave" transform="translate(1019.2257 1415.1904) rotate(-90)"><tspan x="0" y="0">ABC</tspan></text>
+          <g id="charm-extras"></g>
+          <g transform="translate(1094 836)"><g id="charm-side"></g></g>
+          <g transform="translate(600 836)"><g id="charm-slot"><g id="charm-art"></g></g></g>
+        </svg>
+      </div>
+      <div class="canvas-side">
+        <svg id="jc-side" viewBox="0 0 250 1556" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vista de costado del Midori">
+          <rect class="sp-leather" x="25" y="97.4" width="200" height="1391.5" rx="14"/>
+          <clipPath id="side-clip"><rect x="25" y="97.4" width="200" height="1391.5" rx="14"/></clipPath><image class="leather-img" x="25" y="97.4" width="200" height="1453.2" preserveAspectRatio="xMidYMid slice" clip-path="url(#side-clip)"/>
+          <rect x="165" y="97.4" width="60" height="1391.5" rx="14" fill="rgba(0,0,0,.12)"/>
+          <g id="side-cords"></g>
+          <rect class="sp-outline" x="25" y="97.4" width="200" height="1391.5" rx="14"/>
+          <g id="side-eyelets"></g>
+          <g id="side-charm"></g>
+        </svg>
+      </div>
+      </div>
+      <p class="stage-cap" id="cap">A5 · Café Flor · Cordón Negro · 4 cordones</p>
+    </div>
+    <div class="hechos">
+      <button type="button" class="hechos-toggle" id="hechos-toggle" aria-expanded="false" aria-controls="hechos-strip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Mirá Midoris ya hechos</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="hechos-strip" id="hechos-strip" hidden></div>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="Opciones">
+    <div class="head">
+            <div class="price-box"><span class="pz-price" id="p-tr"></span><span class="price-tr">Pagando con transferencia · 10% off</span><span class="price-list"><b id="p-list"></b> con otros medios de pago</span><span class="price-extra" id="p-extra" hidden>Incluye grabado extra (+$2.000)</span></div>
+    </div>
+
+
+    <div class="card" data-group="tam">
+    <div class="card-head"><h3>Tamaño</h3><span class="sticker" data-out>A5</span></div>
+    <div class="opts">
+        <button class="opt tile" data-tam="A5" aria-pressed="true"><span class="cant-col"><svg viewBox="0 0 60 70" aria-hidden="true"><rect x="10" y="9" width="40" height="55" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M10 37.6H50" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span>A5</span></span><small>Esta medida tiene 16&nbsp;cm&nbsp;×&nbsp;22&nbsp;cm al&nbsp;cerrarse</small></button>
+        <button class="opt tile" data-tam="A6" aria-pressed="false"><span class="cant-col"><svg viewBox="0 0 60 70" aria-hidden="true"><rect x="15" y="24" width="30" height="40" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15 44.8H45" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span>A6</span></span><small>Esta medida tiene 12&nbsp;cm&nbsp;×&nbsp;16&nbsp;cm al&nbsp;cerrarse</small></button>
+      </div>
+    </div>
+
+    <div class="card" data-group="cuero">
+      <div class="card-head"><h3>Cuero</h3><span class="sticker" data-out></span></div>
+      <div class="swatches">
+      </div>
+    </div>
+
+    <div class="card" data-group="cordon">
+      <div class="card-head"><h3>Cordón</h3><span class="sticker" data-out>Negro</span></div>
+      <div class="swatches">
+        <button class="sw rd" style="background:#cef6ff" data-v="#cef6ff" data-l="Celeste" data-p="0" data-tip="Celeste" aria-pressed="false" aria-label="Celeste"></button>
+        <button class="sw rd" style="background:#f22525" data-v="#f22525" data-l="Rojo" data-p="0" data-tip="Rojo" aria-pressed="false" aria-label="Rojo"></button>
+        <button class="sw rd" style="background:#ddc97e" data-v="#ddc97e" data-l="Camel" data-p="0" data-tip="Camel" aria-pressed="false" aria-label="Camel"></button>
+        <button class="sw rd" style="background:#ffdaec" data-v="#ffdaec" data-l="Rosa" data-p="0" data-tip="Rosa" aria-pressed="false" aria-label="Rosa"></button>
+        <button class="sw rd" style="background:#860634" data-v="#860634" data-l="Bordo" data-p="0" data-tip="Bordo" aria-pressed="false" aria-label="Bordo"></button>
+        <button class="sw rd" style="background:#000000" data-v="#000000" data-l="Negro" data-p="0" data-tip="Negro" aria-pressed="true" aria-label="Negro"></button>
+        <button class="sw rd" style="background:repeating-linear-gradient(58deg,#f7f8f9 0 2px,#bfc1c4 2px 4px,#8a8d91 4px 5px,#dfe1e3 5px 6px)" data-v="#e7e7e7" data-l="Plata" data-p="0" data-tip="Plata" aria-pressed="false" aria-label="Plata"></button>
+      </div>
+    </div>
+
+
+    <div class="card" data-group="cant">
+      <div class="card-head"><h3>Cantidad de cordones</h3><span class="sticker" data-out>4</span></div>
+      <div class="opts">
+        <button class="opt tile" data-cant="4" aria-pressed="true"><span class="cant-col"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="9 7"/><circle cx="36" cy="38" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="36" cy="60" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M36 38V60" stroke="currentColor" stroke-width="2.4"/><circle cx="63" cy="38" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="63" cy="60" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M63 38V60" stroke="currentColor" stroke-width="2.4"/></svg><span>4</span></span><small>Vas a poder colocar 4 cuadernos</small></button>
+        <button class="opt tile" data-cant="6" aria-pressed="false"><span class="cant-col"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="9 7"/><circle cx="28" cy="38" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="28" cy="60" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M28 38V60" stroke="currentColor" stroke-width="2.4"/><circle cx="48" cy="38" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="48" cy="60" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M48 38V60" stroke="currentColor" stroke-width="2.4"/><circle cx="69" cy="38" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="69" cy="60" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M69 38V60" stroke="currentColor" stroke-width="2.4"/></svg><span>6</span></span><small>Vas a poder colocar 6 cuadernos</small></button>
+      </div>
+    </div>
+
+    <div class="card" data-group="esq">
+    <div class="card-head"><h3>Esquinas</h3><span class="sticker" data-out>Rectas</span></div>
+    <div class="opts">
+      <button class="opt tile" data-esq="rectas" aria-pressed="true"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="cr"><circle cx="50" cy="50" r="46"/></clipPath></defs><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="2"/><g clip-path="url(#cr)"><path d="M0 30H72V100" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" transform="translate(3 0)"/></g></svg><span>Rectas</span></button>
+      <button class="opt tile" data-esq="curvas" aria-pressed="false"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="cc"><circle cx="50" cy="50" r="46"/></clipPath></defs><circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="2"/><g clip-path="url(#cc)"><path d="M0 30H60a12 12 0 0 1 12 12V100" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" transform="translate(3 0)"/></g></svg><span>Curvas</span></button>
+    </div>
+    </div>
+
+    <div class="card" data-group="det">
+      <div class="card-head"><h3>Detalles</h3><span class="sticker" data-out>Plateado</span></div>
+      <div class="opts">
+        <button class="opt" data-gr="#d9d9d9" data-name="Plateado" aria-pressed="true"><span class="dot" style="background:#d9d9d9"></span>Plateado</button>
+        <button class="opt" data-gr="#e6cf96" data-name="Dorado" aria-pressed="false"><span class="dot" style="background:#e6cf96"></span>Dorado</button>
+      </div>
+      <p class="hint">Aplica a los ojalillos y al grabado de letras.</p>
+    </div>
+
+    <div class="card" data-group="dije">
+      <button type="button" class="card-head dij-toggle" aria-expanded="false" aria-controls="dij-body"><h3>Dijes<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h3><span class="sticker" data-out id="dij-out">Ninguno</span></button>
+      <div id="dij-body" hidden>
+        <div class="dz-steps" role="tablist" aria-label="Tipo de dije">
+          <button type="button" class="dz-step" role="tab" data-step="front" aria-selected="true"><b>1</b>Frente</button>
+          <button type="button" class="dz-step" role="tab" data-step="side" aria-selected="false"><b>2</b>Costado</button>
+          <button type="button" class="dz-step" role="tab" data-step="extra" aria-selected="false"><b>3</b>Extra <small>(hasta 4)</small></button>
+        </div>
+        <div class="dz-grid" data-dz="front"></div>
+        <div class="dz-grid" data-dz="side" hidden></div>
+        <div class="dz-grid" data-dz="extra" hidden></div>
+        <p class="dz-note">En la vista previa los dijes se muestran según su medida. Puede variar levemente del tamaño real.</p>
+        <button type="button" class="dz-next" id="dz-next">Siguiente: costado <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+
+    <div class="card" data-group="grabado">
+      <div class="card-head"><h3>Grabado del frente</h3><span class="sticker" data-out>—</span></div>
+      <div class="pz-field">
+        <input type="text" id="eng" maxlength="20" value="" placeholder="Tus iniciales (ej: ABC)" autocomplete="off" aria-label="Texto del grabado">
+        <span class="count"><span id="n">0</span>/20</span>
+      </div>
+      <p class="hint">Solo letras y puntos, en mayúsculas. Máximo dos palabras, sin repetir letras seguidas (ej: HOOLA, AARO).</p>
+    </div>
+
+    <div class="card" data-group="grabadoextra">
+      <button type="button" class="card-head dij-toggle" id="ge-toggle" aria-expanded="false" aria-controls="ge-body"><h3>Grabado extra<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></h3><span class="sticker" id="ge-out">Ninguno</span></button>
+      <div id="ge-body" hidden>
+        <div class="pz-field">
+          <input type="text" id="eng2" maxlength="20" value="" placeholder="Escribí tu grabado extra (+$2.000)" autocomplete="off" aria-label="Texto del grabado extra" aria-describedby="eng2-hint">
+          <span class="count"><span id="n2">0</span>/20</span>
+        </div>
+        <p class="hint" id="eng2-hint">Suma $2.000. Se graba en vertical, en la solapa interior. Solo letras y puntos, en mayúsculas. Máximo dos palabras, sin repetir letras seguidas (ej: HOOLA, AARO).</p>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <button class="cta" id="cta" type="button">Agregar al carrito</button>
+      <p class="cta-note" id="ctanote" aria-live="polite"></p>
+    </div>
+  </section>
+</main>
+    <div class="visor" id="visor" hidden role="dialog" aria-modal="true" aria-label="Foto de un Midori ya hecho">
+      <div class="visor-card">
+        <button type="button" class="visor-x" id="visor-x" aria-label="Cerrar">×</button>
+        <button type="button" class="visor-nav prev" id="visor-prev" aria-label="Foto anterior">‹</button>
+        <button type="button" class="visor-nav next" id="visor-next" aria-label="Foto siguiente">›</button>
+        <img id="visor-img" alt="">
+        <div class="visor-foot"><b id="visor-n"></b><button type="button" class="visor-usar" id="visor-usar">Elegir este cuero</button></div>
+      </div>
+    </div>
+</div>
+
+<script src="{{ 'midori-personalizador.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Personalizador Midori",
+  "settings": [
+    { "type": "header", "content": "Tamaños" },
+    { "type": "product", "id": "producto_a5", "label": "Producto A5" },
+    { "type": "product", "id": "producto_a6", "label": "Producto A6" },
+    { "type": "header", "content": "Stock (productos vinculados)" },
+    { "type": "paragraph", "content": "Cada cuero, dije y el grabado extra es una variante de estos productos. Solo se muestran las variantes con stock y, al comprar, se suman al carrito para descontar el inventario. El pedido muestra todas las elecciones." },
+    { "type": "product", "id": "stock_cueros", "label": "Cueros" },
+    { "type": "product", "id": "stock_dijes_frente", "label": "Dijes de frente" },
+    { "type": "product", "id": "stock_dijes_costado", "label": "Dijes de costado" },
+    { "type": "product", "id": "stock_dijes_extra", "label": "Dijes extra" },
+    { "type": "product", "id": "stock_grabado_extra", "label": "Grabado extra" }
+  ],
+  "presets": [{ "name": "Personalizador Midori" }]
+}
+{% endschema %}

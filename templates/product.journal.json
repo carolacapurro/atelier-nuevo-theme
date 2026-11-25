@@ -1,11 +1,19 @@
 {
   "sections": {
-    "journal_configurator": {
-      "type": "journal-configurator",
-      "blocks": {},
-      "block_order": [],
-      "settings": {}
+    "personalizador": {
+      "type": "midori-personalizador",
+      "settings": {
+        "producto_a5": "journal-a5",
+        "producto_a6": "viajero-a6-cuero-engrasado",
+        "stock_cueros": "cueros-extra",
+        "stock_dijes_frente": "charms-frente",
+        "stock_dijes_costado": "charms-costado-0",
+        "stock_dijes_extra": "charms-extra",
+        "stock_grabado_extra": "grabado-extra"
+      }
     }
   },
-  "order": ["journal_configurator"]
+  "order": [
+    "personalizador"
+  ]
 }

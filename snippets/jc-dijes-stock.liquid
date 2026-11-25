@@ -1,0 +1,21 @@
+{%- comment -%}
+  Botones de dijes a partir de un producto de stock (cada dije = una variante).
+  Solo muestra las variantes disponibles. Uso:
+  {% render 'jc-dijes-stock', producto: section.settings.stock_dijes_frente, opcion: 'dije_portada', multi: false %}
+{%- endcomment -%}
+{%- for dv in producto.variants -%}
+  {%- unless dv.available -%}{%- continue -%}{%- endunless -%}
+  {%- assign dimg = dv.image | default: producto.featured_image -%}
+  <button type="button" class="jc-chip jc-chip--dije{% if multi %} jc-chip--multi{% endif %}"
+    data-option="{{ opcion }}"
+    data-value="{{ dv.title | handleize }}"
+    data-label="{{ dv.title | strip }}"
+    data-variant-id="{{ dv.id }}"
+    data-image="{% if dimg != blank %}{{ dimg | image_url: width: 900 }}{% endif %}">
+    {%- if dimg != blank -%}
+      <img class="jc-thumb" src="{{ dimg | image_url: width: 80 }}" alt="{{ dv.title }}" loading="lazy" width="40" height="40">
+    {%- endif -%}
+    <span>{{ dv.title }}</span>
+    {%- if dv.price > 0 -%}<span class="jc-chip-price">+{{ dv.price | money_without_trailing_zeros }}</span>{%- endif -%}
+  </button>
+{%- endfor -%}

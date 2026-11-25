@@ -9,6 +9,12 @@
   assign extra_blocks     = section.blocks | where: 'type', 'dije_extra'
   assign silver_color     = section.settings.grabado_silver_color | default: '#C0C0C0'
   assign gold_color       = section.settings.grabado_gold_color   | default: '#CFB53B'
+  # Productos de stock: cada cuero y cada dije es una variante con inventario. Solo se muestran las que tienen stock.
+  assign sp_cueros  = section.settings.stock_cueros
+  assign sp_frente  = section.settings.stock_dijes_frente
+  assign sp_costado = section.settings.stock_dijes_costado
+  assign sp_extra   = section.settings.stock_dijes_extra
+  assign sp_grabado = section.settings.stock_grabado_extra
 -%}
 
 <section class="journal-configurator-section" id="jc-{{ section.id }}">
@@ -65,12 +71,39 @@
         novalidate>
 
         <input type="hidden" name="id" value="{{ variant.id }}">
+        {%- if sp_grabado != blank and sp_grabado.selected_or_first_available_variant.available -%}
+          <input type="hidden" data-grabado-extra-variant value="{{ sp_grabado.selected_or_first_available_variant.id }}">
+        {%- endif -%}
 
         <!-- Color Cuero -->
-        {%- if cuero_blocks.size > 0 -%}
+        {%- if cuero_blocks.size > 0 or sp_cueros != blank -%}
         <div class="jc-group" data-group="cuero" data-required>
           <div class="jc-label">Color Cuero <span class="jc-required-mark" aria-hidden="true">*</span></div>
           <div class="jc-chips">
+            {%- if sp_cueros != blank -%}
+              {%- comment -%} Cueros desde el producto de stock: solo variantes disponibles. La capa sale del bloque con el mismo nombre, si existe; si no, de la foto de la variante. {%- endcomment -%}
+              {%- for cv in sp_cueros.variants -%}
+                {%- unless cv.available -%}{%- continue -%}{%- endunless -%}
+                {%- assign cimg = cv.image -%}
+                {%- for block in cuero_blocks -%}
+                  {%- assign bn = block.settings.name | strip | downcase -%}
+                  {%- assign vn = cv.title | strip | downcase -%}
+                  {%- if bn == vn and block.settings.image != blank -%}{%- assign cimg = block.settings.image -%}{%- endif -%}
+                {%- endfor -%}
+                <button type="button" class="jc-chip"
+                  data-option="cuero"
+                  data-value="{{ cv.title | handleize }}"
+                  data-label="{{ cv.title | strip }}"
+                  data-variant-id="{{ cv.id }}"
+                  data-image="{% if cimg != blank %}{{ cimg | image_url: width: 900 }}{% endif %}">
+                  {%- if cimg != blank -%}
+                    <span class="jc-swatch" style="background-image:url('{{ cimg | image_url: width: 80 }}')"></span>
+                  {%- endif -%}
+                  {{ cv.title }}
+                  {%- if cv.price > 0 -%}<span class="jc-chip-price">+{{ cv.price | money_without_trailing_zeros }}</span>{%- endif -%}
+                </button>
+              {%- endfor -%}
+            {%- else -%}
             {%- for block in cuero_blocks -%}
               <button type="button" class="jc-chip"
                 data-option="cuero"
@@ -84,6 +117,7 @@
                 {{ block.settings.name }}
               </button>
             {%- endfor -%}
+            {%- endif -%}
           </div>
           <input type="hidden" name="properties[Color Cuero]" data-prop="cuero">
           <p class="jc-group-error" aria-live="polite">Seleccioná el color de cuero</p>
@@ -178,7 +212,7 @@
         </div>
 
         <!-- Dije Portada -->
-        {%- if portada_blocks.size > 0 -%}
+        {%- if portada_blocks.size > 0 or sp_frente != blank -%}
         <div class="jc-group" data-group="dije_portada">
           <div class="jc-label">
             Dije Portada
@@ -192,6 +226,9 @@
               data-image="">
               Ninguno
             </button>
+            {%- if sp_frente != blank -%}
+              {%- render 'jc-dijes-stock', producto: sp_frente, opcion: 'dije_portada', multi: false -%}
+            {%- else -%}
             {%- for block in portada_blocks -%}
               <button type="button" class="jc-chip jc-chip--dije"
                 data-option="dije_portada"
@@ -206,13 +243,14 @@
                 <span>{{ block.settings.name }}</span>
               </button>
             {%- endfor -%}
+            {%- endif -%}
           </div>
           <input type="hidden" name="properties[Dije Portada]" data-prop="dije_portada">
         </div>
         {%- endif -%}
 
         <!-- Dije Costado -->
-        {%- if costado_blocks.size > 0 -%}
+        {%- if costado_blocks.size > 0 or sp_costado != blank -%}
         <div class="jc-group" data-group="dije_costado">
           <div class="jc-label">
             Dije Costado
@@ -226,6 +264,9 @@
               data-image="">
               Ninguno
             </button>
+            {%- if sp_costado != blank -%}
+              {%- render 'jc-dijes-stock', producto: sp_costado, opcion: 'dije_costado', multi: false -%}
+            {%- else -%}
             {%- for block in costado_blocks -%}
               <button type="button" class="jc-chip jc-chip--dije"
                 data-option="dije_costado"
@@ -240,19 +281,23 @@
                 <span>{{ block.settings.name }}</span>
               </button>
             {%- endfor -%}
+            {%- endif -%}
           </div>
           <input type="hidden" name="properties[Dije Costado]" data-prop="dije_costado">
         </div>
         {%- endif -%}
 
         <!-- Dijes Extra -->
-        {%- if extra_blocks.size > 0 -%}
+        {%- if extra_blocks.size > 0 or sp_extra != blank -%}
         <div class="jc-group" data-group="dije_extra">
           <div class="jc-label">
             Dijes Extra
             <span class="jc-hint-label">Podés elegir varios</span>
           </div>
           <div class="jc-chips jc-chips--dijes">
+            {%- if sp_extra != blank -%}
+              {%- render 'jc-dijes-stock', producto: sp_extra, opcion: 'dije_extra', multi: true -%}
+            {%- else -%}
             {%- for block in extra_blocks -%}
               {%- if block.settings.product != blank and block.settings.product.available == false -%}{%- continue -%}{%- endif -%}
               <button type="button" class="jc-chip jc-chip--dije jc-chip--multi"
@@ -271,6 +316,7 @@
                 {%- endif -%}
               </button>
             {%- endfor -%}
+            {%- endif -%}
           </div>
           <input type="hidden" name="properties[Dijes Extra]" data-prop="dije_extra">
         </div>
@@ -411,6 +457,39 @@
       "id": "grabado_gold_color",
       "label": "Color dorado",
       "default": "#CFB53B"
+    },
+    {
+      "type": "header",
+      "content": "Stock (productos vinculados)"
+    },
+    {
+      "type": "paragraph",
+      "content": "Cada cuero y cada dije es una variante de estos productos. Solo se muestran las variantes con stock y, al comprar, se suman al carrito para descontar el inventario."
+    },
+    {
+      "type": "product",
+      "id": "stock_cueros",
+      "label": "Cueros"
+    },
+    {
+      "type": "product",
+      "id": "stock_dijes_frente",
+      "label": "Dijes de frente"
+    },
+    {
+      "type": "product",
+      "id": "stock_dijes_costado",
+      "label": "Dijes de costado"
+    },
+    {
+      "type": "product",
+      "id": "stock_dijes_extra",
+      "label": "Dijes extra"
+    },
+    {
+      "type": "product",
+      "id": "stock_grabado_extra",
+      "label": "Grabado extra"
     },
     {
       "type": "header",
