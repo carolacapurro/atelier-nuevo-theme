@@ -265,7 +265,7 @@
 .mpz footer.fine{max-width:1120px; margin:0 auto; padding:0 28px 40px; font-size:12px; color:var(--tinta); opacity:.75;}
 .mpz .cta[disabled]{ opacity:.6; cursor:wait; }
 .mpz .cta-note.err{ color:#b3261e; }
-.mpz .sw[hidden], .mpz .opt[disabled]{ display:none; }
+.mpz .sw[hidden], .mpz .opt[disabled]:not(.agotado){ display:none; }
 /* el encabezado del tema es transparente y va encima de la primera sección: dejarle lugar */
 .mpz .hero{ padding-top:112px; }
 @media (max-width:749px){ .mpz .hero{ padding-top:92px; } }
