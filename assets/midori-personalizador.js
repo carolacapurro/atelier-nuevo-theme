@@ -71,7 +71,7 @@
 
   document.querySelectorAll('[data-tam]').forEach(b => {
     const pr = DATA.productos[b.dataset.tam];
-    if (!pr || !pr.disp) b.disabled = true;
+    if (!pr || !pr.disp) { b.disabled = true; b.classList.add('agotado'); b.insertAdjacentHTML('beforeend', '<b class="pz-sinstock">SIN STOCK</b>'); }
     b.setAttribute('aria-pressed', b.dataset.tam === state.tam ? 'true' : 'false');
     if (b.dataset.tam === state.tam) out(b.closest('.card'), state.tam);
     b.addEventListener('click', () => {

@@ -269,3 +269,7 @@
 /* el encabezado del tema es transparente y va encima de la primera sección: dejarle lugar */
 .mpz .hero{ padding-top:112px; }
 @media (max-width:749px){ .mpz .hero{ padding-top:92px; } }
+
+.mpz .opt.tile.agotado{cursor:not-allowed; position:relative;}
+.mpz .opt.tile.agotado svg, .mpz .opt.tile.agotado .cant-col span, .mpz .opt.tile.agotado > small{opacity:.35 !important;}
+.mpz .opt.tile .pz-sinstock{display:inline-block; margin-top:6px; padding:3px 10px; border-radius:999px; background:#7b1923; color:#fffff7; font-family:var(--cuerpo); font-weight:700; font-size:10px; letter-spacing:.12em;}
