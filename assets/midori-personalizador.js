@@ -320,9 +320,9 @@
     const ubic = [];
     /* frente: de izquierda a derecha, como quedaron en el elástico */
     const frente = (dz.front ? [[pos.front, dz.front]] : []).concat(dz.extra.map((id, i) => [pos.extra[i], id])).sort((a, b) => a[0] - b[0]);
-    frente.forEach(([, id], j) => ubic.push('Dije ' + corto(nom(id)) + (j ? ' también en el frente' : ' en el frente')));
+    if (frente.length > 1) ubic.push('Frente, de izquierda a derecha: ' + frente.map(([, id]) => corto(nom(id))).join(' + '));
     if (dz.side) ubic.push('Dije ' + corto(nom(dz.side)) + ' ojalillo ' + (pos.sideRow ? 'abajo' : 'arriba'));
-    if (ubic.length) props['Ubicación dijes'] = ubic.join(' + ');
+    if (ubic.length) props['Ubicación dijes'] = ubic.join(' · ');
     const items = [{ id: pr.id, quantity: 1, properties: props }];
     const parte = (vid, extra) => items.push({ id: vid, quantity: 1, properties: Object.assign({ 'Para': ref }, extra || {}) });
     const cu = CUEROS.find(c => c.n === state.cuero); if (cu) parte(cu.id);
