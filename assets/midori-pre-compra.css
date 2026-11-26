@@ -247,20 +247,22 @@
 .mpc *, .mpc *::before, .mpc *::after{transition:none !important;}
 }
 
-/* Cómo es el proceso: línea de tiempo con tarjetas que se abren al pasar el mouse (o al tocarlas) */
-.mpc .proceso{margin:30px 0 26px;}
+/* Cómo es el proceso: línea de tiempo con tarjetas que se abren al pasar el mouse (o al tocarlas). Verde botella + rosa + bordó */
+.mpc .proceso{--botella:#1d4941; margin:30px 0 26px;}
 .mpc .proceso-lista{list-style:none; margin:0; padding:0; position:relative;}
-.mpc .proceso-lista::before{content:""; position:absolute; left:11px; top:22px; bottom:30px; width:2px; background:var(--bordo); opacity:.85;}
+.mpc .proceso-lista::before{content:""; position:absolute; left:11px; top:22px; bottom:30px; width:2px; background:var(--botella);}
 .mpc .proceso-lista li{position:relative; padding-left:42px; margin:0 0 12px;}
-.mpc .proceso-dot{position:absolute; left:3px; top:50%; width:18px; height:18px; margin-top:-9px; border-radius:50%; background:var(--fondo); border:2.5px solid var(--bordo);}
-.mpc .proceso-head .proceso-dot{width:24px; height:24px; left:0; margin-top:-12px; background:var(--rosa); box-shadow:inset 0 0 0 4px var(--fondo);}
-.mpc .proceso-card{background:var(--rosa-fondo); border:1px solid var(--rosa); border-radius:18px; padding:16px 20px; color:var(--bordo); cursor:default; outline:none; transition:background .2s ease, transform .2s ease;}
+.mpc .proceso-dot{position:absolute; left:3px; top:50%; width:18px; height:18px; margin-top:-9px; border-radius:50%; background:var(--fondo); border:2.5px solid var(--botella); transition:background .2s ease;}
+.mpc .proceso-head .proceso-dot{width:24px; height:24px; left:0; margin-top:-12px; background:var(--rosa); border-color:var(--bordo); box-shadow:inset 0 0 0 4px var(--fondo);}
+.mpc .proceso-lista li:hover .proceso-dot, .mpc .proceso-lista li:focus-within .proceso-dot{background:var(--botella);}
+.mpc .proceso-card{background:var(--rosa-fondo); border:1px solid var(--rosa); border-radius:18px; padding:16px 20px; color:var(--bordo); cursor:default; outline:none; transition:background .25s ease, color .25s ease, border-color .25s ease, transform .2s ease;}
 .mpc .proceso-card b{display:block; font-family:var(--serif); font-weight:600; font-size:17px; line-height:1.3;}
-.mpc .proceso-card p{margin:0; max-height:0; opacity:0; overflow:hidden; font-size:13.5px; color:var(--texto); transition:max-height .3s ease, opacity .25s ease, margin .3s ease;}
-.mpc .proceso-card:hover, .mpc .proceso-card:focus-visible, .mpc .proceso-card:focus{background:var(--rosa); transform:translateX(3px);}
-.mpc .proceso-card:hover p, .mpc .proceso-card:focus p, .mpc .proceso-card:focus-within p{max-height:120px; opacity:1; margin-top:8px;}
-.mpc .proceso-card.oscura{background:var(--bordo); border-color:var(--bordo); color:#fffff7; padding:24px 24px; border-radius:22px;}
-.mpc .proceso-card.oscura:hover{transform:none;}
+.mpc .proceso-card b i{font-style:normal; color:var(--botella); margin-right:4px;}
+.mpc .proceso-card p{margin:0; max-height:0; opacity:0; overflow:hidden; font-size:13.5px; transition:max-height .3s ease, opacity .25s ease, margin .3s ease;}
+.mpc .proceso-card[tabindex]:hover, .mpc .proceso-card[tabindex]:focus{background:var(--botella); border-color:var(--botella); color:#fffff7; transform:translateX(3px);}
+.mpc .proceso-card[tabindex]:hover b i, .mpc .proceso-card[tabindex]:focus b i{color:var(--rosa);}
+.mpc .proceso-card:hover p, .mpc .proceso-card:focus p{max-height:120px; opacity:1; margin-top:8px; color:#f3eedb;}
+.mpc .proceso-card.oscura{background:var(--botella); border-color:var(--botella); color:#fffff7; padding:24px 24px; border-radius:22px;}
 .mpc .proceso-card h3{margin:0; font-family:var(--serif); font-weight:600; font-size:clamp(26px,3vw,34px); line-height:1.1; color:#fffff7;}
 .mpc .proceso-card h3 small{display:block; margin-top:4px; font-family:var(--mano); font-weight:400; font-size:20px; color:var(--rosa);}
-@media (hover:none){ .mpc .proceso-card p{max-height:120px; opacity:1; margin-top:8px;} }
+@media (hover:none){ .mpc .proceso-card p{max-height:120px; opacity:1; margin-top:8px; color:var(--texto);} }
