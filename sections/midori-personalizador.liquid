@@ -263,8 +263,8 @@
 <script>
   (() => {
     const ver = t => document.querySelectorAll('.pz-org-card').forEach(c => { c.hidden = c.dataset.org !== t; });
-    const ini = document.querySelector('[data-tam][aria-pressed="true"]');
-    ver(ini ? ini.dataset.tam : 'A5');
+    let ini = 'A5'; try { ini = JSON.parse(document.getElementById('mpz-data').textContent).tam || 'A5'; } catch (e) {}
+    ver(ini);
     document.querySelectorAll('[data-tam]').forEach(b => b.addEventListener('click', () => ver(b.dataset.tam)));
   })();
 </script>
