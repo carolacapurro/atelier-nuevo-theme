@@ -126,7 +126,7 @@
   const TIER_NOMBRE = { S:'chico', M:'mediano', L:'grande' };
   const TIER_PX = { S:80, M:130, L:200 };
   /* tamaño proporcional a la medida real (tapa A5 = 16 cm ≈ 992 unidades → 6,2 por mm), un poco agrandado para que se lean bien */
-  const MM = 7.1, AJUSTE = { 'plata grande': 1, 'borde': 1, 'chain': 1, 'hueco': 1.4, 'llamas': 1.45 }, RESTO = 1.2;   // los no nombrados, un poco más grandes
+  const MM = 7.1, AJUSTE = { 'plata grande': 1, 'borde': 1, 'chain': 1, 'hueco plateado': 1.75, 'hueco': 1.4, 'llamas': 1.45 }, RESTO = 1.2;   // los no nombrados, un poco más grandes
   const anchoDije = d => { const n = d.n.toLowerCase(), k = Object.keys(AJUSTE).find(k => n.includes(k)); return Math.round(Math.max(medida(d.n), 9) * MM * (k ? AJUSTE[k] : RESTO)); };
   /* borde superior real de cada PNG (sin el aire transparente), para que el dije quede colgado del elástico y no flote */
   const BORDE = {};
