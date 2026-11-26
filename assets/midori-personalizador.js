@@ -318,11 +318,11 @@
       'Grabado del frente': grab || 'Sin grabado', 'Grabado extra': grab2 || 'Ninguno', '_Pedido': ref
     };
     const ubic = [];
-    if (dz.side) ubic.push('Costado: ojalillo de ' + (pos.sideRow ? 'abajo' : 'arriba') + ', columna ' + ((pos.sideCol < 0 || pos.sideCol >= sideXs.length ? sideXs.length - 1 : pos.sideCol) + 1) + ' de ' + sideXs.length);
-    const ancho = state.tam === 'A6' ? 12 : 16, cm = x => (Math.round((x - 104) / 992 * ancho * 2) / 2).toString().replace('.', ',');
-    if (dz.front) ubic.unshift('Frente (' + corto(nom(dz.front)) + '): a ' + cm(pos.front) + ' cm del lomo');
-    dz.extra.forEach((id, i) => ubic.push('Extra ' + (i + 1) + ' (' + corto(nom(id)) + '): a ' + cm(pos.extra[i]) + ' cm del lomo'));
-    if (ubic.length) props['Ubicación dijes'] = ubic.join(' · ');
+    /* frente: de izquierda a derecha, como quedaron en el elástico */
+    const frente = (dz.front ? [[pos.front, dz.front]] : []).concat(dz.extra.map((id, i) => [pos.extra[i], id])).sort((a, b) => a[0] - b[0]);
+    frente.forEach(([, id], j) => ubic.push('Dije ' + corto(nom(id)) + (j ? ' también en el frente' : ' en el frente')));
+    if (dz.side) ubic.push('Dije ' + corto(nom(dz.side)) + ' ojalillo ' + (pos.sideRow ? 'abajo' : 'arriba'));
+    if (ubic.length) props['Ubicación dijes'] = ubic.join(' + ');
     const items = [{ id: pr.id, quantity: 1, properties: props }];
     const parte = (vid, extra) => items.push({ id: vid, quantity: 1, properties: Object.assign({ 'Para': ref }, extra || {}) });
     const cu = CUEROS.find(c => c.n === state.cuero); if (cu) parte(cu.id);
