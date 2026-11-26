@@ -24,9 +24,9 @@
 .mpc .crumbs{font-size:12px; color:var(--suave); padding:6px 0 20px;}
 .mpc .crumbs a{text-decoration:none;}
 .mpc .crumbs span{margin:0 8px;}
-.mpc .grid{display:grid; grid-template-columns:minmax(0,1.04fr) minmax(0,1fr); gap:56px; align-items:start;}
+.mpc .mpc-grid{display:grid; grid-template-columns:minmax(0,1.04fr) minmax(0,1fr); gap:56px; align-items:start;}
 @media (max-width:900px){
-.mpc .grid{grid-template-columns:1fr; gap:30px;}
+.mpc .mpc-grid{grid-template-columns:1fr; gap:30px;}
 .mpc .pdp{padding:0 18px 100px;}
 }
 .mpc .stage{position:relative; aspect-ratio:4/5; background:var(--claro); overflow:hidden;}
@@ -220,8 +220,8 @@
 .mpc .sticky{display:flex;}
 }
 @media (max-width:900px){
-.mpc .grid{display:flex; flex-direction:column; align-items:stretch; gap:0;}
-.mpc .grid > section{display:contents;}
+.mpc .mpc-grid{display:flex; flex-direction:column; align-items:stretch; gap:0;}
+.mpc .mpc-grid > section{display:contents;}
 .mpc .eyebrow{order:1;}
 .mpc h1{order:2;}
 .mpc .sub{order:3;}
