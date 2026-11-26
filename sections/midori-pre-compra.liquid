@@ -8,7 +8,7 @@
   assign price_product = section.settings.price_product | default: product
 
   assign transfer_off = section.settings.transfer_discount | default: 10
-  assign classic_off = section.settings.classic_discount | default: 15
+  assign classic_off = section.settings.classic_discount | default: 20
   assign transfer_keep = 100 | minus: transfer_off
   assign classic_keep = 100 | minus: classic_off
 
@@ -217,7 +217,7 @@
       "info": "Si lo dejás vacío se usa el producto de esta página."
     },
     { "type": "header", "content": "Precios" },
-    { "type": "range", "id": "classic_discount", "label": "Selección clásica: % menos que el diseño a tu medida", "min": 0, "max": 50, "step": 1, "unit": "%", "default": 15 },
+    { "type": "range", "id": "classic_discount", "label": "Selección clásica: % menos que el diseño a tu medida", "min": 0, "max": 50, "step": 1, "unit": "%", "default": 20 },
     { "type": "range", "id": "transfer_discount", "label": "Descuento por transferencia", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 10 },
     { "type": "header", "content": "Botones" },
     {
