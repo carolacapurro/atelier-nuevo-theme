@@ -215,7 +215,7 @@
 .mpz .dz-item span{padding-bottom:3px; border-bottom:2px solid transparent; line-height:1.1; text-align:center;}
 .mpz .dz-item[aria-pressed="true"] span{border-bottom-color:var(--k); font-weight:600;}
 .mpz .dz-item:focus-visible{outline:3px solid var(--verde); outline-offset:2px;}
-.mpz .sw[data-tip]::before{content:attr(data-tip); position:absolute; left:50%; bottom:calc(100% + 12px); transform:translate(-50%,4px); white-space:nowrap; background:#7b1923; color:#fffff7; font-family:var(--caption); font-weight:600; font-size:11px; letter-spacing:.03em; padding:6px 10px; border-radius:6px; opacity:0; pointer-events:none; transition:opacity .15s ease, transform .15s ease; z-index:6;}
+.mpz .sw[data-tip]::before{content:attr(data-tip); position:absolute; left:50%; bottom:calc(100% + 12px); transform:translate(-50%,4px); white-space:nowrap; background:#1d4941; color:#fffff7; font-family:var(--caption); font-weight:600; font-size:11px; letter-spacing:.03em; padding:6px 10px; border-radius:6px; opacity:0; pointer-events:none; transition:opacity .15s ease, transform .15s ease; z-index:6;}
 .mpz .sw:hover::before, .mpz .sw:focus-visible::before{opacity:1; transform:translate(-50%,0);}
 .mpz .dz-item{width:84px !important;}
 .mpz .dz-item img{width:100%; height:54px; object-fit:contain; display:block;}
