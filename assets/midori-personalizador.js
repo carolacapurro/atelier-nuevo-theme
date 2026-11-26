@@ -101,6 +101,19 @@
   const dz = { front:'', side:'', extra:[] };
   /* dónde va cada dije: x sobre el elástico (frente y extras); en el lomo, columna y fila del ojalillo */
   const pos = { front: 600, extra: [], sideCol: -1, sideRow: 0 };
+  /* en el elástico no se elige el lugar: el primero va en el medio y los demás se suman a la derecha y a la izquierda, con aire entre ellos */
+  const AIRE = 40;
+  const acomodar = () => {
+    const lista = (dz.front ? [['f', dz.front]] : []).concat(dz.extra.map((id, i) => [i, id]));
+    let der = 600, izq = 600;
+    lista.forEach(([k, id], j) => {
+      const w = anchoDije(byId[id]); let x;
+      if (j === 0) { x = 600; der = 600 + w / 2; izq = 600 - w / 2; }
+      else if (j % 2) { x = der + AIRE + w / 2; der = x + w / 2; }
+      else { x = izq - AIRE - w / 2; izq = x - w / 2; }
+      if (k === 'f') pos.front = Math.round(x); else pos.extra[k] = Math.round(x);
+    });
+  };
   const libre = () => SLOTS.find(s => Math.abs(s - pos.front) > 90 && !pos.extra.some(x => Math.abs(x - s) < 90)) ?? SLOTS[pos.extra.length % SLOTS.length];
   const SLOTS = [390, 810, 200, 1000];
   /* 3 tamaños estándar según la medida del nombre (la dimensión mayor): chico ≤15 mm, mediano ≤27 mm, grande >27 mm */
@@ -131,13 +144,14 @@
     return `<image href="${d.img}" x="${-w/2}" y="${y.toFixed(1)}" width="${w}" height="${w}" preserveAspectRatio="xMidYMin meet"/>`;
   };
   const renderDijes = () => {
+    acomodar();
     art.innerHTML = dz.front ? imgTag(byId[dz.front]) : '';
     document.getElementById('charm-front').setAttribute('transform', `translate(${pos.front} 836)`);
-    document.getElementById('dz-hint').hidden = !(dz.front || dz.side || dz.extra.length);
+    document.getElementById('dz-hint').hidden = !dz.side;
     slot.classList.toggle('on', !!dz.front);
     sideG.innerHTML = '';  // el dije de costado solo se ve en el lomo
     renderSideCharm();
-    extrasG.innerHTML = dz.extra.map((id,i) => `<g class="dz-drag" data-drag="extra" data-i="${i}" transform="translate(${pos.extra[i]} 836)">${imgTag(byId[id])}</g>`).join('');
+    extrasG.innerHTML = dz.extra.map((id,i) => `<g transform="translate(${pos.extra[i]} 836)">${imgTag(byId[id])}</g>`).join('');
     dijesExtra = dz.extra.reduce((t,id) => t + (byId[id].p || 0), 0);
     const parts = [];
     if (dz.front) parts.push(corto(byId[dz.front].n));
@@ -302,10 +316,7 @@
       'Dijes extra': dz.extra.length ? dz.extra.map(nom).join(', ') : 'Ninguno',
       'Grabado del frente': grab || 'Sin grabado', 'Grabado extra': grab2 || 'Ninguno', '_Pedido': ref
     };
-    const lugar = x => { const p = Math.round((x - 104) / 992 * 100); return (p < 40 ? 'izquierda' : p > 60 ? 'derecha' : 'centro') + ` (${p}% desde la izq.)`; };
     const ubic = [];
-    if (dz.front) ubic.push('Frente: ' + lugar(pos.front));
-    dz.extra.forEach((id, i) => ubic.push(corto(nom(id)) + ': ' + lugar(pos.extra[i])));
     if (dz.side) ubic.push('Costado: ojalillo de ' + (pos.sideRow ? 'abajo' : 'arriba') + ', columna ' + ((pos.sideCol < 0 || pos.sideCol >= sideXs.length ? sideXs.length - 1 : pos.sideCol) + 1) + ' de ' + sideXs.length);
     if (ubic.length) props['Ubicación dijes'] = ubic.join(' · ');
     const items = [{ id: pr.id, quantity: 1, properties: props }];
@@ -348,7 +359,7 @@
     if (sw) sw.click(); visor.hidden = true;
   });
   if (!HECHOS.length) document.querySelector('.hechos').hidden = true;
-  /* arrastrar dijes: el de frente y los extras se deslizan por el elástico; el de costado salta al ojalillo más cercano */
+  /* arrastrar el dije de costado: salta al ojalillo más cercano */
   const svgPt = (svg, e) => { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); };
   let arr = null;
   document.querySelectorAll('#jc-svg, #jc-side').forEach(svg => {
