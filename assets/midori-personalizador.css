@@ -81,7 +81,7 @@
 @media (max-width:880px){
 .mpz .config{grid-template-columns:1fr; padding-top:40px;}
 }
-.mpz .stage{position:sticky; top:22px;}
+.mpz .stage{position:sticky; top:calc(var(--header-height, 74px) + 46px);}
 @media (max-width:880px){
 .mpz .stage{position:static;}
 }
