@@ -298,3 +298,24 @@
 .mpz .proceso-card h3{margin:0; font-family:var(--serif); font-weight:600; font-size:clamp(26px,3vw,34px); line-height:1.1; color:#fffff7;}
 .mpz .proceso-card h3 small{display:block; margin-top:4px; font-family:var(--mano); font-weight:400; font-size:20px; color:var(--rosa);}
 @media (hover:none){ .mpz .proceso-card p{max-height:120px; opacity:1; margin-top:8px; color:var(--texto);} }
+
+/* Proceso + organizador recomendado: dos columnas (organizador a la izquierda, proceso más chico a la derecha) */
+.mpz .pz-proceso-wrap{max-width:1080px; margin:10px auto 60px; padding:0 22px; display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;}
+.mpz .pz-proceso-wrap .proceso{margin:0;}
+.mpz .pz-proceso-wrap .proceso-card{padding:12px 16px; border-radius:14px;}
+.mpz .pz-proceso-wrap .proceso-card b{font-size:15px;}
+.mpz .pz-proceso-wrap .proceso-card.oscura{padding:18px 20px; border-radius:18px;}
+.mpz .pz-proceso-wrap .proceso-card h3{font-size:clamp(22px,2.2vw,27px);}
+.mpz .pz-proceso-wrap .proceso-card h3 small{font-size:17px;}
+.mpz .pz-org-kicker{margin:0 0 10px; font-family:var(--caption); font-size:11px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:#1d4941;}
+.mpz .pz-org-card{display:grid; grid-template-columns:170px 1fr; gap:20px; align-items:center; background:#fff0f3; border:1px solid #ffd1db; border-radius:22px; padding:18px;}
+.mpz .pz-org-card[hidden]{display:none;}
+.mpz .pz-org-card img{width:100%; height:auto; aspect-ratio:1; object-fit:cover; border-radius:14px; background:#fffff7;}
+.mpz .pz-org-card h3{margin:0 0 6px; font-family:var(--titulo); font-weight:600; font-size:22px; line-height:1.15; color:#501123;}
+.mpz .pz-org-card p{margin:0 0 10px; font-size:13.5px; color:#363636;}
+.mpz .pz-org-precio{font-family:var(--titulo); font-size:20px !important; color:#501123 !important;}
+.mpz .pz-org-sin{display:inline-block; margin-left:6px; padding:2px 10px; border-radius:999px; background:#fffff7; font-family:var(--caption); font-size:11px; color:#7b1923; vertical-align:middle;}
+.mpz .pz-org-btn{display:inline-block; padding:10px 18px; border-radius:999px; background:#1d4941; color:#fffff7; text-decoration:none; font-family:var(--caption); font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;}
+.mpz .pz-org-btn:hover{background:#501123;}
+@media (max-width:860px){ .mpz .pz-proceso-wrap{grid-template-columns:1fr; gap:28px;} }
+@media (max-width:480px){ .mpz .pz-org-card{grid-template-columns:1fr;} }
