@@ -267,4 +267,4 @@
 .mpc .proceso-card h3 small{display:block; margin-top:4px; font-family:var(--mano); font-weight:400; font-size:20px; color:var(--rosa);}
 @media (hover:none){ .mpc .proceso-card p{max-height:120px; opacity:1; margin-top:8px; color:var(--texto);} }
 
-.mpc .proceso-card h3 small{font-family:"Royale Victoria","La Belle Aurore",cursive !important; font-size:34px !important; line-height:1.1; margin-top:8px; letter-spacing:0;}
+.mpc .proceso-card h3 small{font-family:"La Belle Aurore",cursive !important; font-size:30px !important; line-height:1.2; margin-top:8px; letter-spacing:0;}
