@@ -275,3 +275,5 @@
 .mpz .dz-drag{cursor:grab;} .mpz .dz-drag.arrastrando{cursor:grabbing;} .mpz #jc-svg{touch-action:pan-y;} .mpz #jc-side{touch-action:none;}
 .mpz .dz-hint{margin:10px auto 0; width:fit-content; padding:6px 14px; border-radius:999px; background:#f9d9e6; text-align:center; font-family:var(--caption); font-size:13px; font-weight:600; color:#7b1923;}
 .mpz .dz-hint[hidden]{display:none;}
+
+.mpz #jc-svg.destino, .mpz #jc-side.destino{outline:3px dashed #b0466a; outline-offset:6px; border-radius:14px;}

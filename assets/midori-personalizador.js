@@ -100,22 +100,26 @@
   const corto = n => n.replace(/\s+\d+(?:x\d+)?(?:mm)?$/, '');
   const dz = { front:'', side:'', extra:[] };
   /* dónde va cada dije: x sobre el elástico (frente y extras); en el lomo, columna y fila del ojalillo */
-  const pos = { front: 600, extra: [], sideCol: -1, sideRow: 0, frontFijo: false, extraFijo: [] };
+  const pos = { sideCol: -1, sideRow: 0 };
+  /* px: x de cada dije sobre el elástico; fijo: los que la clienta movió a mano.
+     enLomo: qué dije va en el lomo (undefined = el de costado elegido; '' = ninguno). Cada dije conserva su precio y su stock, esté donde esté. */
+  const px = {}, fijo = new Set(); let enLomo;
+  const elegidos = () => [dz.front, dz.side].concat(dz.extra).filter(Boolean);
+  const lomo = () => { if (enLomo !== undefined && enLomo !== '' && !elegidos().includes(enLomo)) enLomo = undefined; return enLomo === undefined ? dz.side : enLomo; };
+  const enFrente = () => { const l = lomo(); return elegidos().filter(id => id !== l); };
   /* en el elástico no se elige el lugar: el primero va en el medio y los demás se suman a la derecha y a la izquierda, con aire entre ellos */
   const AIRE = 40;
   const acomodar = () => {
-    const lista = (dz.front ? [['f', dz.front]] : []).concat(dz.extra.map((id, i) => [i, id]));
+    const lista = enFrente().map(id => [id, id]);
     let der = 600, izq = 600;
     lista.forEach(([k, id], j) => {
       const w = anchoDije(byId[id]); let x;
       if (j === 0) { x = 600; der = 600 + w / 2; izq = 600 - w / 2; }
       else if (j % 2) { x = der + AIRE + w / 2; der = x + w / 2; }
       else { x = izq - AIRE - w / 2; izq = x - w / 2; }
-      if (k === 'f') { if (!pos.frontFijo) pos.front = Math.round(x); } else if (!pos.extraFijo[k]) pos.extra[k] = Math.round(x);
+      if (!fijo.has(id)) px[id] = Math.round(x);
     });
   };
-  const libre = () => SLOTS.find(s => Math.abs(s - pos.front) > 90 && !pos.extra.some(x => Math.abs(x - s) < 90)) ?? SLOTS[pos.extra.length % SLOTS.length];
-  const SLOTS = [390, 810, 200, 1000];
   /* 3 tamaños estándar según la medida del nombre (la dimensión mayor): chico ≤15 mm, mediano ≤27 mm, grande >27 mm */
   const medida = n => Math.max(...(n.match(/\d+/g) || [15]).map(Number));
   const tier = d => { const m = medida(d.n); return m <= 15 ? 'S' : (m <= 27 ? 'M' : 'L'); };
@@ -145,15 +149,12 @@
   };
   const renderDijes = () => {
     acomodar();
-    art.innerHTML = dz.front ? imgTag(byId[dz.front]) : '';
-    const cf = document.getElementById('charm-front'); cf.setAttribute('transform', `translate(${pos.front} 836)`);
-    cf.classList.toggle('dz-drag', !!dz.front); cf.dataset.drag = 'front';
-    document.getElementById('dz-hint').hidden = !(dz.front || dz.side || dz.extra.length);
-    slot.classList.toggle('on', !!dz.front);
+    art.innerHTML = ''; slot.classList.remove('on');
+    document.getElementById('dz-hint').hidden = !elegidos().length;
     sideG.innerHTML = '';  // el dije de costado solo se ve en el lomo
     renderSideCharm();
-    extrasG.innerHTML = dz.extra.map((id,i) => `<g class="dz-drag" data-drag="extra" data-i="${i}" transform="translate(${pos.extra[i]} 836)">${imgTag(byId[id])}</g>`).join('');
-    dijesExtra = dz.extra.reduce((t,id) => t + (byId[id].p || 0), 0);
+    extrasG.innerHTML = enFrente().map(id => `<g class="dz-drag" data-drag="frente" data-id="${id}" transform="translate(${px[id]} 836)">${imgTag(byId[id])}</g>`).join('');
+    dijesExtra = elegidos().reduce((t,id) => t + (byId[id].p || 0), 0);
     const parts = [];
     if (dz.front) parts.push(corto(byId[dz.front].n));
     if (dz.side) parts.push(corto(byId[dz.side].n));
@@ -190,8 +191,8 @@
     renderSideCharm();
   };
   const renderSideCharm = () => {
-    if (!dz.side) { sideCharm.innerHTML = ''; return; }
-    sideCharm.innerHTML = `<g class="dz-drag" data-drag="side" transform="translate(${sideX} ${sideY})"><path class="sp-cord" d="M0 0V12" stroke-width="6"/>${imgTag(byId[dz.side], 9, .8)}</g>`;
+    const l = lomo(); if (!l) { sideCharm.innerHTML = ''; return; }
+    sideCharm.innerHTML = `<g class="dz-drag" data-drag="side" transform="translate(${sideX} ${sideY})"><path class="sp-cord" d="M0 0V12" stroke-width="6"/>${imgTag(byId[l], 9, .8)}</g>`;
   };
   const NINGUNO = '<circle cx="0" cy="75" r="46" fill="none" stroke="currentColor" stroke-width="5"/><path d="M-32 107L32 43" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>';
   document.querySelectorAll('.dz-grid').forEach(g => {
@@ -229,16 +230,17 @@
     b.addEventListener('click', () => {
       const row = b.parentElement, kind = row.dataset.dz, v = b.dataset.dzV;
       if (kind === 'extra') {
-        if (v === '') { dz.extra = []; pos.extra = []; pos.extraFijo = []; }
+        if (v === '') { dz.extra = []; }
         else {
           const i = dz.extra.indexOf(v);
-          if (i >= 0) { dz.extra.splice(i,1); pos.extra.splice(i,1); pos.extraFijo.splice(i,1); }
-          else if (dz.extra.length < 4) { pos.extra.push(libre()); dz.extra.push(v); }
+          if (i >= 0) { dz.extra.splice(i,1); }
+          else if (dz.extra.length < 4) { dz.extra.push(v); }
         }
         row.querySelectorAll('.dz-item').forEach(o => o.setAttribute('aria-pressed', (o.dataset.dzV === '' ? dz.extra.length === 0 : dz.extra.includes(o.dataset.dzV)) ? 'true' : 'false'));
       } else {
         press(row.querySelectorAll('.dz-item'), b);
         dz[kind] = v;
+        if (kind === 'side') enLomo = undefined;   // el de costado nuevo va al lomo
       }
       renderDijes();
     });
@@ -319,9 +321,9 @@
     };
     const ubic = [];
     /* frente: de izquierda a derecha, como quedaron en el elástico */
-    const frente = (dz.front ? [[pos.front, dz.front]] : []).concat(dz.extra.map((id, i) => [pos.extra[i], id])).sort((a, b) => a[0] - b[0]);
-    if (frente.length > 1) ubic.push('Frente, de izquierda a derecha: ' + frente.map(([, id]) => corto(nom(id))).join(' + '));
-    if (dz.side) ubic.push('Dije ' + corto(nom(dz.side)) + ' ojalillo ' + (pos.sideRow ? 'abajo' : 'arriba'));
+    const frente = enFrente().sort((a, b) => px[a] - px[b]), enL = lomo();
+    if (frente.length) ubic.push('Frente: ' + frente.map(id => corto(nom(id))).join(' + '));
+    if (enL) ubic.push('Lomo: ' + corto(nom(enL)) + ', ojalillo ' + (pos.sideRow ? 'abajo' : 'arriba'));
     if (ubic.length) props['Ubicación dijes'] = ubic.join(' · ');
     const items = [{ id: pr.id, quantity: 1, properties: props }];
     const parte = (vid, extra) => items.push({ id: vid, quantity: 1, properties: Object.assign({ 'Para': ref }, extra || {}) });
@@ -366,14 +368,17 @@
   /* arrastrar dijes: el de costado salta al ojalillo más cercano; los del frente se deslizan por el elástico */
   const svgPt = (svg, e) => { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); };
   let arr = null;
+  const svgFrente = document.getElementById('jc-svg'), svgLomo = document.getElementById('jc-side');
   document.querySelectorAll('#jc-svg, #jc-side').forEach(svg => {
     svg.addEventListener('pointerdown', e => {
       const g = e.target.closest('.dz-drag'); if (!g || !g.firstElementChild) return;
-      e.preventDefault(); arr = { g, svg, k: g.dataset.drag, i: +g.dataset.i || 0 };
+      e.preventDefault(); arr = { g, svg, k: g.dataset.drag, id: g.dataset.id || lomo() };
       g.classList.add('arrastrando'); svg.setPointerCapture(e.pointerId);
     });
     svg.addEventListener('pointermove', e => {
       if (!arr || arr.svg !== svg) return;
+      { const otro = svg === svgFrente ? svgLomo : svgFrente, r = otro.getBoundingClientRect();
+        otro.classList.toggle('destino', e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom); }
       const p = svgPt(svg, e);
       if (arr.k === 'side') {
         let c = 0; sideXs.forEach((x, j) => { if (Math.abs(x - p.x) < Math.abs(sideXs[c] - p.x)) c = j; });
@@ -384,12 +389,30 @@
         }
         return;
       }
-      const d = byId[arr.k === 'front' ? dz.front : dz.extra[arr.i]], m = Math.min(anchoDije(d) / 2, 300);
+      const d = byId[arr.id], m = Math.min(anchoDije(d) / 2, 300);
       const x = Math.round(Math.min(1096 - m, Math.max(104 + m, p.x)));
-      if (arr.k === 'front') { pos.front = x; pos.frontFijo = true; } else { pos.extra[arr.i] = x; pos.extraFijo[arr.i] = true; }
+      px[arr.id] = x; fijo.add(arr.id);
       arr.g.setAttribute('transform', `translate(${x} 836)`);
     });
-    const fin = () => { if (arr) { arr.g.classList.remove('arrastrando'); arr = null; } };
+    const fin = e => {
+      if (!arr) return;
+      arr.g.classList.remove('arrastrando');
+      svgFrente.classList.remove('destino'); svgLomo.classList.remove('destino');
+      /* soltar sobre la otra vista: el dije pasa del frente al lomo o al revés (si el lomo ya tenía uno, se intercambian) */
+      const otro = arr.svg === svgFrente ? svgLomo : svgFrente, r = otro.getBoundingClientRect();
+      if (e && e.type === 'pointerup' && e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) {
+        const id = arr.id;
+        if (otro === svgLomo) {
+          const antes = lomo();
+          if (antes && antes !== id) { px[antes] = px[id]; fijo.add(antes); }
+          enLomo = id; fijo.delete(id);
+        } else {
+          enLomo = ''; px[id] = Math.round(Math.min(1050, Math.max(150, svgPt(svgFrente, e).x))); fijo.add(id);
+        }
+        renderDijes();
+      }
+      arr = null;
+    };
     svg.addEventListener('pointerup', fin); svg.addEventListener('pointercancel', fin);
   });
   medirBordes().then(() => renderDijes());
