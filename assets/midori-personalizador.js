@@ -99,6 +99,9 @@
   const byId = {}; Object.keys(DIJES).forEach(k => DIJES[k].forEach(d => { byId[d.id] = d; }));
   const corto = n => n.replace(/\s+\d+(?:x\d+)?(?:mm)?$/, '');
   const dz = { front:'', side:'', extra:[] };
+  /* dónde va cada dije: x sobre el elástico (frente y extras); en el lomo, columna y fila del ojalillo */
+  const pos = { front: 600, extra: [], sideCol: -1, sideRow: 0 };
+  const libre = () => SLOTS.find(s => Math.abs(s - pos.front) > 90 && !pos.extra.some(x => Math.abs(x - s) < 90)) ?? SLOTS[pos.extra.length % SLOTS.length];
   const SLOTS = [390, 810, 200, 1000];
   /* 3 tamaños estándar según la medida del nombre (la dimensión mayor): chico ≤15 mm, mediano ≤27 mm, grande >27 mm */
   const medida = n => Math.max(...(n.match(/\d+/g) || [15]).map(Number));
@@ -129,10 +132,12 @@
   };
   const renderDijes = () => {
     art.innerHTML = dz.front ? imgTag(byId[dz.front]) : '';
+    document.getElementById('charm-front').setAttribute('transform', `translate(${pos.front} 836)`);
+    document.getElementById('dz-hint').hidden = !(dz.front || dz.side || dz.extra.length);
     slot.classList.toggle('on', !!dz.front);
     sideG.innerHTML = '';  // el dije de costado solo se ve en el lomo
     renderSideCharm();
-    extrasG.innerHTML = dz.extra.map((id,i) => `<g transform="translate(${SLOTS[i]} 836)">${imgTag(byId[id])}</g>`).join('');
+    extrasG.innerHTML = dz.extra.map((id,i) => `<g class="dz-drag" data-drag="extra" data-i="${i}" transform="translate(${pos.extra[i]} 836)">${imgTag(byId[id])}</g>`).join('');
     dijesExtra = dz.extra.reduce((t,id) => t + (byId[id].p || 0), 0);
     const parts = [];
     if (dz.front) parts.push(corto(byId[dz.front].n));
@@ -147,7 +152,7 @@
   const sideCords = document.getElementById('side-cords'), sideEyelets = document.getElementById('side-eyelets'), sideCharm = document.getElementById('side-charm');
   const T1 = 168, T2 = 232, B1 = 1354, B2 = 1418, MID = 824;
   const eyelet = (x, y, r) => `<g><circle class="sp-ring" cx="${x}" cy="${y}" r="${r}"/><circle class="sp-hole" cx="${x}" cy="${y}" r="${(r*0.5).toFixed(1)}"/><path class="sp-shine" d="M${(x-r*.65).toFixed(1)} ${(y-r*.3).toFixed(1)}A${(r*.72).toFixed(1)} ${(r*.72).toFixed(1)} 0 0 1 ${(x-r*.25).toFixed(1)} ${(y-r*.72).toFixed(1)}"/></g>`;
-  let sideX = 157, sideY = T2 + 10;
+  let sideX = 157, sideY = T2 + 10, sideXs = [], sideR = 17;
   const renderSide = () => {
     const cols = +state.cant / 2;                                // 4 cordones = 2 columnas, 6 = 3 columnas
     const sp = cols === 2 ? 64 : 56, r = cols === 2 ? 17 : 15.5;
@@ -164,12 +169,14 @@
     const cierre = `<path class="sp-band" d="M14 ${MID - 6}Q60 ${MID + 6} ${mx[0]} ${MID}L${mx[1]} ${MID}Q190 ${MID + 6} 236 ${MID - 6}"/>`;
     sideCords.innerHTML = '';
     sideEyelets.innerHTML = ring + el + cierre;
-    sideX = xs[xs.length - 1]; sideY = T2 + r * 0.5;
+    sideXs = xs; sideR = r;
+    const c = pos.sideCol < 0 || pos.sideCol >= cols ? cols - 1 : pos.sideCol;
+    sideX = xs[c]; sideY = (pos.sideRow ? B2 : T2) + r * 0.5;
     renderSideCharm();
   };
   const renderSideCharm = () => {
     if (!dz.side) { sideCharm.innerHTML = ''; return; }
-    sideCharm.innerHTML = `<g transform="translate(${sideX} ${sideY})"><path class="sp-cord" d="M0 0V12" stroke-width="6"/>${imgTag(byId[dz.side], 9, .8)}</g>`;
+    sideCharm.innerHTML = `<g class="dz-drag" data-drag="side" transform="translate(${sideX} ${sideY})"><path class="sp-cord" d="M0 0V12" stroke-width="6"/>${imgTag(byId[dz.side], 9, .8)}</g>`;
   };
   const NINGUNO = '<circle cx="0" cy="75" r="46" fill="none" stroke="currentColor" stroke-width="5"/><path d="M-32 107L32 43" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>';
   document.querySelectorAll('.dz-grid').forEach(g => {
@@ -207,11 +214,11 @@
     b.addEventListener('click', () => {
       const row = b.parentElement, kind = row.dataset.dz, v = b.dataset.dzV;
       if (kind === 'extra') {
-        if (v === '') dz.extra = [];
+        if (v === '') { dz.extra = []; pos.extra = []; }
         else {
           const i = dz.extra.indexOf(v);
-          if (i >= 0) dz.extra.splice(i,1);
-          else if (dz.extra.length < 4) dz.extra.push(v);
+          if (i >= 0) { dz.extra.splice(i,1); pos.extra.splice(i,1); }
+          else if (dz.extra.length < 4) { pos.extra.push(libre()); dz.extra.push(v); }
         }
         row.querySelectorAll('.dz-item').forEach(o => o.setAttribute('aria-pressed', (o.dataset.dzV === '' ? dz.extra.length === 0 : dz.extra.includes(o.dataset.dzV)) ? 'true' : 'false'));
       } else {
@@ -295,6 +302,12 @@
       'Dijes extra': dz.extra.length ? dz.extra.map(nom).join(', ') : 'Ninguno',
       'Grabado del frente': grab || 'Sin grabado', 'Grabado extra': grab2 || 'Ninguno', '_Pedido': ref
     };
+    const lugar = x => { const p = Math.round((x - 104) / 992 * 100); return (p < 40 ? 'izquierda' : p > 60 ? 'derecha' : 'centro') + ` (${p}% desde la izq.)`; };
+    const ubic = [];
+    if (dz.front) ubic.push('Frente: ' + lugar(pos.front));
+    dz.extra.forEach((id, i) => ubic.push(corto(nom(id)) + ': ' + lugar(pos.extra[i])));
+    if (dz.side) ubic.push('Costado: ojalillo de ' + (pos.sideRow ? 'abajo' : 'arriba') + ', columna ' + ((pos.sideCol < 0 || pos.sideCol >= sideXs.length ? sideXs.length - 1 : pos.sideCol) + 1) + ' de ' + sideXs.length);
+    if (ubic.length) props['Ubicación dijes'] = ubic.join(' · ');
     const items = [{ id: pr.id, quantity: 1, properties: props }];
     const parte = (vid, extra) => items.push({ id: vid, quantity: 1, properties: Object.assign({ 'Para': ref }, extra || {}) });
     const cu = CUEROS.find(c => c.n === state.cuero); if (cu) parte(cu.id);
@@ -335,6 +348,35 @@
     if (sw) sw.click(); visor.hidden = true;
   });
   if (!HECHOS.length) document.querySelector('.hechos').hidden = true;
+  /* arrastrar dijes: el de frente y los extras se deslizan por el elástico; el de costado salta al ojalillo más cercano */
+  const svgPt = (svg, e) => { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); };
+  let arr = null;
+  document.querySelectorAll('#jc-svg, #jc-side').forEach(svg => {
+    svg.addEventListener('pointerdown', e => {
+      const g = e.target.closest('.dz-drag'); if (!g || !g.firstElementChild) return;
+      e.preventDefault(); arr = { g, svg, k: g.dataset.drag, i: +g.dataset.i || 0 };
+      g.classList.add('arrastrando'); svg.setPointerCapture(e.pointerId);
+    });
+    svg.addEventListener('pointermove', e => {
+      if (!arr || arr.svg !== svg) return;
+      const p = svgPt(svg, e);
+      if (arr.k === 'side') {
+        let c = 0; sideXs.forEach((x, j) => { if (Math.abs(x - p.x) < Math.abs(sideXs[c] - p.x)) c = j; });
+        const row = p.y > MID ? 1 : 0;
+        if (c !== pos.sideCol || row !== pos.sideRow) {
+          pos.sideCol = c; pos.sideRow = row; sideX = sideXs[c]; sideY = (row ? B2 : T2) + sideR * 0.5;
+          renderSideCharm(); arr.g = sideCharm.querySelector('.dz-drag'); arr.g.classList.add('arrastrando');
+        }
+        return;
+      }
+      const d = byId[arr.k === 'front' ? dz.front : dz.extra[arr.i]], m = Math.min(anchoDije(d) / 2, 300);
+      const x = Math.round(Math.min(1096 - m, Math.max(104 + m, p.x)));
+      if (arr.k === 'front') pos.front = x; else pos.extra[arr.i] = x;
+      arr.g.setAttribute('transform', `translate(${x} 836)`);
+    });
+    const fin = () => { if (arr) { arr.g.classList.remove('arrastrando'); arr = null; } };
+    svg.addEventListener('pointerup', fin); svg.addEventListener('pointercancel', fin);
+  });
   medirBordes().then(() => renderDijes());
   setCuero(cueroInicial);
   out(document.querySelector('.card[data-group="cuero"]'), cueroInicial);

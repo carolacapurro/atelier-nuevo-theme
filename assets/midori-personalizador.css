@@ -272,3 +272,6 @@
 .mpz .opt.tile.agotado{cursor:not-allowed; position:relative;}
 .mpz .opt.tile.agotado svg, .mpz .opt.tile.agotado .cant-col span, .mpz .opt.tile.agotado > small{opacity:.35 !important;}
 .mpz .opt.tile .pz-sinstock{display:inline-block; margin-top:6px; padding:3px 10px; border-radius:999px; background:#7b1923; color:#fffff7; font-family:var(--cuerpo); font-weight:700; font-size:10px; letter-spacing:.12em;}
+.mpz .dz-drag{cursor:grab;} .mpz .dz-drag.arrastrando{cursor:grabbing;} .mpz #jc-svg{touch-action:pan-y;} .mpz #jc-side{touch-action:none;}
+.mpz .dz-hint{margin:8px 0 0; text-align:center; font-family:var(--caption); font-size:11.5px; color:var(--verde); opacity:.8;}
+.mpz .dz-hint[hidden]{display:none;}
