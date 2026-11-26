@@ -100,7 +100,7 @@
   const corto = n => n.replace(/\s+\d+(?:x\d+)?(?:mm)?$/, '');
   const dz = { front:'', side:'', extra:[] };
   /* dónde va cada dije: x sobre el elástico (frente y extras); en el lomo, columna y fila del ojalillo */
-  const pos = { front: 600, extra: [], sideCol: -1, sideRow: 0 };
+  const pos = { front: 600, extra: [], sideCol: -1, sideRow: 0, frontFijo: false, extraFijo: [] };
   /* en el elástico no se elige el lugar: el primero va en el medio y los demás se suman a la derecha y a la izquierda, con aire entre ellos */
   const AIRE = 40;
   const acomodar = () => {
@@ -111,7 +111,7 @@
       if (j === 0) { x = 600; der = 600 + w / 2; izq = 600 - w / 2; }
       else if (j % 2) { x = der + AIRE + w / 2; der = x + w / 2; }
       else { x = izq - AIRE - w / 2; izq = x - w / 2; }
-      if (k === 'f') pos.front = Math.round(x); else pos.extra[k] = Math.round(x);
+      if (k === 'f') { if (!pos.frontFijo) pos.front = Math.round(x); } else if (!pos.extraFijo[k]) pos.extra[k] = Math.round(x);
     });
   };
   const libre = () => SLOTS.find(s => Math.abs(s - pos.front) > 90 && !pos.extra.some(x => Math.abs(x - s) < 90)) ?? SLOTS[pos.extra.length % SLOTS.length];
@@ -146,12 +146,13 @@
   const renderDijes = () => {
     acomodar();
     art.innerHTML = dz.front ? imgTag(byId[dz.front]) : '';
-    document.getElementById('charm-front').setAttribute('transform', `translate(${pos.front} 836)`);
-    document.getElementById('dz-hint').hidden = !dz.side;
+    const cf = document.getElementById('charm-front'); cf.setAttribute('transform', `translate(${pos.front} 836)`);
+    cf.classList.toggle('dz-drag', !!dz.front); cf.dataset.drag = 'front';
+    document.getElementById('dz-hint').hidden = !(dz.front || dz.side || dz.extra.length);
     slot.classList.toggle('on', !!dz.front);
     sideG.innerHTML = '';  // el dije de costado solo se ve en el lomo
     renderSideCharm();
-    extrasG.innerHTML = dz.extra.map((id,i) => `<g transform="translate(${pos.extra[i]} 836)">${imgTag(byId[id])}</g>`).join('');
+    extrasG.innerHTML = dz.extra.map((id,i) => `<g class="dz-drag" data-drag="extra" data-i="${i}" transform="translate(${pos.extra[i]} 836)">${imgTag(byId[id])}</g>`).join('');
     dijesExtra = dz.extra.reduce((t,id) => t + (byId[id].p || 0), 0);
     const parts = [];
     if (dz.front) parts.push(corto(byId[dz.front].n));
@@ -228,10 +229,10 @@
     b.addEventListener('click', () => {
       const row = b.parentElement, kind = row.dataset.dz, v = b.dataset.dzV;
       if (kind === 'extra') {
-        if (v === '') { dz.extra = []; pos.extra = []; }
+        if (v === '') { dz.extra = []; pos.extra = []; pos.extraFijo = []; }
         else {
           const i = dz.extra.indexOf(v);
-          if (i >= 0) { dz.extra.splice(i,1); pos.extra.splice(i,1); }
+          if (i >= 0) { dz.extra.splice(i,1); pos.extra.splice(i,1); pos.extraFijo.splice(i,1); }
           else if (dz.extra.length < 4) { pos.extra.push(libre()); dz.extra.push(v); }
         }
         row.querySelectorAll('.dz-item').forEach(o => o.setAttribute('aria-pressed', (o.dataset.dzV === '' ? dz.extra.length === 0 : dz.extra.includes(o.dataset.dzV)) ? 'true' : 'false'));
@@ -318,6 +319,9 @@
     };
     const ubic = [];
     if (dz.side) ubic.push('Costado: ojalillo de ' + (pos.sideRow ? 'abajo' : 'arriba') + ', columna ' + ((pos.sideCol < 0 || pos.sideCol >= sideXs.length ? sideXs.length - 1 : pos.sideCol) + 1) + ' de ' + sideXs.length);
+    const ancho = state.tam === 'A6' ? 12 : 16, cm = x => (Math.round((x - 104) / 992 * ancho * 2) / 2).toString().replace('.', ',');
+    if (dz.front) ubic.unshift('Frente (' + corto(nom(dz.front)) + '): a ' + cm(pos.front) + ' cm del lomo');
+    dz.extra.forEach((id, i) => ubic.push('Extra ' + (i + 1) + ' (' + corto(nom(id)) + '): a ' + cm(pos.extra[i]) + ' cm del lomo'));
     if (ubic.length) props['Ubicación dijes'] = ubic.join(' · ');
     const items = [{ id: pr.id, quantity: 1, properties: props }];
     const parte = (vid, extra) => items.push({ id: vid, quantity: 1, properties: Object.assign({ 'Para': ref }, extra || {}) });
@@ -359,7 +363,7 @@
     if (sw) sw.click(); visor.hidden = true;
   });
   if (!HECHOS.length) document.querySelector('.hechos').hidden = true;
-  /* arrastrar el dije de costado: salta al ojalillo más cercano */
+  /* arrastrar dijes: el de costado salta al ojalillo más cercano; los del frente se deslizan por el elástico */
   const svgPt = (svg, e) => { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); };
   let arr = null;
   document.querySelectorAll('#jc-svg, #jc-side').forEach(svg => {
@@ -382,7 +386,7 @@
       }
       const d = byId[arr.k === 'front' ? dz.front : dz.extra[arr.i]], m = Math.min(anchoDije(d) / 2, 300);
       const x = Math.round(Math.min(1096 - m, Math.max(104 + m, p.x)));
-      if (arr.k === 'front') pos.front = x; else pos.extra[arr.i] = x;
+      if (arr.k === 'front') { pos.front = x; pos.frontFijo = true; } else { pos.extra[arr.i] = x; pos.extraFijo[arr.i] = true; }
       arr.g.setAttribute('transform', `translate(${x} 836)`);
     });
     const fin = () => { if (arr) { arr.g.classList.remove('arrastrando'); arr = null; } };
