@@ -130,7 +130,7 @@
   const renderDijes = () => {
     art.innerHTML = dz.front ? imgTag(byId[dz.front]) : '';
     slot.classList.toggle('on', !!dz.front);
-    sideG.innerHTML = dz.side ? imgTag(byId[dz.side]) : '';
+    sideG.innerHTML = '';  // el dije de costado solo se ve en el lomo
     renderSideCharm();
     extrasG.innerHTML = dz.extra.map((id,i) => `<g transform="translate(${SLOTS[i]} 836)">${imgTag(byId[id])}</g>`).join('');
     dijesExtra = dz.extra.reduce((t,id) => t + (byId[id].p || 0), 0);
