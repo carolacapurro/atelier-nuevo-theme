@@ -1,0 +1,52 @@
+{%- comment -%} Pop-up Black Friday: 15% (BFVALLORANI) + 10% transferencia (SOLOTRANSFERENCIA) + 6 cuotas. Aparece desde el 27/11 9:00 (hora AR), una vez por sesión. {%- endcomment -%}
+<div class="bfp" id="bfp" hidden role="dialog" aria-modal="true" aria-labelledby="bfp-t">
+  <div class="bfp-card">
+    <button type="button" class="bfp-x" aria-label="Cerrar">×</button>
+    <p class="bfp-kicker">Black Friday</p>
+    <h2 id="bfp-t" class="bfp-t">15% de descuento</h2>
+    <p class="bfp-mas">+ 10% OFF abonando con transferencia</p>
+    <p class="bfp-mas">+ 6 cuotas sin interés</p>
+    <div class="bfp-codes">
+      <button type="button" class="bfp-code" data-code="BFVALLORANI"><span>BFVALLORANI</span><small>Tocá para copiar</small></button>
+      <button type="button" class="bfp-code" data-code="SOLOTRANSFERENCIA"><span>SOLOTRANSFERENCIA</span><small>Si pagás con transferencia</small></button>
+    </div>
+    <p class="bfp-nota">Ingresá los códigos al pagar. Se pueden usar juntos.</p>
+    <button type="button" class="bfp-ok">Ir a la tienda</button>
+  </div>
+</div>
+<style>
+  .bfp{position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(30,12,14,.55);}
+  .bfp[hidden]{display:none;}
+  .bfp-card{position:relative; width:min(440px,100%); background:#fffff7; border-radius:24px; padding:34px 28px 26px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,.25); border:1px solid #f3d3dc;}
+  .bfp-x{position:absolute; top:10px; right:12px; width:36px; height:36px; border:0; border-radius:50%; background:transparent; color:#7b1923; font-size:26px; line-height:1; cursor:pointer;}
+  .bfp-kicker{margin:0 0 6px; font-family:"Montserrat","Helvetica Neue",Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:#1d4941;}
+  .bfp-t{margin:0 0 10px; font-family:"Newsreader",Georgia,serif; font-weight:500; font-size:clamp(34px,8vw,44px); line-height:1.05; color:#7b1923;}
+  .bfp-mas{margin:0 0 4px; font-family:"Montserrat","Helvetica Neue",Arial,sans-serif; font-size:14px; font-weight:600; color:#501123;}
+  .bfp-codes{display:grid; gap:10px; margin:20px 0 12px;}
+  .bfp-code{display:flex; flex-direction:column; align-items:center; gap:2px; padding:12px 16px; border:1.5px dashed #721442; border-radius:16px; background:#fff0f3; color:#721442; cursor:pointer; font-family:"Montserrat","Helvetica Neue",Arial,sans-serif;}
+  .bfp-code span{font-size:16px; font-weight:700; letter-spacing:.06em;}
+  .bfp-code small{font-size:11px; color:#7b1923; opacity:.8;}
+  .bfp-code.ok{border-style:solid; background:#1d4941; color:#fffff7;} .bfp-code.ok small{color:#fffff7;}
+  .bfp-nota{margin:0 0 16px; font-size:12px; color:#6b6b5a; font-family:"Montserrat","Helvetica Neue",Arial,sans-serif;}
+  .bfp-ok{width:100%; padding:15px 20px; border:0; border-radius:999px; background:#721442; color:#fffff7; font-family:"Montserrat","Helvetica Neue",Arial,sans-serif; font-weight:600; font-size:13px; text-transform:uppercase; cursor:pointer;}
+  .bfp-ok:hover{background:#7b1923;}
+</style>
+<script>
+(function(){
+  var desde = new Date('2026-11-27T09:00:00-03:00');
+  var prueba = /[?&]bfp=1/.test(location.search);   // ?bfp=1 para verlo antes de hora
+  if (!prueba && new Date() < desde) return;
+  try { if (!prueba && sessionStorage.getItem('bfp-visto')) return; } catch(e) {}
+  var p = document.getElementById('bfp'); if (!p) return;
+  function cerrar(){ p.hidden = true; try { sessionStorage.setItem('bfp-visto','1'); } catch(e) {} }
+  setTimeout(function(){ p.hidden = false; }, 1500);
+  p.addEventListener('click', function(e){ if (e.target === p || e.target.closest('.bfp-x') || e.target.closest('.bfp-ok')) cerrar(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !p.hidden) cerrar(); });
+  p.querySelectorAll('.bfp-code').forEach(function(b){
+    b.addEventListener('click', function(){
+      var c = b.dataset.code, s = b.querySelector('small'), t = s.textContent;
+      (navigator.clipboard ? navigator.clipboard.writeText(c) : Promise.reject()).then(function(){ b.classList.add('ok'); s.textContent = '¡Copiado!'; setTimeout(function(){ b.classList.remove('ok'); s.textContent = t; }, 1800); }).catch(function(){});
+    });
+  });
+})();
+</script>
