@@ -1,0 +1,31 @@
+{%- comment -%} Reseñas en un desplegable discreto (usa el widget de Judge.me como bloque de app) {%- endcomment -%}
+<div class="rp page-width">
+  <details class="rp-details"{% if section.settings.abierto %} open{% endif %}>
+    <summary>{{ section.settings.titulo }}</summary>
+    <div class="rp-body">
+      {%- for block in section.blocks -%}{% render block %}{%- endfor -%}
+    </div>
+  </details>
+</div>
+<style>
+  .rp{margin:24px auto 40px; max-width:1200px; padding-inline:var(--page-margin, 20px);}
+  .rp-details{border-top:1px solid rgba(54,56,21,.18); padding-top:14px;}
+  .rp-details>summary{list-style:none; cursor:pointer; display:inline-flex; gap:6px; align-items:center; font-family:"Montserrat","Helvetica Neue",Arial,sans-serif; font-size:13px; letter-spacing:.04em; color:#6b6b5a; text-decoration:underline; text-underline-offset:3px; padding:4px 0;}
+  .rp-details>summary::-webkit-details-marker{display:none;}
+  .rp-details>summary::after{content:"+"; text-decoration:none; font-size:15px;}
+  .rp-details[open]>summary::after{content:"–";}
+  .rp-body{margin-top:12px; max-height:560px; overflow:auto; padding-right:6px;}
+  .rp-body .jdgm-rev-widg__header{display:none !important;}
+  .rp-body .jdgm-rev-widg{padding:0 !important; margin:0 !important;}
+</style>
+{% schema %}
+{
+  "name": "Reseñas plegables",
+  "settings": [
+    { "type": "text", "id": "titulo", "label": "Texto del desplegable", "default": "Ver reseñas de clientas" },
+    { "type": "checkbox", "id": "abierto", "label": "Abierto al cargar", "default": false }
+  ],
+  "blocks": [{ "type": "@app" }],
+  "presets": [{ "name": "Reseñas plegables" }]
+}
+{% endschema %}
