@@ -40,8 +40,8 @@
   {%- if product_resource.handle contains '-classic-' and selected_variant.price > 0 -%}
     {%- assign transfer_price = selected_variant.price | times: 9 | divided_by: 10 -%}
     <span class="price-transfer">
-      <s class="compare-at-price">{{ selected_variant.price | money }}</s>
-      <span class="price">{{ transfer_price | money }}</span>
+      <s class="compare-at-price">{{ selected_variant.price | money_without_trailing_zeros }}</s>
+      <span class="price">{{ transfer_price | money_without_trailing_zeros }}</span>
       <small class="price-transfer__note">10% off con transferencia</small>
     </span>
     <style>.price-transfer{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:0 .45em}.price-transfer__note{flex-basis:100%;font-size:.72em;opacity:.75}</style>
