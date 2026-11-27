@@ -51,3 +51,19 @@
 })();
 </script>
 {%- endif -%}
+{%- comment -%} A6 = 4 elásticos: al elegir A6 la foto principal cambia a la versión A6 (assets/clasica-<handle>-a6.jpg) {%- endcomment -%}
+<script>
+(function(){
+  var a5 = null, a6 = {{ 'clasica-' | append: product.handle | append: '-a6.jpg' | asset_url | json }};
+  function imgs(){ return [...document.querySelectorAll('.product-information img, media-gallery img, .product-media img')].filter(function(i){ return /clasica-/.test(i.currentSrc || i.src) || i.dataset.a5; }); }
+  function poner(t){
+    imgs().forEach(function(i){
+      if (!i.dataset.a5) { i.dataset.a5 = i.src; i.dataset.a5set = i.srcset || ''; }
+      if (t === 'A6') { i.removeAttribute('srcset'); i.src = a6; }
+      else { i.src = i.dataset.a5; if (i.dataset.a5set) i.srcset = i.dataset.a5set; }
+    });
+  }
+  document.addEventListener('change', function(e){ var i = e.target; if (i && i.type === 'radio' && /^A[56]$/.test(i.value)) setTimeout(function(){ poner(i.value); }, 60); });
+  document.addEventListener('DOMContentLoaded', function(){ var c = document.querySelector('input[type=radio][value="A6"]:checked'); if (c) poner('A6'); });
+})();
+</script>
