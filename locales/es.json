@@ -109,6 +109,7 @@
     "pause_video": "Pausar el video"
   },
   "actions": {
+    "sign_in_options": "Otras opciones para iniciar sesión",
     "add_to_cart": "Agregar al carrito",
     "clear_all": "Borrar todo",
     "remove": "Eliminar",
