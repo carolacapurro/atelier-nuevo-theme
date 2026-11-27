@@ -63,7 +63,10 @@
       else { i.src = i.dataset.a5; if (i.dataset.a5set) i.srcset = i.dataset.a5set; }
     });
   }
-  document.addEventListener('change', function(e){ var i = e.target; if (i && i.type === 'radio' && /^A[56]$/.test(i.value)) setTimeout(function(){ poner(i.value); }, 60); });
-  document.addEventListener('DOMContentLoaded', function(){ var c = document.querySelector('input[type=radio][value="A6"]:checked'); if (c) poner('A6'); });
+  var estado = 'A5';
+  document.addEventListener('change', function(e){ var i = e.target; if (i && i.type === 'radio' && /^A[56]$/.test(i.value)) { estado = i.value; poner(estado); setTimeout(function(){ poner(estado); }, 400); } });
+  /* el tema vuelve a dibujar la galería al cambiar de variante: se reaplica */
+  new MutationObserver(function(){ if (estado === 'A6') imgs().forEach(function(i){ if (i.src !== a6) poner('A6'); }); }).observe(document.body, { childList: true, subtree: true });
+  document.addEventListener('DOMContentLoaded', function(){ var c = document.querySelector('input[type=radio][value="A6"]:checked'); if (c) { estado = 'A6'; poner('A6'); } });
 })();
 </script>
