@@ -17,7 +17,7 @@
   if section.settings.enable_transparent_header_home and template.name == 'index'
     assign transparent = 'always'
     assign transparent_color_scheme = section.settings.home_color_scheme
-  elsif section.settings.enable_transparent_header_product and template.name == 'product'
+  elsif section.settings.enable_transparent_header_product and template.name == 'product' and template.suffix != 'midori-a5' and template.suffix != 'midori-a6'
     assign transparent = 'always'
     assign transparent_color_scheme = section.settings.product_color_scheme
   elsif section.settings.enable_transparent_header_collection and template.name == 'collection'
