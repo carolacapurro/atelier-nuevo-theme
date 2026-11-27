@@ -98,8 +98,8 @@
         }
       },
       "block_order": [
-        "cuero_cocoa_engrasado",
         "cuero_camel_flor",
+        "cuero_cocoa_engrasado",
         "cuero_rojo_flor",
         "cuero_cafe_flor",
         "cuero_cactus_engrasado",
