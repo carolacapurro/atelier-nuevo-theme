@@ -129,6 +129,13 @@
           <span>{{ section.settings.review_author }}</span><span>{{ section.settings.review_caption }}</span>
         </figcaption>
       </figure>
+      {%- assign app_blocks = section.blocks | where: 'type', '@app' -%}
+      {%- if app_blocks.size > 0 -%}
+      <details class="mas-resenas" id="mas-resenas">
+        <summary>Ver más reseñas</summary>
+        <div class="mas-resenas-body">{%- for block in app_blocks -%}{% render block %}{%- endfor -%}</div>
+      </details>
+      {%- endif -%}
     </section>
 
     <section aria-label="Información y compra">
@@ -137,7 +144,7 @@
       <p class="sub">{{ section.settings.subtitle }}</p>
       <div class="ratingrow">
         <span class="stars" aria-hidden="true"><svg class="i"><use href="#star"/></svg><svg class="i"><use href="#star"/></svg><svg class="i"><use href="#star"/></svg><svg class="i"><use href="#star"/></svg><svg class="i"><use href="#star"/></svg></span>
-        <b>{{ rating_text }}</b><a href="#resenas">({{ review_count }} reseñas)</a>
+        <b>{{ rating_text }}</b><a href="#mas-resenas" onclick="var d=document.getElementById('mas-resenas');if(d)d.open=true">({{ review_count }} reseñas)</a>
         <span class="faces" aria-hidden="true"><span>N</span><span>M</span><span>C</span><span>P</span></span>
       </div>
 
@@ -258,6 +265,7 @@
     { "type": "text", "id": "review_caption", "label": "Descripción", "default": "Una clienta de Vallorani" }
   ],
   "blocks": [
+    { "type": "@app" },
     {
       "type": "cuero",
       "name": "Foto de cuero",

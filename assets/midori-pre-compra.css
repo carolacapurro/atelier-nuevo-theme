@@ -268,3 +268,10 @@
 @media (hover:none){ .mpc .proceso-card p{max-height:120px; opacity:1; margin-top:8px; color:var(--texto);} }
 
 .mpc .proceso-card h3 small{font-family:"La Belle Aurore",cursive !important; font-size:20px !important; line-height:1.2; margin-top:8px; letter-spacing:0;}
+/* Más reseñas: discreto, colapsado */
+.mpc .mas-resenas{margin:14px 0 0; border:0;}
+.mpc .mas-resenas>summary{list-style:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px; font-size:13px; letter-spacing:.04em; color:var(--suave); text-decoration:underline; text-underline-offset:3px; padding:4px 0;}
+.mpc .mas-resenas>summary::-webkit-details-marker{display:none;}
+.mpc .mas-resenas>summary::after{content:"+"; text-decoration:none; font-size:15px;}
+.mpc .mas-resenas[open]>summary::after{content:"–";}
+.mpc .mas-resenas-body{margin-top:12px; max-height:520px; overflow:auto; padding-right:6px;}

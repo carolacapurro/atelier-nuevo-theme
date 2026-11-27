@@ -88,6 +88,13 @@
             "name": "Habano engrasado",
             "asset_file": "midori-habano-engrasado.jpg"
           }
+        },
+        "judgeme_resenas": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "show_shop_reviews": false,
+            "max_width": 1200
+          }
         }
       },
       "block_order": [
@@ -101,7 +108,8 @@
         "cuero_avellana_vetas",
         "cuero_caramelo_vetas",
         "cuero_gris_engrasado",
-        "cuero_habano_engrasado"
+        "cuero_habano_engrasado",
+        "judgeme_resenas"
       ],
       "settings": {
         "model": "A5"
