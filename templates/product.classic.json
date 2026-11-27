@@ -146,32 +146,6 @@
               },
               "blocks": {}
             },
-            "text_h7mmb6": {
-              "type": "text",
-              "name": "t:names.text",
-              "settings": {
-                "text": "{{ closest.product.description | replace: '6, dorados (para 6 cuadernos)', 'dorados. A5: 6 elásticos (6 cuadernos) · A6: 4 elásticos (4 cuadernos)' }}",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
             "easify_options_easify_product_options_T9HNRM": {
               "type": "shopify://apps/easify-options/blocks/easify-product-options/d2288b18-c1ba-42f5-b3b3-26c75c8820bf",
               "settings": {}
@@ -226,6 +200,12 @@
               "settings": {
                 "custom_liquid": "{% render 'classic-hechos', product: closest.product %}"
               }
+            },
+            "classic_desc": {
+              "type": "custom-liquid",
+              "settings": {
+                "custom_liquid": "<div class=\"rte\">{{ closest.product.description | replace: '6, dorados (para 6 cuadernos)', 'dorados. A5: 6 elásticos (6 cuadernos) · A6: 4 elásticos (4 cuadernos)' }}</div>"
+              }
             }
           },
           "block_order": [
@@ -233,7 +213,7 @@
             "price_8XmfjV",
             "variant_picker_XEPFbt",
             "text_EjJUez",
-            "text_h7mmb6",
+            "classic_desc",
             "classic_hechos",
             "easify_options_easify_product_options_T9HNRM",
             "easify_options_easify_product_options_t34pnR",
