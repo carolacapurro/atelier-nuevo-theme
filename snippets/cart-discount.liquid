@@ -136,13 +136,11 @@
   <accordion-custom class="cart-discount">
     <details
       class="details discount-details"
-      {% if discount_codes.size > 0 %}
-        open
-      {% endif %}
+      open
       declarative-open
     >
       <summary class="cart-discount__summary">
-        <span class="cart-discount__label h6">Código de descuento</span>
+        <span class="cart-discount__label h6">¿Tenés un código de descuento?</span>
 
         <span class="svg-wrapper icon-plus">
           {{- 'icon-plus.svg' | inline_asset_content -}}
@@ -175,6 +173,10 @@
               {{ 'actions.apply' | t }}
             </button>
           </form>
+          <div class="vd-chips">
+            <button type="button" class="vd-chip" data-code="BFVALLORANI">Aplicar <b>BFVALLORANI</b></button>
+            <button type="button" class="vd-chip" data-code="SOLOTRANSFERENCIA">Aplicar <b>SOLOTRANSFERENCIA</b> <small>(si pagás con transferencia)</small></button>
+          </div>
         </div>
         <div
           class="cart-discount__error hidden"
@@ -222,3 +224,25 @@
     </details>
   </accordion-custom>
 </cart-discount-component>
+
+<style>
+  /* Vallorani: código de descuento siempre visible y destacado */
+  .cart-discount{background:#fff0f3; border:1.5px dashed #721442; border-radius:16px; padding:12px 14px; margin-block:10px;}
+  .cart-discount__summary{pointer-events:none;}
+  .cart-discount__summary .icon-plus{display:none;}
+  .cart-discount__label{color:#721442; font-weight:600;}
+  .cart-discount__input{border-radius:999px !important;}
+  .cart-discount__button{border-radius:999px !important; background:#721442 !important; color:#fffff7 !important;}
+  .vd-chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
+  .vd-chip{border:1px solid #721442; background:#fffff7; color:#721442; border-radius:999px; padding:6px 12px; font-size:12px; cursor:pointer; font-family:inherit;}
+  .vd-chip:hover{background:#721442; color:#fffff7;}
+  .vd-chip small{opacity:.75;}
+</style>
+<script>
+  document.addEventListener('click', function(e){
+    var c = e.target.closest('.vd-chip'); if (!c) return;
+    var box = c.closest('.cart-discount'), inp = box && box.querySelector('.cart-discount__input'), btn = box && box.querySelector('.cart-discount__button');
+    if (!inp || !btn) return;
+    inp.value = c.dataset.code; inp.dispatchEvent(new Event('input', { bubbles: true })); btn.click();
+  });
+</script>
