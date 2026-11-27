@@ -322,3 +322,6 @@
 
 .mpz .proceso-card h3 small{font-family:"La Belle Aurore",cursive !important; font-size:20px !important; line-height:1.2; margin-top:8px; letter-spacing:0;}
 .mpz .opt[hidden]{display:none !important;}
+/* "Mirá Midoris ya hechos": la tira scrollea por dentro y no ensancha la página en celular */
+.mpz .hechos{min-width:0; max-width:100%;}
+.mpz .hechos-strip{width:100%; max-width:calc(100vw - 32px); margin-inline:auto; overscroll-behavior-x:contain;}
