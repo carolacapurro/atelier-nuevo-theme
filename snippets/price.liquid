@@ -44,7 +44,7 @@
       <span class="price">{{ transfer_price | money_without_trailing_zeros }}</span>
       <small class="price-transfer__note">10% off con transferencia</small>
     </span>
-    <style>.price-transfer{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:0 .45em}.price-transfer__note{flex-basis:100%;font-size:.72em;opacity:.75}.group-block-content:has(> product-price .price-transfer)>*{order:2}.group-block-content:has(> product-price .price-transfer)>:first-child{order:0}.group-block-content:has(> product-price .price-transfer)>product-price{order:1;width:100%;text-align:center;justify-content:center;align-items:center}</style>
+    <style>.price-transfer{display:inline-flex;flex-wrap:wrap;align-items:baseline;justify-content:flex-start;text-align:left;gap:0 .45em}product-price .price-transfer{justify-content:center;text-align:center}.price-transfer__note{flex-basis:100%;font-size:.72em;opacity:.75}.group-block-content:has(> product-price .price-transfer)>*{order:2}.group-block-content:has(> product-price .price-transfer)>:first-child{order:0}.group-block-content:has(> product-price .price-transfer)>product-price{order:1;width:100%;text-align:center;justify-content:center;align-items:center}</style>
   {%- else -%}
   {% if show_sale_price_first == false and compare_at_price > price %}
     <s class="compare-at-price">{{ compare_at_price }}</s>
