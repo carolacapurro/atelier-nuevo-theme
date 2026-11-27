@@ -232,7 +232,9 @@
 .mpc .choices{order:8;}
 .mpc .note{order:9;}
 .mpc .postcard{order:10;}
-.mpc #resenas{order:11; margin-top:30px;}
+.mpc .mas-resenas{order:10;}
+.mpc .proceso{order:11;}
+.mpc #resenas{order:12; margin-top:30px;}
 }
 @media (max-width:560px){
 .mpc .sub{font-size:22px; margin-bottom:12px; white-space:nowrap;}
