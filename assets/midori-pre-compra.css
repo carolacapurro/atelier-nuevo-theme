@@ -87,7 +87,7 @@
 .mpc .step small{display:none;}
 .mpc .sep{font-size:14px; margin-top:13px;}
 }
-.mpc .label{font-size:12px; letter-spacing:.16em; text-transform:uppercase; font-weight:600; margin:0 0 28px;}
+.mpc .label{font-family:var(--sans) !important;font-size:12px; letter-spacing:.16em; text-transform:uppercase; font-weight:600; margin:0 0 28px;}
 .mpc .choices{display:flex; flex-direction:column; gap:30px; margin-top:4px;}
 .mpc .choice{position:relative; display:grid; grid-template-columns:1fr auto; gap:14px 22px; align-items:end; padding:34px 28px 26px; border-radius:18px; transition:transform .18s ease, box-shadow .18s ease;}
 .mpc .choice::before{display:none;}
