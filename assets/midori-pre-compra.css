@@ -275,3 +275,6 @@
 .mpc .mas-resenas>summary::after{content:"+"; text-decoration:none; font-size:15px;}
 .mpc .mas-resenas[open]>summary::after{content:"–";}
 .mpc .mas-resenas-body{margin-top:12px; max-height:520px; overflow:auto; padding-right:6px;}
+.mpc .mas-resenas-body .jdgm-rev-widg__header{display:none !important;}
+.mpc .mas-resenas-body .jdgm-rev-widg{padding:0 !important; margin:0 !important;}
+.mpc .mas-resenas-body .jdgm-rev{font-size:14px;}
