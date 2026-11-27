@@ -1,0 +1,141 @@
+{%- comment -%} Bloque '¡Hacemos envíos a todo el mundo!' (va debajo de la postal en la pre-tienda y en el home). uid: id único {%- endcomment -%}
+<section class="envm" id="envm-{{ uid }}" aria-labelledby="envm-t-{{ uid }}">
+    <div class="env-art">
+      <svg viewBox="0 0 520 520" role="img" aria-label="Caja de Vallorani abierta con monumentos del mundo">
+        <defs>
+          <symbol id="plane-p" viewBox="0 0 60 40"><path d="M2 20 58 2 40 38 28 24Z" fill="#f6c4d0" stroke="#501123" stroke-width="2" stroke-linejoin="round"/><path d="M58 2 28 24 26 36" fill="none" stroke="#501123" stroke-width="2" stroke-linejoin="round"/></symbol>
+        </defs>
+        <!-- recorridos -->
+        <path d="M40 210 Q90 120 170 110" fill="none" stroke="#e59db9" stroke-width="2.5" stroke-dasharray="2 9" stroke-linecap="round"/>
+        <path d="M480 160 Q450 90 380 70" fill="none" stroke="#e59db9" stroke-width="2.5" stroke-dasharray="2 9" stroke-linecap="round"/>
+        <use href="#plane-p" x="150" y="88" width="46" height="31" transform="rotate(-8 173 103)"/>
+        <use href="#plane-p" x="352" y="52" width="40" height="27" transform="rotate(200 372 66) scale(1 1)"/>
+        <g fill="#e59db9"><path d="M70 330l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/><path d="M462 230l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/><path d="M110 150l2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5z"/></g>
+
+        <!-- sombra -->
+        <ellipse cx="268" cy="496" rx="190" ry="16" fill="#501123" opacity=".12"/>
+
+        <!-- solapas de atrás -->
+        <path d="M110 300 260 255 228 196 76 240Z" fill="#fbe3e9" stroke="#501123" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M260 255 420 300 456 242 296 198Z" fill="#fbe3e9" stroke="#501123" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- interior -->
+        <path d="M110 300 260 255 420 300 270 350Z" fill="#e9a3b8" stroke="#501123" stroke-width="2.5" stroke-linejoin="round"/>
+
+        <!-- monumentos -->
+        <!-- Torre de Pisa -->
+        <g transform="rotate(-7 150 330)" stroke="#501123" stroke-width="2.2" stroke-linejoin="round">
+          <rect x="131" y="176" width="38" height="160" rx="3" fill="#fffdf7"/>
+          <rect x="136" y="160" width="28" height="18" rx="3" fill="#fffdf7"/>
+          <path d="M131 204h38M131 232h38M131 260h38M131 288h38" fill="none"/>
+          <g fill="none" stroke-width="1.6"><path d="M137 204v-8a3 3 0 0 1 6 0v8M147 204v-8a3 3 0 0 1 6 0v8M157 204v-8a3 3 0 0 1 6 0v8M137 232v-8a3 3 0 0 1 6 0v8M147 232v-8a3 3 0 0 1 6 0v8M157 232v-8a3 3 0 0 1 6 0v8M137 260v-8a3 3 0 0 1 6 0v8M147 260v-8a3 3 0 0 1 6 0v8M157 260v-8a3 3 0 0 1 6 0v8M137 288v-8a3 3 0 0 1 6 0v8M147 288v-8a3 3 0 0 1 6 0v8M157 288v-8a3 3 0 0 1 6 0v8"/></g>
+        </g>
+        <!-- Big Ben -->
+        <g stroke="#501123" stroke-width="2.2" stroke-linejoin="round">
+          <path d="M193 142 215 58 237 142Z" fill="#501123"/>
+          <path d="M215 58v-12" fill="none"/>
+          <rect x="191" y="140" width="48" height="10" fill="#f6c4d0"/>
+          <rect x="195" y="150" width="40" height="190" fill="#fffdf7"/>
+          <circle cx="215" cy="174" r="15" fill="#f6c4d0"/>
+          <path d="M215 174v-9M215 174l6 4" fill="none" stroke-linecap="round"/>
+          <path d="M203 200v130M215 200v130M227 200v130" fill="none" stroke-width="1.4"/>
+          <path d="M195 200h40M195 250h40M195 300h40" fill="none" stroke-width="1.6"/>
+        </g>
+        <!-- Torre Eiffel -->
+        <g stroke="#501123" stroke-width="2" stroke-linejoin="round">
+          <path d="M298 340Q318 262 323 202L326 132 329 72h2l3 60 3 70Q342 262 362 340h-15Q338 296 330 294 322 296 313 340Z" fill="#501123"/>
+          <path d="M314 202h32M306 254h48M320 132h20" fill="none" stroke="#f6c4d0" stroke-width="3" stroke-linecap="round"/>
+          <path d="M321 228l18 0M318 228l24-24M342 228l-24-24" fill="none" stroke="#f6c4d0" stroke-width="1.2" opacity=".8"/>
+        </g>
+        <!-- Obelisco -->
+        <g stroke="#501123" stroke-width="2.2" stroke-linejoin="round">
+          <path d="M378 342 383 178 391 160 399 178 404 342Z" fill="#f9dde4"/>
+          <rect x="387.5" y="196" width="7" height="10" rx="1" fill="#501123" stroke="none"/>
+        </g>
+        <!-- Estatua de la Libertad -->
+        <g stroke="#501123" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M281 128l5-2 4 82-8 2Z" fill="#e9a3b8"/>
+          <rect x="279" y="116" width="12" height="13" rx="2" fill="#f6c4d0"/>
+          <path d="M285 116q-9-12 0-24 9 12 0 24Z" fill="#fff0a8"/>
+          <path d="M246 342 251 232q3-36 17-40 14 4 17 22l5 128Z" fill="#e9a3b8"/>
+          <path d="M256 250q10 10 24 4M254 290q12 8 30 2" fill="none" stroke-width="1.5"/>
+          <rect x="240" y="226" width="12" height="20" rx="2" transform="rotate(-14 246 236)" fill="#f9dde4"/>
+          <circle cx="268" cy="180" r="10" fill="#e9a3b8"/>
+          <path d="M258 172l-7-7M263 168l-3-10M268 167v-11M273 168l3-10M278 172l7-7" fill="none"/>
+        </g>
+
+        <!-- caja: frente -->
+        <path d="M110 300 270 350 270 490 110 440Z" fill="#fffdf7" stroke="#501123" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M270 350 420 300 420 440 270 490Z" fill="#fbf1ec" stroke="#501123" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- impresión cara izquierda -->
+        <g transform="matrix(1 .3125 0 1 0 0)">
+          <text x="190" y="336" text-anchor="middle" font-family="Newsreader,Georgia,serif" font-style="italic" font-size="30" fill="#501123">Vallorani</text>
+          <text x="190" y="354" text-anchor="middle" font-family="Montserrat,Arial,sans-serif" font-weight="600" font-size="9" letter-spacing="3.5" fill="#501123">ATELIER</text>
+          <g fill="#e9a3b8"><path d="M128 376l10 4-8 6Z"/><path d="M146 384l9-2-3 9Z"/><path d="M166 374l8 6-9 2Z"/><path d="M138 398l9 1-6 7Z"/><path d="M160 396l6 7-9 0Z"/><path d="M184 388l7-5 1 9Z"/><path d="M126 412l8 3-7 5Z"/><path d="M150 414l9-1-4 8Z"/><path d="M204 400l6 6-8 1Z"/></g>
+          <g fill="#501123"><path d="M176 404l7 2-5 5Z"/><path d="M140 424l6 3-5 4Z"/><path d="M196 382l6-1-2 6Z"/></g>
+        </g>
+        <!-- impresión cara derecha -->
+        <g transform="matrix(1 -.33333 0 1 0 0)">
+          <g transform="translate(345 488) rotate(-12)" fill="#501123">
+            <ellipse cx="0" cy="0" rx="34" ry="6"/>
+            <path d="M-6 0h14L-8 28h-10Z"/><path d="M-6 0h14L-8-28h-10Z"/>
+            <path d="M-26 0h6l-10-13h-6Z"/><path d="M-26 0h6l-10 13h-6Z"/>
+          </g>
+          <text x="345" y="540" text-anchor="middle" font-family="Montserrat,Arial,sans-serif" font-weight="600" font-size="9.5" letter-spacing="1.6" fill="#501123">ENVÍOS A TODO</text>
+          <text x="345" y="553" text-anchor="middle" font-family="Montserrat,Arial,sans-serif" font-weight="600" font-size="9.5" letter-spacing="1.6" fill="#501123">EL MUNDO</text>
+          <path d="M305 565h80" stroke="#e59db9" stroke-width="2" stroke-dasharray="6 5"/>
+        </g>
+        <!-- solapas de adelante -->
+        <path d="M110 300 270 350 232 374 66 322Z" fill="#fffdf7" stroke="#501123" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M270 350 420 300 466 320 310 374Z" fill="#fbf1ec" stroke="#501123" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- cinta rosa -->
+        <path d="M86 328 160 351M380 340 440 320" stroke="#f6c4d0" stroke-width="6" stroke-linecap="round" opacity=".9"/>
+      </svg>
+    </div>
+
+    <div class="env-text">
+      <p class="envm-eyebrow">Envíos internacionales</p>
+      <h2 id="envm-t-{{ uid }}">¡Hacemos envíos a <em>todo el mundo</em>!</h2>
+      <p class="env-lead">Desde nuestro taller en Argentina hasta la puerta de tu casa, con DHL o FedEx y número de seguimiento.</p>
+      <div class="env-btns">
+        <a class="envm-btn envm-solid" href="mailto:ateliervallorani@gmail.com?subject=Env%C3%ADo%20internacional">Click acá para contactarnos <svg class="i"><use href="#i-arrow"/></svg></a>
+        <button class="envm-btn envm-line envm-more" type="button" aria-expanded="false" aria-controls="envm-info-{{ uid }}">Ver más info <span class="pm" aria-hidden="true">+</span></button>
+      </div>
+    </div>
+    <div class="env-info" id="envm-info-{{ uid }}" hidden>
+      <dl>
+        <div><dt>¿A qué países?</dt><dd>A todos, con DHL Express y FedEx, puerta a puerta.</dd></div>
+        <div><dt>¿Cuánto tarda?</dt><dd>5 a 7 días hábiles de producción, más el viaje: América 6-8 días, Europa 8-10 y resto del mundo 10-12.</dd></div>
+        <div><dt>¿Cuánto cuesta?</dt><dd>Depende del país y del peso. Lo ves calculado en el checkout, antes de pagar.</dd></div>
+        <div><dt>Aduana</dt><dd>Según el país, puede cobrar impuestos al entregar. Corren por cuenta de quien compra.</dd></div>
+        <div><dt>Pagos desde el exterior</dt><dd>USDT, AstroPay, Lemon o link de Mercado Pago (según el país).</dd></div>
+        <div><dt>Seguimiento</dt><dd>Cuando sale del taller te llega el tracking oficial del correo para seguirlo en todo momento.</dd></div>
+      </dl>
+    </div>
+  </section>
+<style>
+.envm{--bordo:#501123; --texto:#363636; display:grid; grid-template-columns:160px minmax(0,1fr); gap:22px; align-items:center; margin-top:30px; font-family:"Montserrat","Helvetica Neue",Arial,sans-serif; color:var(--texto); text-align:left;}
+.envm .env-art svg{display:block; width:100%; height:auto;}
+.envm .envm-eyebrow{font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--bordo); font-weight:600; margin:0 0 6px;}
+.envm .env-text h2{margin:0 0 8px; font-family:"Newsreader",Georgia,serif; font-weight:500; font-size:24px; line-height:1.1; color:var(--bordo); letter-spacing:0; text-transform:none;}
+.envm .env-text h2 em{font-style:italic; font-weight:500; color:#b73a5f;}
+.envm .env-lead{margin:0 0 14px; font-size:13px; line-height:1.5;}
+.envm .env-btns{display:flex; flex-wrap:wrap; gap:8px;}
+.envm .envm-btn{border-radius:999px; font-family:inherit; font-size:10.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; padding:10px 16px; border:1px solid var(--bordo); cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:8px; white-space:nowrap; transition:background .15s ease, color .15s ease;}
+.envm .envm-btn svg{width:1em; height:1em; fill:none; stroke:currentColor; stroke-width:1.6;}
+.envm .envm-solid{background:var(--bordo); color:#f9f8e8;}
+.envm .envm-solid:hover{background:#3a0b19;}
+.envm .envm-line{background:transparent; color:var(--bordo); border-color:#e59db9;}
+.envm .envm-line:hover{background:#f6c4d0; border-color:#f6c4d0;}
+.envm .pm{display:inline-block; font-size:15px; font-weight:400; line-height:0; transition:transform .2s ease;}
+.envm [aria-expanded="true"] .pm{transform:rotate(45deg);}
+.envm .env-info{grid-column:1 / -1; margin-top:4px; border-top:1px solid #f2b8c6;}
+.envm .env-info dl{margin:0; display:grid; grid-template-columns:1fr 1fr; gap:0 22px;}
+.envm .env-info dl div{padding:10px 0; border-bottom:1px dashed #f2b8c6;}
+.envm .env-info dt{font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:600; color:var(--bordo); margin-bottom:3px;}
+.envm .env-info dd{margin:0; font-size:12.5px; line-height:1.5;}
+@media (max-width:560px){ .envm{grid-template-columns:110px minmax(0,1fr); gap:14px;} .envm .env-text h2{font-size:21px;} .envm .env-info dl{grid-template-columns:1fr;} .envm .env-btns .envm-btn{width:100%; justify-content:center;} }
+</style>
+<script>
+(function(){ var w=document.getElementById('envm-{{ uid }}'); if(!w) return; var b=w.querySelector('.envm-more'), i=document.getElementById('envm-info-{{ uid }}');
+  b.addEventListener('click',function(){ var o=b.getAttribute('aria-expanded')==='true'; b.setAttribute('aria-expanded',!o); i.hidden=o; b.firstChild.textContent=o?'Ver más info ':'Ver menos '; }); })();
+</script>

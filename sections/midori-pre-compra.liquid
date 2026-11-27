@@ -129,6 +129,7 @@
           <span>{{ section.settings.review_author }}</span><span>{{ section.settings.review_caption }}</span>
         </figcaption>
       </figure>
+      {%- render 'envios-mundo', uid: section.id -%}
       {%- assign app_blocks = section.blocks | where: 'type', '@app' -%}
       {%- if app_blocks.size > 0 -%}
       <details class="mas-resenas" id="mas-resenas">

@@ -2114,6 +2114,10 @@
         "padding-block-start": 64,
         "padding-block-end": 64
       }
+    },
+    "envios_mundo": {
+      "type": "envios-mundo",
+      "settings": {}
     }
   },
   "order": [
@@ -2126,6 +2130,7 @@
     "media_with_content_bwgWmR",
     "hero_MVUtj6",
     "1754612701961b0ef1",
+    "envios_mundo",
     "section_ktU3La",
     "divider_tHJJar",
     "section_QxxJxq"

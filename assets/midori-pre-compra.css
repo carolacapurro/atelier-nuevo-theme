@@ -280,3 +280,5 @@
 .mpc .mas-resenas-body .jdgm-rev-widg__header{display:none !important;}
 .mpc .mas-resenas-body .jdgm-rev-widg{padding:0 !important; margin:0 !important;}
 .mpc .mas-resenas-body .jdgm-rev{font-size:14px;}
+
+@media (max-width:900px){ .mpc .envm{order:10;} }
