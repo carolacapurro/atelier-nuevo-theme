@@ -3961,3 +3961,8 @@ text-component {
 .product-form-buttons .add-to-cart-button,
 .product-form-buttons .shopify-payment-button__button--unbranded{white-space:nowrap !important; padding:16px 18px !important; letter-spacing:.08em !important; font-size:12.5px !important; line-height:1.2 !important;}
 .product-form-buttons .add-to-cart-button svg,.product-form-buttons .add-to-cart-button .svg-wrapper{display:none !important;}
+.product-form-buttons .add-to-cart-button,
+.product-form-buttons .shopify-payment-button__button--unbranded{letter-spacing:0 !important;}
+/* "Comprar ahora" → "Comprar" */
+.product-form-buttons .shopify-payment-button__button--unbranded{font-size:0 !important;}
+.product-form-buttons .shopify-payment-button__button--unbranded::after{content:"Comprar"; font-size:12.5px; letter-spacing:0;}
