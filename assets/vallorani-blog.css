@@ -106,3 +106,5 @@
 .vb-art .mas .meta{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--oliva);font-weight:600;margin-bottom:8px;}
 .vb-art .mas h3{font-family:var(--serif);font-weight:400;font-size:21px;line-height:1.25;color:var(--bordo);margin:0;}
 @media (max-width:760px){.vb-art{padding:32px 18px 64px;}.vb-art .cuerpo{font-size:16px;}.vb-art .cuerpo > p:nth-of-type(2){font-size:19px;}.vb-art .cuerpo blockquote{padding:22px 22px 20px;}.vb-art .cuerpo blockquote::after{display:none;}.vb-art .mas .grid{grid-template-columns:1fr;}.vb-art .cierre{padding:40px 22px;}}
+/* tablas de los artículos: en celular scrollean por dentro */
+.rte table, .article table, article table{display:block; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch;}
