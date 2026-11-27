@@ -239,10 +239,12 @@
   .vd-chip small{opacity:.75;}
 </style>
 <script>
+  if (!window.__vdChips) { window.__vdChips = true;
   document.addEventListener('click', function(e){
     var c = e.target.closest('.vd-chip'); if (!c) return;
     var box = c.closest('.cart-discount'), inp = box && box.querySelector('.cart-discount__input'), btn = box && box.querySelector('.cart-discount__button');
     if (!inp || !btn) return;
     inp.value = c.dataset.code; inp.dispatchEvent(new Event('input', { bubbles: true })); btn.click();
   });
+  }
 </script>
