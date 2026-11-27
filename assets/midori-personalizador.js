@@ -102,11 +102,22 @@
   /* dónde va cada dije: x sobre el elástico (frente y extras); en el lomo, columna y fila del ojalillo */
   const pos = { sideCol: -1, sideRow: 0 };
   /* px: x de cada dije sobre el elástico; fijo: los que la clienta movió a mano.
-     enLomo: qué dije va en el lomo (undefined = el de costado elegido; '' = ninguno). Cada dije conserva su precio y su stock, esté donde esté. */
-  const px = {}, fijo = new Set(); let enLomo;
+     enLomo: los dijes que van en el lomo (pueden ser varios); posL: ojalillo de cada uno {c: columna, r: 0 arriba / 1 abajo}.
+     Cada dije conserva su precio y su stock, esté donde esté. */
+  const px = {}, fijo = new Set(), enLomo = new Set(), posL = {};
   const elegidos = () => [dz.front, dz.side].concat(dz.extra).filter(Boolean);
-  const lomo = () => { if (enLomo !== undefined && enLomo !== '' && !elegidos().includes(enLomo)) enLomo = undefined; return enLomo === undefined ? dz.side : enLomo; };
-  const enFrente = () => { const l = lomo(); return elegidos().filter(id => id !== l); };
+  const lomos = () => { const el = elegidos(); [...enLomo].forEach(id => { if (!el.includes(id)) { enLomo.delete(id); delete posL[id]; } }); return [...enLomo]; };
+  const lomo = () => lomos()[0] || '';
+  const enFrente = () => { lomos(); return elegidos().filter(id => !enLomo.has(id)); };
+  /* ojalillo libre más cercano a (c, r); si no se indica, el primero libre empezando por la derecha, arriba */
+  const slotLibre = (id, c, r) => {
+    const cols = Math.max(1, sideXs.length), usados = new Set(lomos().filter(o => o !== id && posL[o]).map(o => posL[o].c + ':' + posL[o].r));
+    const todos = []; for (let cc = cols - 1; cc >= 0; cc--) for (let rr = 0; rr < 2; rr++) todos.push({ c: cc, r: rr });
+    const libres = todos.filter(t => !usados.has(t.c + ':' + t.r)); if (!libres.length) return todos[0];
+    if (c === undefined) return libres[0];
+    return libres.sort((a, b) => (Math.abs(a.c - c) + Math.abs(a.r - r) * 2) - (Math.abs(b.c - c) + Math.abs(b.r - r) * 2))[0];
+  };
+  const alLomo = (id, c, r) => { enLomo.add(id); posL[id] = slotLibre(id, c, r); fijo.delete(id); };
   /* en el elástico no se elige el lugar: el primero va en el medio y los demás se suman a la derecha y a la izquierda, con aire entre ellos */
   const AIRE = 40;
   const acomodar = () => {
@@ -186,13 +197,15 @@
     sideCords.innerHTML = '';
     sideEyelets.innerHTML = ring + el + cierre;
     sideXs = xs; sideR = r;
-    const c = pos.sideCol < 0 || pos.sideCol >= cols ? cols - 1 : pos.sideCol;
-    sideX = xs[c]; sideY = (pos.sideRow ? B2 : T2) + r * 0.5;
+    lomos().forEach(id => { if (!posL[id] || posL[id].c >= cols) posL[id] = slotLibre(id); });
     renderSideCharm();
   };
   const renderSideCharm = () => {
-    const l = lomo(); if (!l) { sideCharm.innerHTML = ''; return; }
-    sideCharm.innerHTML = `<g class="dz-drag" data-drag="side" transform="translate(${sideX} ${sideY})"><path class="sp-cord" d="M0 0V12" stroke-width="6"/>${imgTag(byId[l], 9, .8)}</g>`;
+    sideCharm.innerHTML = lomos().map(id => {
+      if (!posL[id]) posL[id] = slotLibre(id);
+      const x = sideXs[posL[id].c] ?? sideX, y = (posL[id].r ? B2 : T2) + sideR * 0.5;
+      return `<g class="dz-drag" data-drag="side" data-id="${id}" transform="translate(${x} ${y})"><path class="sp-cord" d="M0 0V12" stroke-width="6"/>${imgTag(byId[id], 9, .8)}</g>`;
+    }).join('');
   };
   const NINGUNO = '<circle cx="0" cy="75" r="46" fill="none" stroke="currentColor" stroke-width="5"/><path d="M-32 107L32 43" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>';
   document.querySelectorAll('.dz-grid').forEach(g => {
@@ -239,8 +252,9 @@
         row.querySelectorAll('.dz-item').forEach(o => o.setAttribute('aria-pressed', (o.dataset.dzV === '' ? dz.extra.length === 0 : dz.extra.includes(o.dataset.dzV)) ? 'true' : 'false'));
       } else {
         press(row.querySelectorAll('.dz-item'), b);
+        if (kind === 'side' && dz.side && dz.side !== v) { enLomo.delete(dz.side); delete posL[dz.side]; }
         dz[kind] = v;
-        if (kind === 'side') enLomo = undefined;   // el de costado nuevo va al lomo
+        if (kind === 'side' && v) alLomo(v);   // el de costado nuevo va al lomo
       }
       renderDijes();
     });
@@ -321,9 +335,10 @@
     };
     const ubic = [];
     /* frente: de izquierda a derecha, como quedaron en el elástico */
-    const frente = enFrente().sort((a, b) => px[a] - px[b]), enL = lomo();
+    const frente = enFrente().sort((a, b) => px[a] - px[b]);
+    const enL = lomos().sort((a, b) => (posL[a].c - posL[b].c) || (posL[a].r - posL[b].r));
     if (frente.length) ubic.push('Frente: ' + frente.map(id => corto(nom(id))).join(' + '));
-    if (enL) ubic.push('Lomo: ' + corto(nom(enL)) + ', ojalillo ' + (pos.sideRow ? 'abajo' : 'arriba'));
+    if (enL.length) ubic.push('Lomo: ' + enL.map(id => corto(nom(id)) + ', ojalillo ' + (posL[id].r ? 'abajo' : 'arriba')).join(' + '));
     if (ubic.length) props['Ubicación dijes'] = ubic.join(' · ');
     const items = [{ id: pr.id, quantity: 1, properties: props }];
     const parte = (vid, extra) => items.push({ id: vid, quantity: 1, properties: Object.assign({ 'Para': ref }, extra || {}) });
@@ -372,7 +387,7 @@
   document.querySelectorAll('#jc-svg, #jc-side').forEach(svg => {
     svg.addEventListener('pointerdown', e => {
       const g = e.target.closest('.dz-drag'); if (!g || !g.firstElementChild) return;
-      e.preventDefault(); arr = { g, svg, k: g.dataset.drag, id: g.dataset.id || lomo() };
+      e.preventDefault(); arr = { g, svg, k: g.dataset.drag, id: g.dataset.id };
       g.classList.add('arrastrando'); svg.setPointerCapture(e.pointerId);
     });
     svg.addEventListener('pointermove', e => {
@@ -382,10 +397,13 @@
       const p = svgPt(svg, e);
       if (arr.k === 'side') {
         let c = 0; sideXs.forEach((x, j) => { if (Math.abs(x - p.x) < Math.abs(sideXs[c] - p.x)) c = j; });
-        const row = p.y > MID ? 1 : 0;
-        if (c !== pos.sideCol || row !== pos.sideRow) {
-          pos.sideCol = c; pos.sideRow = row; sideX = sideXs[c]; sideY = (row ? B2 : T2) + sideR * 0.5;
-          renderSideCharm(); arr.g = sideCharm.querySelector('.dz-drag'); arr.g.classList.add('arrastrando');
+        const row = p.y > MID ? 1 : 0, act = posL[arr.id];
+        if (act && (c !== act.c || row !== act.r)) {
+          /* si en ese ojalillo ya hay otro dije, intercambian lugar */
+          const otro = lomos().find(o => o !== arr.id && posL[o].c === c && posL[o].r === row);
+          if (otro) posL[otro] = { c: act.c, r: act.r };
+          posL[arr.id] = { c, r: row };
+          renderSideCharm(); arr.g = sideCharm.querySelector(`.dz-drag[data-id="${arr.id}"]`); arr.g.classList.add('arrastrando');
         }
         return;
       }
@@ -398,16 +416,15 @@
       if (!arr) return;
       arr.g.classList.remove('arrastrando');
       svgFrente.classList.remove('destino'); svgLomo.classList.remove('destino');
-      /* soltar sobre la otra vista: el dije pasa del frente al lomo o al revés (si el lomo ya tenía uno, se intercambian) */
+      /* soltar sobre la otra vista: el dije pasa del frente al lomo (al ojalillo libre más cercano) o al revés */
       const otro = arr.svg === svgFrente ? svgLomo : svgFrente, r = otro.getBoundingClientRect();
       if (e && e.type === 'pointerup' && e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) {
         const id = arr.id;
         if (otro === svgLomo) {
-          const antes = lomo();
-          if (antes && antes !== id) { px[antes] = px[id]; fijo.add(antes); }
-          enLomo = id; fijo.delete(id);
+          const p = svgPt(svgLomo, e); let c = 0; sideXs.forEach((x, j) => { if (Math.abs(x - p.x) < Math.abs(sideXs[c] - p.x)) c = j; });
+          alLomo(id, c, p.y > MID ? 1 : 0);
         } else {
-          enLomo = ''; px[id] = Math.round(Math.min(1050, Math.max(150, svgPt(svgFrente, e).x))); fijo.add(id);
+          enLomo.delete(id); delete posL[id]; px[id] = Math.round(Math.min(1050, Math.max(150, svgPt(svgFrente, e).x))); fijo.add(id);
         }
         renderDijes();
       }
