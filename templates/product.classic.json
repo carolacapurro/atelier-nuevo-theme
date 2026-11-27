@@ -598,7 +598,8 @@
       ],
       "settings": {
         "titulo": "Ver reseñas de clientas",
-        "abierto": false
+        "abierto": false,
+        "fuente": "journal-a5"
       }
     }
   },

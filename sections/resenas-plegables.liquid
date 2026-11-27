@@ -2,8 +2,8 @@
 <div class="rp page-width">
   <details class="rp-details"{% if section.settings.abierto %} open{% endif %}>
     <summary>{{ section.settings.titulo }}</summary>
-    <div class="rp-body">
-      {%- for block in section.blocks -%}{% render block %}{%- endfor -%}
+    <div class="rp-body"{% if section.settings.fuente != blank %} data-fuente="{{ section.settings.fuente.url }}"{% endif %}>
+      {%- if section.settings.fuente == blank -%}{%- for block in section.blocks -%}{% render block %}{%- endfor -%}{%- else -%}<p class="rp-cargando">Cargando reseñas…</p>{%- endif -%}
     </div>
   </details>
 </div>
@@ -17,13 +17,32 @@
   .rp-body{margin-top:12px; max-height:560px; overflow:auto; padding-right:6px;}
   .rp-body .jdgm-rev-widg__header{display:none !important;}
   .rp-body .jdgm-rev-widg{padding:0 !important; margin:0 !important;}
+  .rp-body .jdgm-paginate,.rp-body .jdgm-rev-widg__paginate-spinner-wrapper{display:none !important;}
+  .rp-cargando{font-size:13px; color:#6b6b5a;}
 </style>
+<script>
+(function(){
+  var body=document.querySelector('#shopify-section-{{ section.id }} .rp-body[data-fuente]'); if(!body) return;
+  var d=body.closest('details'), hecho=false;
+  function cargar(){ if(hecho) return; hecho=true;
+    fetch(body.dataset.fuente,{credentials:'same-origin'}).then(function(r){return r.text()}).then(function(t){
+      var doc=new DOMParser().parseFromString(t,'text/html');
+      var revs=doc.querySelectorAll('.jdgm-rev'); if(!revs.length){ body.innerHTML='<p class="rp-cargando">Todavía no hay reseñas.</p>'; return; }
+      var w=document.createElement('div'); w.className='jdgm-widget jdgm-review-widget jdgm--done-setup-widget';
+      var l=document.createElement('div'); l.className='jdgm-rev-widg__reviews'; revs.forEach(function(r){ l.appendChild(document.importNode(r,true)); });
+      w.appendChild(l); body.innerHTML=''; body.appendChild(w);
+    }).catch(function(){ body.innerHTML=''; });
+  }
+  if(d.open) cargar(); d.addEventListener('toggle', function(){ if(d.open) cargar(); });
+})();
+</script>
 {% schema %}
 {
   "name": "Reseñas plegables",
   "settings": [
     { "type": "text", "id": "titulo", "label": "Texto del desplegable", "default": "Ver reseñas de clientas" },
-    { "type": "checkbox", "id": "abierto", "label": "Abierto al cargar", "default": false }
+    { "type": "checkbox", "id": "abierto", "label": "Abierto al cargar", "default": false },
+    { "type": "product", "id": "fuente", "label": "Mostrar reseñas de este producto", "info": "Vacío = las del producto actual (bloque de Judge.me)." }
   ],
   "blocks": [{ "type": "@app" }],
   "presets": [{ "name": "Reseñas plegables" }]
