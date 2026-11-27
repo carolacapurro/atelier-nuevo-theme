@@ -54,19 +54,21 @@
 {%- comment -%} A6 = 4 elásticos: al elegir A6 la foto principal cambia a la versión A6 (assets/clasica-<handle>-a6.jpg) {%- endcomment -%}
 <script>
 (function(){
-  var a5 = null, a6 = {{ 'clasica-' | append: product.handle | append: '-a6.jpg' | asset_url | json }};
-  function imgs(){ return [...document.querySelectorAll('.product-information img, media-gallery img, .product-media img')].filter(function(i){ return /clasica-/.test(i.currentSrc || i.src) || i.dataset.a5; }); }
-  function poner(t){
+  var a6 = {{ 'clasica-' | append: product.handle | append: '-a6.jpg' | asset_url | json }};
+  function imgs(){ return [...document.querySelectorAll('.product-information img.product-media__image, media-gallery img')].filter(function(i){ return /clasica-/.test(i.getAttribute('src') || '') || i.dataset.a5; }); }
+  function tam(){ var c = document.querySelector('.product-information input[type=radio][value="A6"]:checked, input[type=radio][value="A6"]:checked'); return c ? 'A6' : 'A5'; }
+  function aplicar(){
+    var t = tam();
     imgs().forEach(function(i){
-      if (!i.dataset.a5) { i.dataset.a5 = i.src; i.dataset.a5set = i.srcset || ''; }
-      if (t === 'A6') { i.removeAttribute('srcset'); i.src = a6; }
-      else { i.src = i.dataset.a5; if (i.dataset.a5set) i.srcset = i.dataset.a5set; }
+      if (!i.dataset.a5) { i.dataset.a5 = i.getAttribute('src'); i.dataset.a5set = i.getAttribute('srcset') || ''; }
+      if (t === 'A6') { if (i.getAttribute('src') !== a6) { i.removeAttribute('srcset'); i.setAttribute('src', a6); } }
+      else if (i.getAttribute('src') === a6) { i.setAttribute('src', i.dataset.a5); if (i.dataset.a5set) i.setAttribute('srcset', i.dataset.a5set); }
     });
   }
-  var estado = 'A5';
-  document.addEventListener('change', function(e){ var i = e.target; if (i && i.type === 'radio' && /^A[56]$/.test(i.value)) { estado = i.value; poner(estado); setTimeout(function(){ poner(estado); }, 400); } });
-  /* el tema vuelve a dibujar la galería al cambiar de variante: se reaplica */
-  new MutationObserver(function(){ if (estado === 'A6') imgs().forEach(function(i){ if (i.src !== a6) poner('A6'); }); }).observe(document.body, { childList: true, subtree: true });
-  document.addEventListener('DOMContentLoaded', function(){ var c = document.querySelector('input[type=radio][value="A6"]:checked'); if (c) { estado = 'A6'; poner('A6'); } });
+  var pend = false;
+  function pedir(){ if (pend) return; pend = true; requestAnimationFrame(function(){ pend = false; aplicar(); }); }
+  document.addEventListener('click', function(){ setTimeout(aplicar, 50); setTimeout(aplicar, 500); }, true);
+  new MutationObserver(pedir).observe(document.documentElement, { childList: true, subtree: true });
+  if (document.readyState !== 'loading') aplicar(); else document.addEventListener('DOMContentLoaded', aplicar);
 })();
 </script>
