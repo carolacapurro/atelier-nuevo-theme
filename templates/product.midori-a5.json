@@ -112,7 +112,8 @@
         "judgeme_resenas"
       ],
       "settings": {
-        "model": "A5"
+        "model": "A5",
+        "classic_url": "shopify://collections/seleccion-clasica"
       }
     }
   },
