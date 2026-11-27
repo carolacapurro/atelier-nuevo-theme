@@ -39,7 +39,8 @@
 (function(){
   var desde = new Date('2026-11-27T09:00:00-03:00');
   var prueba = /[?&]bfp=1/.test(location.search);   // ?bfp=1 para verlo antes de hora
-  if (!prueba && new Date() < desde) return;
+  var hasta = new Date('2026-11-28T00:00:00-03:00');   // Black Friday solo el 27/11
+  if (!prueba && (new Date() < desde || new Date() >= hasta)) return;
   try { if (!prueba && sessionStorage.getItem('bfp-visto')) return; } catch(e) {}
   var p = document.getElementById('bfp'); if (!p) return;
   function cerrar(){ p.hidden = true; try { sessionStorage.setItem('bfp-visto','1'); } catch(e) {} }
