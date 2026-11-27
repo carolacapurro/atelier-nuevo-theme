@@ -608,10 +608,15 @@
         "abierto": false,
         "fuente": "journal-a5"
       }
+    },
+    "classic_extras": {
+      "type": "classic-extras",
+      "settings": {}
     }
   },
   "order": [
     "main",
+    "classic_extras",
     "resenas_plegables",
     "product_recommendations_qnzPkn",
     "section_4M9XYE"

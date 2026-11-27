@@ -1,0 +1,65 @@
+{%- comment -%} Classic: organizador recomendado + "¿Cómo es el proceso?" (mismo diseño que el personalizador, con los tiempos de la Selección clásica) {%- endcomment -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=La+Belle+Aurore&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400&family=Montserrat:wght@400;500;600;700&display=swap">
+{{ 'midori-personalizador.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign tam_ini = 'A5'
+  assign v0 = product.selected_or_first_available_variant
+  if v0.title contains 'A6'
+    assign tam_ini = 'A6'
+  endif
+-%}
+<div class="mpz ce-wrap" id="ce-{{ section.id }}" data-tam="{{ tam_ini }}">
+<div class="pz-proceso-wrap">
+  <aside class="pz-org" aria-label="Complemento recomendado">
+    <p class="pz-org-kicker">Complemento ideal</p>
+    {%- assign org_handles = 'organizador-a5,organizador-a6' | split: ',' -%}
+    {%- for h in org_handles -%}
+      {%- assign o = all_products[h] -%}
+      {%- if o != blank -%}
+      <div class="pz-org-card" data-org="{% if h contains 'a6' %}A6{% else %}A5{% endif %}"{% unless h contains tam_ini %}{% endunless %}>
+        {%- if o.featured_image -%}<img src="{{ o.featured_image | image_url: width: 520 }}" alt="{{ o.title | escape }}" loading="lazy" width="260" height="260">{%- endif -%}
+        <div class="pz-org-txt">
+          <h3>Sumale el {{ o.title }}</h3>
+          <p>Un sobre con cierre, solapas para tus papeles y un elástico para la lapicera. Va adentro de tu Midori y lo hace todavía más práctico.</p>
+          <p class="pz-org-precio">{{ o.price | money_without_trailing_zeros }}{% unless o.available %} <span class="pz-org-sin">Sin stock por ahora</span>{% endunless %}</p>
+          <a class="pz-org-btn" href="{{ o.url }}">Ver organizador →</a>
+        </div>
+      </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </aside>
+  <section class="proceso" aria-labelledby="ce-proceso-t-{{ section.id }}">
+    <ol class="proceso-lista">
+      <li class="proceso-head"><span class="proceso-dot" aria-hidden="true"></span>
+        <div class="proceso-card oscura"><h3 id="ce-proceso-t-{{ section.id }}">¿Cómo es el proceso?<small>Es muy simple</small></h3></div>
+      </li>
+      <li><span class="proceso-dot" aria-hidden="true"></span>
+        <div class="proceso-card" tabindex="0"><b><i>1</i>Elegí tu Classic y hacé la compra</b>
+          <p>Es una combinación ya diseñada: elegís el tamaño, A5 o A6, y listo.</p></div>
+      </li>
+      <li><span class="proceso-dot" aria-hidden="true"></span>
+        <div class="proceso-card" tabindex="0"><b><i>2</i>Lo preparamos en hasta 48 hs</b>
+          <p>En el taller lo armamos a mano y lo dejamos listo para enviar.</p></div>
+      </li>
+      <li><span class="proceso-dot" aria-hidden="true"></span>
+        <div class="proceso-card" tabindex="0"><b><i>3</i>Te lo enviamos</b>
+          <p>Cuando está listo te contactamos por WhatsApp para coordinar el envío. Por Andreani llega en 2 a 4 días hábiles. Si lo mandamos en moto o por Uber paquetería, te llega en el día.</p></div>
+      </li>
+    </ol>
+  </section>
+</div>
+</div>
+<style>.ce-wrap{background:transparent;} .ce-wrap .pz-proceso-wrap{margin-top:30px;}</style>
+<script>
+(() => {
+  const w = document.getElementById('ce-{{ section.id }}'); if (!w) return;
+  const ver = t => w.querySelectorAll('.pz-org-card').forEach(c => { c.hidden = c.dataset.org !== t; });
+  ver(w.dataset.tam);
+  document.addEventListener('change', e => { const i = e.target; if (i && i.type === 'radio' && /^A[56]$/.test(i.value)) ver(i.value); });
+})();
+</script>
+{% schema %}
+{ "name": "Classic: complemento y proceso", "settings": [], "presets": [{ "name": "Classic: complemento y proceso" }] }
+{% endschema %}
