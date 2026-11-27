@@ -3937,3 +3937,24 @@ text-component {
 }
 /* Vallorani: botón de variante elegido legible (texto blanco sobre verde) */
 .variant-option__button-label:has(input:checked){background-color:#363815 !important; border-color:#363815 !important; color:#fff !important;}
+
+/* Vallorani: botones de compra con el estilo del personalizador (píldora ciruela) */
+.product-form-buttons .add-to-cart-button,
+.product-form-buttons .shopify-payment-button__button,
+.product-form-buttons .shopify-payment-button__button--unbranded{
+  font-family:"Montserrat","Helvetica Neue",Arial,sans-serif !important; font-weight:600 !important;
+  text-transform:uppercase !important; font-size:13px !important; letter-spacing:.1em !important;
+  border-radius:999px !important; min-height:54px; padding:17px 28px !important;
+  transition:transform .12s ease, background-color .15s ease, color .15s ease !important; box-shadow:none !important;
+}
+.product-form-buttons .add-to-cart-button{
+  background:#fffff7 !important; color:#721442 !important; border:1.5px solid #721442 !important;
+}
+.product-form-buttons .add-to-cart-button:hover{background:#721442 !important; color:#fffff7 !important;}
+.product-form-buttons .shopify-payment-button__button--unbranded{
+  background:#721442 !important; color:#fffff7 !important; border:0 !important;
+}
+.product-form-buttons .shopify-payment-button__button--unbranded:hover:not([disabled]){background:#7b1923 !important;}
+.product-form-buttons .add-to-cart-button:active,
+.product-form-buttons .shopify-payment-button__button--unbranded:active{transform:translateY(1px);}
+.product-form-buttons .add-to-cart-button::before,.product-form-buttons .add-to-cart-button::after{border-radius:999px !important;}
