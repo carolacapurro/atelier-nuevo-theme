@@ -67,7 +67,7 @@
           "name": "t:names.button",
           "settings": {
             "label": "Personalizar",
-            "link": "shopify://collections/all",
+            "link": "shopify://products/journal-a5",
             "open_in_new_tab": false,
             "style_class": "button-secondary",
             "width": "fit-content",
@@ -102,7 +102,7 @@
         "section_height_custom": 50,
         "color_scheme": "scheme-6",
         "toggle_overlay": true,
-        "overlay_color": "#000000D6",
+        "overlay_color": "#000000d6",
         "overlay_style": "gradient",
         "gradient_direction": "to top",
         "blurred_reflection": false,
