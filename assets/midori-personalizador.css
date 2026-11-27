@@ -321,3 +321,4 @@
 @media (max-width:480px){ .mpz .pz-org-card{grid-template-columns:1fr;} }
 
 .mpz .proceso-card h3 small{font-family:"La Belle Aurore",cursive !important; font-size:20px !important; line-height:1.2; margin-top:8px; letter-spacing:0;}
+.mpz .opt[hidden]{display:none !important;}

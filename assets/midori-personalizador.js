@@ -78,9 +78,16 @@
       const card = b.closest('.card');
       press(card.querySelectorAll('.opt'), b);
       state.tam = b.dataset.tam; out(card, state.tam); updateCap();
-      updatePrecio();
+      updatePrecio(); ajustarCant();
     });
   });
+  /* el A6 lleva solo 4 elásticos: se oculta la opción de 6 y, si estaba elegida, vuelve a 4 */
+  function ajustarCant() {
+    const b6 = document.querySelector('[data-cant="6"]'), b4 = document.querySelector('[data-cant="4"]'); if (!b6 || !b4) return;
+    const a6 = state.tam === 'A6'; b6.hidden = a6;
+    if (a6 && state.cant === '6') b4.click();
+  }
+  ajustarCant();
 
   const cover = document.getElementById('cover'), outline = document.getElementById('outline');
   document.querySelectorAll('[data-esq]').forEach(b => {

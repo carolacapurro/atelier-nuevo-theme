@@ -150,7 +150,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "{{ closest.product.description }}",
+                "text": "{{ closest.product.description | replace: '6, dorados (para 6 cuadernos)', 'dorados. A5: 6 elásticos (6 cuadernos) · A6: 4 elásticos (4 cuadernos)' }}",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
