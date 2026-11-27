@@ -3966,3 +3966,6 @@ text-component {
 /* "Comprar ahora" → "Comprar" */
 .product-form-buttons .shopify-payment-button__button--unbranded{font-size:0 !important;}
 .product-form-buttons .shopify-payment-button__button--unbranded::after{content:"Comprar"; font-size:12.5px; letter-spacing:0;}
+
+/* Hero de la home: encuadre más abajo para que se vean los Midoris con elástico y dijes */
+[id$="__hero_iyt6zg"] .hero__image{object-position:50% 82% !important;}
