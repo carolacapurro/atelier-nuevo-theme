@@ -220,6 +220,12 @@
                 }
               },
               "block_order": []
+            },
+            "classic_hechos": {
+              "type": "custom-liquid",
+              "settings": {
+                "custom_liquid": "{% render 'classic-hechos', product: closest.product %}"
+              }
             }
           },
           "block_order": [
@@ -228,6 +234,7 @@
             "variant_picker_XEPFbt",
             "text_EjJUez",
             "text_h7mmb6",
+            "classic_hechos",
             "easify_options_easify_product_options_T9HNRM",
             "easify_options_easify_product_options_t34pnR",
             "buy_buttons_eYQEYi"
