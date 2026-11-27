@@ -147,7 +147,7 @@
     "open_image_in_full_screen": "Abrir imagen a pantalla completa"
   },
   "content": {
-    "shipping_policy": "El envío se calcula al finalizar la compra.",
+    "shipping_policy": "El envío se calcula en el checkout.",
     "reviews": "reseñas",
     "language": "Idioma",
     "localization_region_and_language": "Región e idioma",
