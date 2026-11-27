@@ -109,6 +109,7 @@
     "pause_video": "Pausar el video"
   },
   "actions": {
+    "sign_up": "Crear cuenta",
     "sign_in_options": "Otras opciones para iniciar sesión",
     "add_to_cart": "Agregar al carrito",
     "clear_all": "Borrar todo",
@@ -146,6 +147,7 @@
     "open_image_in_full_screen": "Abrir imagen a pantalla completa"
   },
   "content": {
+    "shipping_policy": "El envío se calcula al finalizar la compra.",
     "reviews": "reseñas",
     "language": "Idioma",
     "localization_region_and_language": "Región e idioma",
@@ -269,6 +271,7 @@
   },
   "products": {
     "product": {
+      "sold_out": "Agotado",
       "add_to_cart": "Agregar al carrito",
       "added_to_cart": "Agregado al carrito",
       "adding_to_cart": "Agregando...",
