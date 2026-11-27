@@ -3969,3 +3969,10 @@ text-component {
 
 /* Hero de la home: encuadre más abajo para que se vean los Midoris con elástico y dijes */
 [id$="__hero_iyt6zg"] .hero__image{object-position:50% 82% !important;}
+
+/* Solo "Agregar al carrito": se oculta el botón de compra directa */
+.product-form-buttons .shopify-payment-button,
+.product-form-buttons shopify-accelerated-checkout,
+.product-form-buttons .accelerated-checkout-block{display:none !important;}
+/* Código de descuento del carrito: siempre desplegado */
+.cart-discount .discount-details .details-content{height:auto !important; max-height:none !important; overflow:visible !important; display:block !important;}
